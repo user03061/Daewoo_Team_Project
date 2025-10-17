@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MY. 메인 페이지</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Nanum Pen Script", cursive;
+        margin: 0;
+        padding: 0;
+        overscroll-behavior-y: none;
+        overflow-y: auto;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #000000, #0a0a23, #151540);
+        color: white;
+        position: relative;
+      }
+
+      /* body 배경에 올라가는 별 애니메이션 */
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(
+            white,
+            rgba(255, 255, 255, 0.2) 2px,
+            transparent 40px
+          ),
+          radial-gradient(
+            white,
+            rgba(255, 255, 255, 0.15) 1px,
+            transparent 30px
+          ),
+          radial-gradient(white, rgba(255, 255, 255, 0.1) 2px, transparent 40px);
+        background-size: 550px 550px, 350px 350px, 250px 250px;
+        background-position: 0 0, 40px 60px, 130px 270px;
+        animation: starMove 200s linear infinite;
+        z-index: -1;
+        pointer-events: none;
+        opacity: 0.5;
+      }
+
+      @keyframes starMove {
+        from {
+          transform: translateY(0);
+        }
+
+        to {
+          transform: translateY(-2000px);
+        }
+      }
+
+      .container {
+        display: flex;
+        padding: 20px;
+        flex-grow: 1;
+      }
+
+      .sidebar {
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        border-radius: 10px;
+      }
+
+      .sidebar {
+        transition: width 0.3s ease;
+        width: 250px;
+        overflow: hidden;
+      }
+
+      .sidebar.collapsed {
+        width: 250px;
+        /* 축소된 너비 */
+      }
+
+      .sidebar.collapsed .menu-item span {
+        display: none;
+      }
+
+      .menu-item {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        margin-bottom: 30px;
+        padding: 10px;
+        border-radius: 10px;
+        transition: background-color 0.3s;
+        cursor: pointer;
+      }
+
+      .menu-item img {
+        width: 25px;
+        height: 25px;
+        margin-right: 10px;
+        background-color: white;
+        border-radius: 50%;
+        padding: 5px;
+      }
+
+      .menu-item span {
+        font-size: 30px;
+        color: white;
+      }
+
+      .welcome-message {
+        font-size: 30px;
+        text-align: center;
+        margin: 0 auto;
+        margin-right: auto;
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+        flex-wrap: nowrap;
+      }
+
+      .logo {
+        width: 70px;
+        height: auto;
+        margin: 0 20px 0 0;
+      }
+
+      .logo-container {
+        display: flex;
+        align-items: center;
+      }
+
+      .Menu {
+        width: 50px;
+        margin-right: 15px;
+        cursor: pointer;
+      }
+
+      .search-bar {
+        width: 80%;
+        padding: 10px;
+        border-radius: 20px;
+        font-size: 15px;
+      }
+
+      .user-info {
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+        text-align: center;
+      }
+
+      .signup-button {
+        width: 120px;
+        height: 40px;
+        padding: 10px 20px;
+        border-radius: 20px;
+        font-size: 15px;
+        margin-right: 30px;
+        color: white;
+        background: rgb(8, 152, 209);
+        border: none;
+        position: relative;
+        overflow: visible;
+        z-index: 1;
+        cursor: pointer;
+        animation: pulse 3s infinite;
+        margin-top: 5px;
+      }
+
+      @keyframes pulse {
+        0% {
+          box-shadow: 0 0 0 0 rgba(8, 152, 209, 0.7);
+        }
+
+        70% {
+          box-shadow: 0 0 0 20px rgba(8, 152, 209, 0);
+        }
+
+        100% {
+          box-shadow: 0 0 0 0 rgba(8, 152, 209, 0);
+        }
+      }
+
+      .logout-button {
+        margin-left: 50px;
+        color: blueviolet;
+      }
+
+      .chat-container {
+        display: flex;
+        flex-grow: 1;
+        height: calc(100vh - 100px);
+        margin-top: 20px;
+      }
+
+      .chat-list {
+        width: 300px;
+        background-image: url("icon/chat.jpg");
+        padding: 20px;
+        border-radius: 20px;
+        margin-right: 20px;
+        height: 1000px;
+        overflow-y: auto;
+        margin-left: 100px;
+      }
+
+      .chat-list,
+      .chat-window {
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.5),
+          0 0 25px rgba(255, 255, 255, 0.3), 0 0 35px rgba(255, 255, 255, 0.2);
+      }
+
+      .chat-category,
+      .chat-category2 {
+        font-size: 43px;
+        color: #fff;
+      }
+
+      .chat-category2 {
+        margin-top: 20px;
+      }
+
+      .chat-window {
+        flex-grow: 1;
+        background-color: rgba(119, 136, 153, 0.8);
+        background-image: url("icon/chat1.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        border-radius: 20px;
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        margin-left: 10px;
+        max-width: 1500px;
+        height: 1000px;
+        position: relative;
+      }
+
+      .chat-header {
+        font-size: 25px;
+        margin-top: 0px;
+        border-bottom: 5px solid #003cff;
+        flex-shrink: 0;
+      }
+
+      .chat-body {
+        flex-grow: 1;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column-reverse;
+      }
+
+      .chat-messages {
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        flex-grow: 1;
+        overflow-y: auto;
+      }
+
+      .chat-item {
+        padding: 10px;
+        height: 40px;
+        margin-bottom: 10px;
+        background-color: #2a2a31;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 33px;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .chat-item:hover {
+        background-color: #513486;
+      }
+
+      .chat-item .unread-count {
+        background-color: #ff4b1f;
+        color: white;
+        border-radius: 50%;
+        padding: 2px 6px;
+        font-size: 20px;
+      }
+
+      .mbti-group {
+        margin-left: 0;
+        display: none;
+        text-align: center;
+      }
+
+      .mbti-type {
+        position: relative;
+        height: 50px;
+        padding: 5px;
+        margin-bottom: 5px;
+        background-color: #3a0a3e;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 20px;
+        overflow: hidden;
+      }
+
+      .mbti-type-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 1;
+      }
+
+      .mbti-type-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 2;
+        color: white;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        font-size: 30px;
+        font-weight: bold;
+        text-align: center;
+        width: 100%;
+        padding: 10px;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+
+      .mbti-type:hover .mbti-type-text {
+        background-color: rgb(190, 190, 190);
+        transform: translate(-50%, -50%) scale(1.1);
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+      }
+
+      .chat-input {
+        display: flex;
+        padding: 5px;
+        align-items: center;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 0 0 10px 10px;
+        flex-shrink: 0;
+      }
+
+      .chat-input input[type="text"] {
+        flex-grow: 1;
+        padding: 15px;
+        border: none;
+        border-radius: 5px;
+        background-color: #9cceff;
+        color: black;
+        width: calc(100% - 180px);
+        box-shadow: 2px 2px 4px #2a3642, -2px -2px 4px #4e6480;
+        font-size: 20px;
+      }
+
+      .send-button,
+      .emoji-button {
+        width: 80px;
+        height: 50px;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
+        margin-left: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 20px;
+        background: linear-gradient(145deg, #9cceff, #0080ff);
+        box-shadow: 3px 3px 6px #2a3642, -3px -3px 6px #4e6480;
+        transition: all 0.3s ease;
+      }
+
+      .send-button:hover,
+      .emoji-button:hover {
+        background: linear-gradient(145deg, #2c3a48, #3d5063);
+        box-shadow: 2px 2px 4px #2a3642, -2px -2px 4px #4e6480;
+      }
+
+      emoji-picker {
+        position: absolute;
+        bottom: 100%;
+        /* 버튼 바로 위에 위치 */
+        right: 0;
+        z-index: 1000;
+        background-color: white;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-bottom: 5px;
+        /* 버튼과의 간격 */
+      }
+
+      .emoji-picker span {
+        cursor: pointer;
+        font-size: 20px;
+        margin: 5px;
+      }
+
+      .message {
+        max-width: 70%;
+        margin-bottom: 10px;
+        padding: 10px;
+        border-radius: 20px;
+        font-size: 16px;
+      }
+
+      .message.sent {
+        align-self: flex-end;
+        background-color: #00c3ff;
+        font-size: 25px;
+        color: black;
+      }
+
+      .message.received {
+        align-self: flex-start;
+        background-color: #fcf700a2;
+        font-size: 25px;
+        color: black;
+      }
+
+      .message-time {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.7);
+        margin-top: 5px;
+      }
+
+      .message-sender {
+        font-weight: bold;
+        font-size: 0.9em;
+        margin-bottom: 3px;
+        color: #555;
+      }
+
+      .room-change-message {
+        text-align: center;
+        padding: 15px;
+        margin: 20px 0;
+        background-color: rgba(240, 240, 240, 0.9);
+        border-radius: 10px;
+        font-style: italic;
+        color: #333;
+        font-weight: bold;
+        font-size: 1.5em;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <script type="module">
+    import "https://unpkg.com/emoji-picker-element";
+
+    let partnerId;
+    let currentRoomId;
+
+    function toggleMbtiGroup(groupId) {
+      var group = document.getElementById(groupId);
+      if (group) {
+        group.style.display = group.style.display === "none" ? "block" : "none";
+      }
+
+      var otherGroupId = groupId === "e-types" ? "i-types" : "e-types";
+      var otherGroup = document.getElementById(otherGroupId);
+      if (otherGroup) {
+        otherGroup.style.display = "none";
+      }
+    }
+
+    function toggleEmojiPicker() {
+      const picker = document.querySelector("emoji-picker");
+      picker.style.display = picker.style.display === "none" ? "block" : "none";
+    }
+
+    function displayMessage(
+      message,
+      senderId,
+      currentUserId,
+      senderName = null,
+      isMbtiRoom = false
+    ) {
+      const chatMessages = document.querySelector(".chat-messages");
+      const messageElement = document.createElement("div");
+
+      if (senderId === currentUserId || senderId === "currentUser") {
+        messageElement.className = "message sent";
+      } else {
+        messageElement.className = "message received";
+      }
+
+      if (isMbtiRoom && senderName) {
+        const nameElement = document.createElement("div");
+        nameElement.className = "message-sender";
+        nameElement.textContent = senderName;
+        messageElement.appendChild(nameElement);
+      }
+
+      const textElement = document.createElement("div");
+      textElement.className = "message-text";
+      textElement.textContent = message;
+      messageElement.appendChild(textElement);
+
+      chatMessages.appendChild(messageElement);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function loadMessages() {
+      const currentChatName =
+        document.getElementById("currentChatName").textContent;
+      const chatMessages = document.querySelector(".chat-messages");
+
+      // 메시지 창 초기화
+      chatMessages.innerHTML = "";
+
+      if (currentChatName.includes("방")) {
+        // MBTI 채팅방
+        loadMbtiMessages(currentRoomId);
+      } else if (partnerId) {
+        // 1대1 채팅
+        load1on1Messages();
+      }
+    }
+
+    function loadMbtiMessages(roomId) {
+      fetch(`/api/get-mbti-messages?roomId=${roomId}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          if (data.success) {
+            const chatMessages = document.querySelector(".chat-messages");
+            chatMessages.innerHTML = "";
+            data.messages.forEach((msg) => {
+              displayMessage(
+                msg.message,
+                msg.userId,
+                data.currentUserId,
+                msg.sender_name,
+                true
+              );
+            });
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+          } else {
+            throw new Error(data.message || "메시지 로딩 실패");
+          }
+        })
+        .catch((error) => {
+          console.error("Error loading MBTI messages:", error);
+          alert(
+            "메시지를 불러오는 데 실패했습니다. 잠시 후 다시 시도해주세요."
+          );
+        });
+    }
+
+    function displayRoomChangeMessage(roomName) {
+      const chatMessages = document.querySelector(".chat-messages");
+      chatMessages.innerHTML = ""; // 기존 메시지를 모두 지웁니다.
+      const messageElement = document.createElement("div");
+      messageElement.className = "room-change-message";
+      messageElement.textContent = `${roomName}으로 이동했습니다.`;
+      chatMessages.appendChild(messageElement);
+      chatMessages.scrollTop = 0;
+
+      // 3초 후에 메시지 스타일을 변경
+      setTimeout(() => {
+        messageElement.style.opacity = "0.5";
+        messageElement.style.fontSize = "0.9em";
+      }, 5000);
+    }
+
+    function load1on1Messages() {
+      fetch(`/api/get-messages?partnerId=${partnerId}`)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            const chatMessages = document.querySelector(".chat-messages");
+            chatMessages.innerHTML = "";
+            const currentUserId = data.currentUserId;
+            data.messages.forEach((msg) => {
+              displayMessage(msg.message, msg.sender_id, currentUserId);
+            });
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+          }
+        })
+        .catch((error) => {
+          console.error("Error loading messages:", error);
+          alert(
+            "메시지를 불러오는 데 실패했습니다. 잠시 후 다시 시도해주세요."
+          );
+        });
+    }
+
+    function sendMessage() {
+      const messageInput = document.getElementById("messageInput");
+      const message = messageInput.value.trim();
+      const currentChatName =
+        document.getElementById("currentChatName").textContent;
+
+      if (message) {
+        if (currentChatName.includes("방")) {
+          // MBTI 채팅방
+          sendMbtiMessage(currentRoomId, message);
+        } else if (partnerId) {
+          // 1대1 채팅
+          send1on1Message(message);
+        } else {
+          alert("채팅 상대를 선택해주세요.");
+        }
+      }
+    }
+
+    function sendMbtiMessage(roomId, message) {
+      fetch("/api/send-mbti-message", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ roomId, message }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            // 여기서 'You'를 사용하는 대신 현재 사용자의 ID를 사용합니다.
+            displayMessage(message, "currentUser", "currentUser", null, true);
+            document.getElementById("messageInput").value = "";
+            // 메시지를 즉시 표시한 후 전체 메시지 목록을 다시 로드합니다.
+            setTimeout(() => loadMbtiMessages(roomId), 500);
+          } else {
+            alert("메시지 전송에 실패했습니다: " + data.message);
+          }
+        })
+        .catch((error) => {
+          console.error("Error sending MBTI message:", error);
+          alert("메시지 전송 중 오류가 발생했습니다.");
+        });
+    }
+
+    function send1on1Message(message) {
+      fetch("/api/send-message", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({ receiverId: partnerId, message }),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          if (data.success) {
+            displayMessage(message, "sent", "sent");
+            document.getElementById("messageInput").value = "";
+            load1on1Messages();
+          } else {
+            alert("메시지 전송에 실패했습니다: " + data.message);
+          }
+        })
+        .catch((error) => {
+          console.error("Error sending message:", error);
+          alert("메시지 전송 중 오류가 발생했습니다.");
+        });
+    }
+
+    function updateURL(name, id, isMbtiRoom = false) {
+      const url = new URL(window.location);
+      url.searchParams.delete("userId");
+      url.searchParams.delete("userName");
+      url.searchParams.delete("chatName");
+      url.searchParams.delete("chatId");
+
+      if (isMbtiRoom) {
+        url.searchParams.set("chatName", name);
+        url.searchParams.set("chatId", id);
+      } else {
+        url.searchParams.set("userId", id);
+        url.searchParams.set("userName", name);
+      }
+
+      window.history.pushState({}, "", url);
+    }
+
+    function saveChatState(name, id) {
+      localStorage.setItem("currentChatName", name);
+      localStorage.setItem("currentChatId", id);
+    }
+
+    function clearChatState() {
+      localStorage.removeItem("currentChatName");
+      localStorage.removeItem("currentChatId");
+      partnerId = null;
+      currentRoomId = null;
+    }
+
+    function updateChatRoomName(name, id) {
+      document.getElementById("currentChatName").textContent = name;
+      const mbtiTypes = [
+        "ISTJ",
+        "ISFJ",
+        "INFJ",
+        "INTJ",
+        "ISTP",
+        "ISFP",
+        "INFP",
+        "INTP",
+        "ESTP",
+        "ESFP",
+        "ENFP",
+        "ENTP",
+        "ESTJ",
+        "ESFJ",
+        "ENFJ",
+        "ENTJ",
+      ];
+
+      if (mbtiTypes.includes(id)) {
+        currentRoomId = id;
+        partnerId = null;
+        displayRoomChangeMessage(name);
+        // 메시지 로드를 5초 후로 지연
+        setTimeout(() => {
+          loadMessages();
+        }, 5000);
+      } else {
+        partnerId = id;
+        currentRoomId = null;
+        load1on1Messages();
+      }
+
+      console.log(
+        `Chat room updated: ${name}, partnerId: ${partnerId}, currentRoomId: ${currentRoomId}`
+      );
+      saveChatState(name, id);
+      updateURL(name, id, !!currentRoomId);
+
+      const leaveChatButton = document.getElementById("leaveChatButton");
+      leaveChatButton.style.display = currentRoomId ? "none" : "block";
+      if (!currentRoomId) {
+        leaveChatButton.onclick = function () {
+          if (confirm(`${name}님과의 채팅방을 나가시겠습니까?`)) {
+            leaveChatRoom(id, name);
+          }
+        };
+      }
+    }
+
+    function leaveChatRoom(partnerId, partnerName) {
+      fetch("/api/leave-chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ partnerId: partnerId }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            alert(`${partnerName}님과의 채팅방을 나갔습니다.`);
+            loadChatPartners();
+            clearChatWindow();
+            clearChatState();
+            updateURL("", "");
+          } else {
+            alert("채팅방 나가기에 실패했습니다: " + data.message);
+          }
+        })
+        .catch((error) => console.error("채팅방 나가기 오류:", error));
+    }
+
+    function clearChatWindow() {
+      document.getElementById("currentChatName").textContent =
+        "채팅방을 선택해주세요";
+      document.querySelector(".chat-messages").innerHTML = "";
+      partnerId = null;
+      currentRoomId = null;
+      document.getElementById("leaveChatButton").style.display = "none";
+      // URL에서 채팅 관련 파라미터 제거
+      const url = new URL(window.location);
+      url.searchParams.delete("chatName");
+      url.searchParams.delete("chatId");
+      url.searchParams.delete("userId");
+      url.searchParams.delete("userName");
+      window.history.replaceState({}, "", url);
+    }
+
+    function loadChatPartners() {
+      fetch("/api/chat-partners")
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            const directMessageList =
+              document.getElementById("directMessageList");
+            directMessageList.innerHTML = "";
+            data.partners.forEach((partner) => {
+              const chatItem = document.createElement("div");
+              chatItem.className = "chat-item";
+              chatItem.textContent = partner.partner_name;
+              chatItem.dataset.userId = partner.partner_id;
+              chatItem.onclick = () =>
+                updateChatRoomName(partner.partner_name, partner.partner_id);
+              directMessageList.appendChild(chatItem);
+            });
+          }
+        })
+        .catch((error) => console.error("Error loading chat partners:", error));
+    }
+
+    function updateUI(isLoggedIn, userName) {
+      const loggedOutElements = document.querySelectorAll(".logged-out-only");
+      const loggedInElements = document.querySelectorAll(".logged-in-only");
+      const userNameElement = document.getElementById("user-name");
+
+      if (isLoggedIn) {
+        loggedOutElements.forEach((el) => (el.style.display = "none"));
+        loggedInElements.forEach((el) => (el.style.display = "block"));
+        if (userNameElement) userNameElement.textContent = userName;
+      } else {
+        loggedOutElements.forEach((el) => (el.style.display = "block"));
+        loggedInElements.forEach((el) => (el.style.display = "none"));
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const urlParams = new URLSearchParams(window.location.search);
+      const chatName = urlParams.get("chatName");
+      const chatId = urlParams.get("chatId");
+      const userId = urlParams.get("userId");
+      const userName = urlParams.get("userName");
+
+      // URL에 채팅 정보가 있는 경우에만 해당 채팅방으로 이동
+      if (chatName && chatId) {
+        updateChatRoomName(chatName, chatId);
+      } else if (userId && userName) {
+        updateChatRoomName(userName, userId);
+      } else {
+        // URL에 정보가 없는 경우, 저장된 상태를 지우고 기본 상태로 설정
+        clearChatState();
+        clearChatWindow();
+      }
+
+      const searchInput = document.getElementById("categorySearch");
+      searchInput.addEventListener("keypress", function (e) {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          const searchTerm = this.value.trim();
+          if (searchTerm) {
+            window.location.href = `main.html?category=${encodeURIComponent(
+              searchTerm
+            )}`;
+          }
+        }
+      });
+
+      fetch("/api/check-auth")
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Auth data:", data);
+          updateUI(data.isLoggedIn, data.isLoggedIn ? data.user.name : null);
+        })
+        .catch((error) => {
+          console.error("Error checking auth:", error);
+          updateUI(false);
+        });
+
+      loadChatPartners();
+      setInterval(loadMessages, 60000);
+
+      const menuToggle = document.getElementById("menu-toggle");
+      const sidebar = document.getElementById("sidebar");
+      const chatContainer = document.querySelector(".chat-container");
+
+      menuToggle.addEventListener("click", function () {
+        sidebar.classList.toggle("collapsed");
+        chatContainer.classList.toggle("sidebar-collapsed");
+      });
+
+      const messageInput = document.getElementById("messageInput");
+      const sendButton = document.querySelector(".send-button");
+      const emojiButton = document.querySelector(".emoji-button");
+      const picker = document.querySelector("emoji-picker");
+
+      sendButton.addEventListener("click", sendMessage);
+      emojiButton.addEventListener("click", toggleEmojiPicker);
+
+      messageInput.addEventListener("keypress", function (e) {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          sendMessage();
+        }
+      });
+
+      document
+        .getElementById("directMessageList")
+        .addEventListener("click", function (event) {
+          if (event.target.classList.contains("chat-item")) {
+            updateChatRoomName(
+              event.target.textContent,
+              event.target.dataset.userId
+            );
+          }
+        });
+
+      document.querySelectorAll(".mbti-type").forEach(function (type) {
+        type.addEventListener("click", function () {
+          var mbtiType =
+            this.querySelector(".mbti-type-text").textContent.trim();
+          updateChatRoomName(mbtiType + "방", mbtiType);
+        });
+      });
+
+      document.querySelectorAll(".chat-item[data-group]").forEach((item) => {
+        item.addEventListener("click", function () {
+          const groupName = this.textContent.trim();
+          updateChatRoomName(groupName, groupName);
+          toggleMbtiGroup(this.getAttribute("data-group"));
+        });
+      });
+
+      picker.addEventListener("emoji-click", (event) => {
+        messageInput.value += event.detail.unicode;
+        picker.style.display = "none";
+      });
+    });
+
+    window.toggleMbtiGroup = toggleMbtiGroup;
+    window.toggleEmojiPicker = toggleEmojiPicker;
+    window.sendMessage = sendMessage;
+    window.updateChatRoomName = updateChatRoomName;
+  </script>
+
+  <body>
+    <div class="header">
+      <div class="logo-container">
+        <img src="icon/Menu.png" alt="메뉴" class="Menu" id="menu-toggle" />
+        <img
+          src="icon/Title.png"
+          alt="로고"
+          class="logo"
+          onclick="location.href='main.html'"
+          style="cursor: pointer"
+        />
+      </div>
+      <input
+        type="text"
+        class="search-bar"
+        id="categorySearch"
+        placeholder="카테고리 검색 (예: 여행,게임...)"
+      />
+      <button
+        class="signup-button logged-out-only"
+        onclick="location.href='MemberShip.html'"
+      >
+        가입하기
+      </button>
+      <div class="user-info logged-in-only" style="display: none">
+        <span class="welcome-message"
+          >환영합니다, <span id="user-name"></span>님!</span
+        >
+      </div>
+    </div>
+    <div class="container">
+      <div class="sidebar" id="sidebar">
+        <div class="menu-item">
+          <img src="icon/home.png" />
+          <span onclick="location.href='main.html'">홈</span>
+        </div>
+        <div class="menu-item">
+          <img src="icon/heart.png" />
+          <span onclick="location.href='Love.html'">소개팅 매칭</span>
+        </div>
+        <div class="menu-item">
+          <img src="icon/message.png" />
+          <span onclick="location.href='chat.html'">메시지</span>
+        </div>
+        <div class="menu-item">
+          <img src="icon/Logo.png" />
+          <span onclick="location.href='Profile.html'">프로필</span>
+        </div>
+        <div class="menu-item">
+          <img src="icon/database.png" />
+          <span onclick="location.href='resource.html'"
+            >성격 데이터 베이스</span
+          >
+        </div>
+        <div class="menu-item">
+          <img src="icon/test.png" />
+          <span onclick="location.href='MBTITest.html'">성격 유형 테스트</span>
+        </div>
+        <div class="menu-item logged-in-only" style="display: none">
+          <span><a href="/logout" class="logout-button">로그아웃</a></span>
+        </div>
+      </div>
+      <div class="chat-container">
+        <div class="chat-list">
+          <div class="chat-category">1대1 메시지</div>
+          <div id="directMessageList">
+            <!-- 여기에 선택된 사용자가 동적으로 추가됩니다 -->
+          </div>
+          <div class="chat-category2">MBTI별 채팅</div>
+          <div class="chat-item" onclick="toggleMbtiGroup('e-types')">
+            E 타입 모임
+          </div>
+          <div class="mbti-group" id="e-types" style="display: none">
+            <div class="mbti-type">
+              <img src="icon/e1.jpg" alt="ESTJ" class="mbti-type-image" />
+              <span class="mbti-type-text">ESTJ</span>
+            </div>
+            <div class="mbti-type">
+              <img src="icon/e2.jpg" alt="ESTP" class="mbti-type-image" />
+              <span class="mbti-type-text">ESTP</span>
+            </div>
+            <div class="mbti-type">
+              <img src="icon/e3.jpg" alt="ESFJ" class="mbti-type-image" />
+              <span class="mbti-type-text">ESFJ</span>
+            </div>
+            <div class="mbti-type">
+              <img src="icon/e4.jpg" alt="ESFP" class="mbti-type-image" />
+              <span class="mbti-type-text">ESFP</span>
+            </div>
+            <div class="mbti-type">
+              <img src="icon/e5.jpg" alt="ENTJ" class="mbti-type-image" />
+              <span class="mbti-type-text">ENTJ</span>
+            </div>
+            <div class="mbti-type">
+              <img src="icon/e6.jpg" alt="ENTP" class="mbti-type-image" />
+              <span class="mbti-type-text">ENTP</span>
+            </div>
+            <div class="mbti-type">
+              <img src="icon/e7.jpg" alt="ENFJ" class="mbti-type-image" />
+              <span class="mbti-type-text">ENFJ</span>
+            </div>
+            <div class="mbti-type">
+              <img src="icon/e8.jpg" alt="ENFP" class="mbti-type-image" />
+              <span class="mbti-type-text">ENFP</span>
+            </div>
+          </div>
+          <div class="chat-item" onclick="toggleMbtiGroup('i-types')">
+            I 타입 모임
+          </div>
+          <div class="mbti-group" id="i-types" style="display: none">
+            <div class="mbti-type">
+              <img src="icon/i1.jpg" alt="ISTJ" class="mbti-type-image" />
+              <span class="mbti-type-text">ISTJ</span>
+            </div>
+            <div class="mbti-type">
+              <img src="icon/i2.jpg" alt="ISTP" class="mbti-type-image" />
+              <span class="mbti-type-text">ISTP</span>
+            </div>
+            <div class="mbti-type">
+              <img src="icon/i3.jpg" alt="ISFJ" class="mbti-type-image" />
+              <span class="mbti-type-text">ISFJ</span>
+            </div>
+            <div class="mbti-type">
+              <img src="icon/i4.jpg" alt="ISFP" class="mbti-type-image" />
+              <span class="mbti-type-text">ISFP</span>
+            </div>
+            <div class="mbti-type">
+              <img src="icon/i5.jpg" alt="INTJ" class="mbti-type-image" />
+              <span class="mbti-type-text">INTJ</span>
+            </div>
+            <div class="mbti-type">
+              <img src="icon/i6.jpg" alt="INTP" class="mbti-type-image" />
+              <span class="mbti-type-text">INTP</span>
+            </div>
+            <div class="mbti-type">
+              <img src="icon/i7.jpg" alt="INFJ" class="mbti-type-image" />
+              <span class="mbti-type-text">INFJ</span>
+            </div>
+            <div class="mbti-type">
+              <img src="icon/i8.jpg" alt="INFP" class="mbti-type-image" />
+              <span class="mbti-type-text">INFP</span>
+            </div>
+          </div>
+        </div>
+        <div class="chat-window">
+          <div
+            class="chat-header"
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+            "
+          >
+            <h2 id="currentChatName">채팅방을 선택해주세요</h2>
+            <button
+              id="leaveChatButton"
+              style="
+                background-color: rgb(255, 0, 0);
+                color: white;
+                padding: 5px 15px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                display: none;
+              "
+            >
+              방 나가기
+            </button>
+          </div>
+          <div class="chat-body">
+            <div class="chat-messages"></div>
+          </div>
+          <div id="messages"></div>
+          <div class="chat-input">
+            <input
+              type="text"
+              id="messageInput"
+              placeholder="메시지를 입력하세요..."
+            />
+            <div style="position: relative">
+              <button class="emoji-button">😊</button>
+              <emoji-picker
+                id="emojiPicker"
+                style="display: none"
+              ></emoji-picker>
+            </div>
+            <button class="send-button">전송</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

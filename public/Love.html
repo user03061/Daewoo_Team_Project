@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MY. 메인 페이지</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: "Nanum Pen Script", cursive;
+      margin: 0;
+      padding: 0;
+      overscroll-behavior-y: none;
+      overflow-y: auto;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #000000, #0a0a23, #151540);
+      color: white;
+      position: relative;
+    }
+
+    /* body 배경에 올라가는 별 애니메이션 */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(white,
+          rgba(255, 255, 255, 0.2) 2px,
+          transparent 40px),
+        radial-gradient(white,
+          rgba(255, 255, 255, 0.15) 1px,
+          transparent 30px),
+        radial-gradient(white, rgba(255, 255, 255, 0.1) 2px, transparent 40px);
+      background-size: 550px 550px, 350px 350px, 250px 250px;
+      background-position: 0 0, 40px 60px, 130px 270px;
+      animation: starMove 200s linear infinite;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    @keyframes starMove {
+      from {
+        transform: translateY(0);
+      }
+
+      to {
+        transform: translateY(-2000px);
+      }
+    }
+
+    .container {
+      display: flex;
+      padding: 20px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      flex-wrap: nowrap;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      width: 70px;
+      height: auto;
+      margin: 0 20px 0 0;
+    }
+
+    .Menu {
+      width: 50px;
+      margin-right: 15px;
+      cursor: pointer;
+    }
+
+    .search-bar {
+      width: 80%;
+      padding: 10px;
+      border-radius: 20px;
+      font-size: 15px;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+      text-align: center;
+    }
+
+    .signup-button {
+      width: 120px;
+      height: 40px;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-size: 15px;
+      margin-right: 30px;
+      color: white;
+      background: rgb(8, 152, 209);
+      border: none;
+      position: relative;
+      overflow: visible;
+      z-index: 1;
+      cursor: pointer;
+      animation: pulse 3s infinite;
+      margin-top: 5px;
+    }
+
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(8, 152, 209, 0.7);
+      }
+
+      70% {
+        box-shadow: 0 0 0 20px rgba(8, 152, 209, 0);
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(8, 152, 209, 0);
+      }
+    }
+
+    .logout-button {
+      margin-left: 50px;
+      color: blueviolet;
+    }
+
+    .sidebar {
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      border-radius: 10px;
+    }
+
+    .sidebar {
+      transition: width 0.3s ease;
+      width: 250px;
+      overflow: hidden;
+    }
+
+    .sidebar.collapsed {
+      width: 60px;
+    }
+
+    .sidebar.collapsed .menu-item span {
+      display: none;
+    }
+
+    .menu-item {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      margin-bottom: 30px;
+      padding: 10px;
+      border-radius: 10px;
+      transition: background-color 0.3s;
+      cursor: pointer;
+    }
+
+    .menu-item img {
+      width: 25px;
+      height: 25px;
+      margin-right: 10px;
+      background-color: white;
+      border-radius: 50%;
+      padding: 5px;
+    }
+
+    .welcome-message {
+      font-size: 30px;
+      text-align: center;
+      margin: 0 auto;
+      margin-right: auto;
+    }
+
+    .menu-item span {
+      font-size: 30px;
+      color: white;
+    }
+
+    .main-content {
+      flex-grow: 1;
+      padding: 20px;
+    }
+
+    .profile-container {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 70px;
+      gap: 20px;
+    }
+
+    .profile-info {
+      flex: 1;
+      padding: 20px;
+      background: linear-gradient(135deg, #0a0a1b, #1b1b2e, #111121);
+      border-radius: 20px;
+      max-width: 500px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 0 10px rgba(148, 143, 179, 0.3),
+        0 0 20px rgba(148, 143, 179, 0.1);
+      border: 3px solid #390950;
+      backdrop-filter: blur(10px);
+      position: relative;
+      animation: glow 3s infinite alternate;
+      overflow: hidden;
+      margin: 0 80px;
+      position: relative;
+    }
+
+    .gender-indicator {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2em;
+      color: white;
+      z-index: 10;
+    }
+
+    .gender-indicator.male {
+      background-color: #4169E1;
+    }
+
+    .gender-indicator.female {
+      background-color: #FF69B4;
+    }
+
+    .profile-info::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(white,
+          rgba(255, 255, 255, 0.1) 2px,
+          transparent 40px),
+        radial-gradient(white,
+          rgba(255, 255, 255, 0.05) 1px,
+          transparent 30px),
+        radial-gradient(white,
+          rgba(255, 255, 255, 0.03) 2px,
+          transparent 40px);
+      background-size: 550px 550px, 350px 350px, 250px 250px;
+      background-position: 0 0, 40px 60px, 130px 270px;
+      animation: starMove 200s linear infinite;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    @keyframes glow {
+      0% {
+        box-shadow: 0 0 5px #390950, 0 0 10px #6e3a9a;
+      }
+
+      50% {
+        box-shadow: 0 0 10px #834896, 0 0 15px #a366b6;
+      }
+
+      100% {
+        box-shadow: 0 0 5px #390950, 0 0 10px #6e3a9a;
+      }
+    }
+
+    @keyframes starMove {
+      from {
+        transform: translateY(0);
+      }
+
+      to {
+        transform: translateY(-2000px);
+      }
+    }
+
+    .profile-photo {
+      width: 300px;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .profile-details {
+      font-size: 1.5em;
+      text-align: center;
+    }
+
+    .profile-details h2 {
+      font-size: 1.7em;
+      margin: 10px 0;
+    }
+
+    .profile-details p {
+      font-size: 1.2em;
+      margin: 15px 0;
+    }
+
+    @keyframes colorChange {
+      0% {
+        background: #ff61a6;
+      }
+
+      14% {
+        background: #ffb3ba;
+      }
+
+      28% {
+        background: #ffa07a;
+      }
+
+      42% {
+        background: #8be5e5;
+      }
+
+      56% {
+        background: #00ced1;
+      }
+
+      70% {
+        background: #9b7ede;
+      }
+
+      84% {
+        background: #6a5acd;
+      }
+
+      100% {
+        background: #ff61a6;
+      }
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.05);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    #user-mbti {
+      font-size: 1.8em;
+      font-weight: bold;
+      padding: 10px 25px;
+      border-radius: 12px;
+      display: inline-block;
+      animation: colorChange 10s linear infinite,
+        pulse 2s ease-in-out infinite;
+      color: white;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+      transition: all 0.3s ease;
+      margin-bottom: 5px;
+    }
+
+    #user-mbti:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+    }
+
+    .introduction {
+      margin-top: 15px;
+      text-align: center;
+      font-style: italic;
+      max-width: 100%;
+      word-wrap: break-word;
+    }
+
+    .profile-object {
+      text-align: center;
+    }
+
+    .tag {
+      display: inline-block;
+      background-color: white;
+      padding: 5px 10px;
+      color: black;
+      border-radius: 20px;
+      border: 3px solid #390950;
+      margin-right: 5px;
+      margin-bottom: 5px;
+    }
+
+    .chat-button {
+      margin-top: 15px;
+      padding: 10px 60px;
+      background-color: #390950;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      font-size: 20px;
+    }
+
+    .chat-button:hover {
+      background-color: #8543a3;
+    }
+
+    .profile-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .profile-section h1 {
+      font-size: 3em;
+      margin: 0;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      background: linear-gradient(135deg,
+          #050514,
+          #0c0c2e,
+          #0a0a24);
+      /* Dark space-like gradient */
+      border-radius: 25px;
+      padding: 15px;
+      box-shadow: 0 0 10px rgba(148, 143, 179, 0.3),
+        0 0 20px rgba(148, 143, 179, 0.1);
+      /* Softer space glow */
+      border: 3px solid #390950;
+      /* Cosmic violet border */
+      margin-right: 100px;
+      position: relative;
+      animation: glow 3s infinite alternate;
+      /* Add glowing effect */
+    }
+
+    .search-box::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(white,
+          rgba(255, 255, 255, 0.1) 2px,
+          transparent 40px),
+        radial-gradient(white,
+          rgba(255, 255, 255, 0.05) 1px,
+          transparent 30px),
+        radial-gradient(white,
+          rgba(255, 255, 255, 0.03) 2px,
+          transparent 40px);
+      /* Subtle star effect */
+      background-size: 550px 550px, 350px 350px, 250px 250px;
+      background-position: 0 0, 40px 60px, 130px 270px;
+      z-index: 0;
+      pointer-events: none;
+      animation: starMove 200s linear infinite;
+      border-radius: 25px;
+    }
+
+    .search-box input {
+      padding: 12px 15px;
+      border-radius: 20px 0 0 20px;
+      border: none;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+      font-size: 18px;
+      width: 250px;
+      z-index: 1;
+      /* Ensure input is above the background stars */
+    }
+
+    .search-box input::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .search-box button {
+      padding: 10px 20px;
+      background-color: #390950;
+      color: white;
+      border: none;
+      border-radius: 0 20px 20px 0;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      font-size: 18px;
+      font-weight: bold;
+      z-index: 1;
+      /* Ensure button is above the background stars */
+    }
+
+    .search-box button:hover {
+      background-color: #8543a3;
+    }
+
+    /* Animation for subtle glowing effect */
+    @keyframes glow {
+      0% {
+        box-shadow: 0 0 10px #390950, 0 0 15px #6e3a9a;
+      }
+
+      50% {
+        box-shadow: 0 0 20px #834896, 0 0 30px #a366b6;
+      }
+
+      100% {
+        box-shadow: 0 0 10px #390950, 0 0 15px #6e3a9a;
+      }
+    }
+
+    @keyframes starMove {
+      from {
+        transform: translateY(0);
+      }
+
+      to {
+        transform: translateY(-2000px);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="header">
+    <div class="logo-container">
+      <img src="icon/Menu.png" alt="메뉴" class="Menu" id="menu-toggle" />
+      <img src="icon/Title.png" alt="로고" class="logo" onclick="location.href='main.html'" style="cursor: pointer" />
+    </div>
+    <input type="text" class="search-bar" id="categorySearch" placeholder="카테고리 검색 (예: 여행,게임...)" />
+    <button class="signup-button logged-out-only" onclick="location.href='MemberShip.html'">
+      가입하기
+    </button>
+    <div class="user-info logged-in-only" style="display: none">
+      <span class="welcome-message">환영합니다, <span id="user-name"></span>님!</span>
+    </div>
+  </div>
+  <div class="container">
+    <div class="sidebar" id="sidebar">
+      <div class="menu-item">
+        <img src="icon/home.png" alt="홈" />
+        <span onclick="location.href='main.html'">홈</span>
+      </div>
+      <div class="menu-item">
+        <img src="icon/heart.png" alt="소개팅 매칭" />
+        <span onclick="location.href='Love.html'">소개팅 매칭</span>
+      </div>
+      <div class="menu-item">
+        <img src="icon/message.png" alt="메시지" />
+        <span onclick="location.href='chat.html'">메시지</span>
+      </div>
+      <div class="menu-item">
+        <img src="icon/Logo.png" alt="프로필" />
+        <span onclick="location.href='Profile.html'">프로필</span>
+      </div>
+      <div class="menu-item">
+        <img src="icon/database.png" alt="성격 데이터베이스" />
+        <span onclick="location.href='resource.html'">성격 데이터 베이스</span>
+      </div>
+      <div class="menu-item">
+        <img src="icon/test.png" alt="성격 유형 테스트" />
+        <span onclick="location.href='MBTITest.html'">성격 유형 테스트</span>
+      </div>
+      <div class="menu-item logged-in-only" style="display: none">
+        <span><a href="/logout" class="logout-button">로그아웃</a></span>
+      </div>
+    </div>
+    <div class="main-content">
+      <div class="profile-section">
+        <h1 style="font-size: 3em; margin-left: 100px">추천 프로필</h1>
+        <div class="search-box">
+          <input type="text" id="name-search" placeholder="이름으로 검색" />
+          <button onclick="searchByName()">검색</button>
+        </div>
+      </div>
+      <div class="profile-container">
+        <div id="profile1" class="profile-info">
+          <img src="default-image.png" alt="프로필 사진" class="profile-photo" />
+          <div class="profile-details">
+            <h2 id="user-name"></h2>
+            <p id="user-mbti"></p>
+            <p id="user-school"></p>
+            <p id="user-job"></p>
+            <p id="user-birthday"></p>
+            <p id="user-bio" class="introduction"></p>
+            <div id="user-interests"></div>
+          </div>
+          <button class="chat-button">채팅하기</button>
+        </div>
+        <!-- profile2와 profile3는 그대로 유지 -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function formatBirthday(birthday) {
+      if (!birthday) return null;
+      const date = new Date(birthday);
+      return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+        2,
+        "0"
+      )}-${String(date.getDate()).padStart(2, "0")}`;
+    }
+
+    function formatInterests(interests) {
+      if (!interests || interests.length === 0) return "관심사 정보 없음";
+      return interests
+        .split(",")
+        .map((interest) => `<span class="tag">${interest.trim()}</span>`)
+        .join("");
+    }
+
+    function createProfileElement(profile, index) {
+      const profileDiv = document.createElement("div");
+      profileDiv.className = "profile-info";
+      profileDiv.id = `profile${index + 1}`;
+
+      profileDiv.innerHTML = `
+    <div class="gender-indicator ${profile.gender === 'M' ? 'male' : 'female'}">
+        ${profile.gender === 'M' ? '♂' : '♀'}
+    </div>
+    <img src="${profile.profile_photo || "default-image.png"}" alt="프로필 사진" class="profile-photo">
+    <div class="profile-details">
+        <h2>${profile.name || "이름 없음"}</h2>
+        <p id="user-mbti">${profile.mbti_result || "MBTI 정보 없음"}</p>
+        <p>${profile.school || "학교 정보 없음"}</p>
+        <p>${profile.job || "직업 정보 없음"}</p>
+        <p>${formatBirthday(profile.birthday) || "생일 정보 없음"}</p>
+        <p id="user-bio" class="introduction">${profile.bio || "소개글이 없습니다."}</p>
+        <div class="profile-object">${formatInterests(profile.interests)}</div>
+    </div>
+    <button class="chat-button" onclick="startChat('${profile.id}', '${profile.name}')">채팅하기</button>
+    `;
+
+      return profileDiv;
+    }
+
+    function loadRandomProfiles() {
+      fetch("/api/random-profiles?count=3")
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          if (data.success) {
+            const profileContainer =
+              document.querySelector(".profile-container");
+            profileContainer.innerHTML = ""; // 기존 프로필 제거
+
+            if (data.profiles && data.profiles.length > 0) {
+              data.profiles.forEach((profile, index) => {
+                const profileElement = createProfileElement(profile, index);
+                profileContainer.appendChild(profileElement);
+              });
+            } else {
+              profileContainer.innerHTML = "<p>불러올 프로필이 없습니다.</p>";
+            }
+          } else {
+            throw new Error(
+              data.message || "프로필을 불러오는데 실패했습니다."
+            );
+          }
+        })
+        .catch((error) => {
+          console.error("프로필 정보를 불러오는 중 오류 발생:", error);
+          const profileContainer =
+            document.querySelector(".profile-container");
+          profileContainer.innerHTML = `<p>오류: ${error.message}</p>`;
+        });
+    }
+
+    function updateUI(isLoggedIn, userName) {
+      const loggedOutElements = document.querySelectorAll(".logged-out-only");
+      const loggedInElements = document.querySelectorAll(".logged-in-only");
+      const userNameElement = document.getElementById("user-name");
+
+      if (isLoggedIn) {
+        loggedOutElements.forEach((el) => (el.style.display = "none"));
+        loggedInElements.forEach((el) => (el.style.display = "block"));
+        if (userNameElement) userNameElement.textContent = userName;
+      } else {
+        loggedOutElements.forEach((el) => (el.style.display = "block"));
+        loggedInElements.forEach((el) => (el.style.display = "none"));
+      }
+    }
+
+    // 이름 검색 기능
+    function searchByName() {
+      const name = document.getElementById("name-search").value;
+
+      fetch(`/api/search-profiles?name=${encodeURIComponent(name)}`)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            displayProfiles(data.profiles);
+          } else {
+            throw new Error(data.message || "프로필 검색에 실패했습니다.");
+          }
+        })
+        .catch((error) => {
+          console.error("프로필 검색 중 오류 발생:", error);
+          alert("프로필 검색 중 오류가 발생했습니다.");
+        });
+    }
+
+    function displayProfiles(profiles) {
+      const profileContainer = document.querySelector(".profile-container");
+      profileContainer.innerHTML = ""; // 기존 프로필 제거
+
+      if (profiles && profiles.length > 0) {
+        profiles.forEach((profile, index) => {
+          const profileElement = createProfileElement(profile, index);
+          profileContainer.appendChild(profileElement);
+        });
+      } else {
+        profileContainer.innerHTML = "<p>검색 결과가 없습니다.</p>";
+      }
+    }
+
+    function startChat(userId, userName) {
+      window.location.href = `chat.html?userId=${encodeURIComponent(
+        userId
+      )}&userName=${encodeURIComponent(userName)}`;
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      fetch("/api/check-auth")
+        .then((response) => response.json())
+        .then((data) => {
+          updateUI(data.isLoggedIn, data.isLoggedIn ? data.user.name : null);
+          if (data.isLoggedIn) {
+            loadRandomProfiles();
+          }
+        })
+        .catch((error) => {
+          console.error("Error checking auth:", error);
+          updateUI(false);
+        });
+
+      // 사이드바 토글 기능 추가
+      const menuToggle = document.getElementById("menu-toggle");
+      const sidebar = document.getElementById("sidebar");
+      const content = document.getElementById("content");
+
+      menuToggle.addEventListener("click", function () {
+        sidebar.classList.toggle("collapsed");
+      });
+
+      const searchInput = document.getElementById("categorySearch");
+      searchInput.addEventListener("keypress", function (e) {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          const searchTerm = this.value.trim();
+          if (searchTerm) {
+            window.location.href = `main.html?category=${encodeURIComponent(
+              searchTerm
+            )}`;
+          }
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MY. 프로필 수정</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/airbnb.css">
+
+    <style>
+        body {
+            font-family: 'Nanum Pen Script', cursive;
+            margin: 0;
+            padding: 0;
+            overscroll-behavior-y: none;
+            overflow-y: auto;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #000000, #0a0a23, #151540);
+            color: white;
+            position: relative;
+        }
+
+        /* body 배경에 올라가는 별 애니메이션 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(white, rgba(255, 255, 255, .2) 2px, transparent 40px),
+                radial-gradient(white, rgba(255, 255, 255, .15) 1px, transparent 30px),
+                radial-gradient(white, rgba(255, 255, 255, .1) 2px, transparent 40px);
+            background-size: 550px 550px, 350px 350px, 250px 250px;
+            background-position: 0 0, 40px 60px, 130px 270px;
+            animation: starMove 200s linear infinite;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        @keyframes starMove {
+            from {
+                transform: translateY(0);
+            }
+
+            to {
+                transform: translateY(-2000px);
+            }
+        }
+
+        .container {
+            display: flex;
+            padding: 20px;
+        }
+
+        .sidebar {
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            margin-right: 20px;
+            border-radius: 10px;
+        }
+
+        .menu-item {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 10px;
+            border-radius: 10px;
+            transition: background-color 0.3s;
+            cursor: pointer;
+        }
+
+        .menu-item img {
+            width: 25px;
+            height: 25px;
+            margin-right: 10px;
+            background-color: white;
+            border-radius: 50%;
+            padding: 5px;
+        }
+
+        .menu-item span {
+            font-size: 30px;
+            color: white;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            flex-wrap: nowrap;
+        }
+
+        .logo {
+            width: 70px;
+            height: auto;
+            margin: 0 20px 0 0;
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-left: 1200px;
+        }
+
+        .Menu {
+            width: 50px;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+
+        .profile-edit {
+            flex: 1;
+            padding: 10px;
+            background-color: #1b1b32;
+            box-shadow: 0 0 10px rgba(61, 61, 61, 0.3), 0 0 20px rgba(148, 143, 179, 0.1);
+            border: 5px solid #390950;
+            border-radius: 10px;
+            max-width: 800px;
+            margin: 100px auto;
+            margin-top: 0px;
+        }
+
+        .profile-photo {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .file-input {
+            font-size: 15px;
+            margin-left: 300px;
+        }
+
+        .form-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            margin-right: 10px;
+        }
+
+        .form-column {
+            width: 45%;
+        }
+
+        .form-group {
+            margin-bottom: 5px;
+            font-size: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        select {
+            width: 98%;
+            padding: 8px;
+            border-radius: 5px;
+            border: none;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 18px;
+        }
+
+        .char-count {
+            font-size: 20px;
+            color: #888;
+            text-align: right;
+        }
+
+        textarea {
+            width: 98%;
+            padding: 8px;
+            border-radius: 5px;
+            border: none;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 18px;
+            resize: none;
+            height: 100px;
+            min-height: 100px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .gender-options {
+            display: flex;
+            justify-content: space-between;
+            max-width: 300px;
+        }
+
+        .gender-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 10px;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .gender-option.selected {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .gender-option[data-gender="M"].selected {
+            border: 2px solid #1e90ff;
+        }
+
+        .gender-option[data-gender="W"].selected {
+            border: 2px solid #ff69b4;
+        }
+
+        .gender-icon {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .interests-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 10px;
+            margin-left: 10px;
+            margin-bottom: 10px;
+        }
+
+        .interest-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+            transition: background-color 0.3s;
+        }
+
+        .interest-item.selected {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .interest-item img {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 5px;
+        }
+
+        .interest-item span {
+            font-size: 14px;
+        }
+
+        .save-button {
+            background-color: white;
+            color: black;
+            border: none;
+            padding: 10px 40px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+        .save-button:hover {
+            border: 2px solid #ff58ff;
+            box-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+        }
+
+        .cancel-button {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 10px 40px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            margin-top: 10px;
+            margin-left: 10px;
+        }
+
+        .cancel-button:hover {
+            background-color: #ff3333;
+            box-shadow: 0 0 10px rgba(255, 77, 77, 0.5);
+        }
+
+        .save-button,
+        .cancel-button {
+            display: inline-block;
+        }
+
+        .logout-button {
+            margin-left: 50px;
+            color: blueviolet;
+        }
+
+        .user-info {
+            text-align: center;
+        }
+
+        .welcome-message {
+            font-size: 30px;
+            color: white;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 로그인 여부 확인 및 UI 업데이트
+            fetch('/api/check-auth')
+                .then(response => response.json())
+                .then(data => {
+                    updateUI(data.isLoggedIn, data.isLoggedIn ? data.user.name : null);
+                    if (data.isLoggedIn) {
+                        fetchMBTIResult();
+                        fetchUserProfile();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error checking auth:', error);
+                    updateUI(false);
+                });
+
+            function updateUI(isLoggedIn, userName) {
+                const loggedOutElements = document.querySelectorAll('.logged-out-only');
+                const loggedInElements = document.querySelectorAll('.logged-in-only');
+                const welcomeNameElement = document.getElementById('welcome-name');
+                const userNameElement = document.getElementById('user-name');
+
+                if (isLoggedIn) {
+                    loggedOutElements.forEach(el => el.style.display = 'none');
+                    loggedInElements.forEach(el => el.style.display = 'block');
+                    if (welcomeNameElement) welcomeNameElement.textContent = userName;
+                    if (userNameElement) userNameElement.value = userName;
+                } else {
+                    loggedOutElements.forEach(el => el.style.display = 'block');
+                    loggedInElements.forEach(el => el.style.display = 'none');
+                }
+            }
+
+            // Flatpickr 설정
+            flatpickr("#birthday", {
+                dateFormat: "Y-m-d",
+                altInput: true,
+                altFormat: "F j, Y",
+                locale: "ko",
+                allowInput: true
+            });
+
+            function fetchMBTIResult() {
+                fetch('/get-mbti-result')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            document.getElementById('mbti').value = data.mbtiResult;
+                        } else {
+                            console.error('MBTI 결과를 가져올 수 없습니다:', data.message);
+                        }
+                    })
+                    .catch(error => console.error('MBTI 결과 가져오기 오류:', error));
+            }
+
+            const myselfTextarea = document.getElementById('myself');
+            const charCount = document.createElement('div');
+            charCount.className = 'char-count';
+            myselfTextarea.parentNode.insertBefore(charCount, myselfTextarea.nextSibling);
+
+            function updateCharCount() {
+                const remainingChars = 34 - myselfTextarea.value.length;
+                charCount.textContent = `${remainingChars} / 34`;
+
+                if (remainingChars < 0) {
+                    charCount.style.color = 'red';
+                } else {
+                    charCount.style.color = '#888';
+                }
+            }
+
+            myselfTextarea.addEventListener('input', function () {
+                if (this.value.length > 34) {
+                    this.value = this.value.slice(0, 34);
+                }
+                updateCharCount();
+            });
+
+            updateCharCount();
+
+            function fetchUserProfile() {
+                fetch('/get-user-profile')
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Received profile data:', data);
+                        if (data.success) {
+                            // 기본 정보 설정
+                            document.getElementById('user-name').value = data.name || '';
+                            console.log('Name set:', document.getElementById('user-name').value);
+
+                            document.getElementById('school').value = data.school || '';
+                            console.log('School set:', document.getElementById('school').value);
+
+                            document.getElementById('job').value = data.job || '';
+                            console.log('Job set:', document.getElementById('job').value);
+
+                            document.getElementById('myself').value = data.bio || '';
+                            console.log('Bio set:', document.getElementById('myself').value);
+
+                            const myselfValue = data.bio || '';
+                            document.getElementById('myself').value = myselfValue.slice(0, 34);
+                            updateCharCount();
+
+                            // 성별 선택
+                            if (data.gender) {
+                                const genderOption = document.querySelector(`.gender-option[data-gender="${data.gender}"]`);
+                                if (genderOption) {
+                                    genderOption.classList.add('selected');
+                                    document.getElementById('gender-input').value = data.gender;
+                                    console.log('Gender set:', data.gender);
+                                }
+                            }
+
+                            // 프로필 사진 설정
+                            if (data.profile_photo) {
+                                document.getElementById('profile-preview').src = data.profile_photo;
+                                console.log('Profile photo set:', data.profile_photo);
+                            }
+
+                        } else {
+                            console.error('사용자 프로필을 가져올 수 없습니다:', data.message);
+                        }
+                    })
+                    .catch(error => console.error('사용자 프로필 가져오기 오류:', error));
+            }
+
+            // 성별 선택 처리
+            document.querySelectorAll('.gender-option').forEach(option => {
+                option.addEventListener('click', function () {
+                    document.querySelectorAll('.gender-option').forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+
+            // 파일 선택 시 이미지 미리보기 업데이트
+            document.getElementById('file-input').addEventListener('change', function (event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        document.getElementById('profile-preview').src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // 관심사 선택 처리
+            document.querySelectorAll('.interest-item').forEach(item => {
+                item.addEventListener('click', function () {
+                    this.classList.toggle('selected');
+                    updateInterestsInput();
+                });
+            });
+
+            function updateInterestsInput() {
+                const selectedInterests = Array.from(document.querySelectorAll('.interest-item.selected'))
+                    .map(item => item.getAttribute('data-interest'));
+                document.getElementById('interests-input').value = selectedInterests.join(',');
+            }
+
+            // 폼 제출 처리
+            document.getElementById('profileForm').addEventListener('submit', function (event) {
+                event.preventDefault();
+                console.log("Form submit triggered");
+
+                const formData = new FormData(this);
+
+                // 성별 값 추가
+                const selectedGender = document.querySelector('.gender-option.selected');
+                if (selectedGender) {
+                    formData.set('gender', selectedGender.getAttribute('data-gender'));
+                }
+
+                fetch('/save-profile', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => {
+                        console.log("Response status:", response.status);
+                        if (!response.ok) {
+                            return response.text().then(text => {
+                                throw new Error(`HTTP error! status: ${response.status}, message: ${text}`);
+                            });
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log("Response data:", data);
+                        if (data.success) {
+                            alert('프로필이 성공적으로 저장되었습니다.');
+                            window.location.href = '/profile.html';
+                        } else {
+                            throw new Error(data.message || '알 수 없는 오류가 발생했습니다.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('프로필 저장 중 오류 발생:', error);
+                        alert(`프로필 저장 중 오류가 발생했습니다: ${error.message}`);
+                    });
+            });
+
+            // 초기 프로필 정보 불러오기
+            fetchUserProfile();
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>
+</head>
+
+<body>
+    <div class="header">
+        <div class="logo-container">
+            <img src="icon/Title.png" alt="로고" class="logo" onclick="location.href='main.html'"
+                style="cursor: pointer;">
+        </div>
+        <div class="user-info logged-in-only">
+            <span class="welcome-message">환영합니다, <span id="welcome-name"></span>님!</span>
+        </div>
+    </div>
+    <div class="profile-edit">
+        <h1 style="text-align: center;">프로필 편집</h1>
+        <form id="profileForm" enctype="multipart/form-data">
+            <div class="photo-container">
+                <img id="profile-preview" src="/images/default-profile.png" alt="프로필 사진" class="profile-photo">
+                <input type="file" accept="image/*" class="file-input" id="file-input" name="profilePhoto">
+            </div>
+            <div class="form-row">
+                <div class="form-column">
+                    <div class="form-group">
+                        <label for="user-name">이름</label>
+                        <input type="text" id="user-name" name="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="school">학교</label>
+                        <input type="text" id="school" name="school">
+                    </div>
+                    <div class="form-group">
+                        <label for="job">직업</label>
+                        <input type="text" id="job" name="job">
+                    </div>
+                </div>
+                <div class="form-column">
+                    <div class="form-group">
+                        <label for="gender">성별</label>
+                        <div class="gender-options">
+                            <div class="gender-option" data-gender="M">
+                                <div class="gender-icon">♂️</div>
+                                <span>남성</span>
+                            </div>
+                            <div class="gender-option" data-gender="W">
+                                <div class="gender-icon">♀️</div>
+                                <span>여성</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-column">
+                    <div class="form-group">
+                        <label for="birthday">생일</label>
+                        <input type="text" id="birthday" name="birthday">
+                    </div>
+                </div>
+                <div class="form-column">
+                    <div class="form-group">
+                        <label for="mbti">MBTI</label>
+                        <input type="text" id="mbti" name="mbti" readonly>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="interests">관심사</label>
+                <div class="interests-container">
+                    <div class="interest-item" data-interest="여성패션"><img src="icon/WS.png" alt="WS"><span>여성패션</span>
+                    </div>
+                    <div class="interest-item" data-interest="남성패션"><img src="icon/MS.png" alt="MS"><span>남성패션</span>
+                    </div>
+                    <div class="interest-item" data-interest="음악"><img src="icon/sing.png" alt="sing"><span>음악</span>
+                    </div>
+                    <div class="interest-item" data-interest="영화"><img src="icon/movie.png" alt="moive"><span>영화</span>
+                    </div>
+                    <div class="interest-item" data-interest="여행"><img src="icon/travel.png"
+                            alt="travel"><span>여행</span></div>
+                    <div class="interest-item" data-interest="요리"><img src="icon/cook.png" alt="cook"><span>요리</span>
+                    </div>
+                    <div class="interest-item" data-interest="동물"><img src="icon/pet.png" alt="pet"><span>동물</span>
+                    </div>
+                    <div class="interest-item" data-interest="스포츠"><img src="icon/sport.png"
+                            alt="sport"><span>스포츠</span></div>
+                    <div class="interest-item" data-interest="게임"><img src="icon/game.png" alt="game"><span>게임</span>
+                    </div>
+                    <div class="interest-item" data-interest="뷰티"><img src="icon/beauty.png"
+                            alt="beauty"><span>뷰티</span></div>
+                    <div class="interest-item" data-interest="문화"><img src="icon/culture.png"
+                            alt="culture"><span>문화</span></div>
+                </div>
+                <input type="hidden" id="interests-input" name="interests">
+            </div>
+            <div class="form-group">
+                <label for="myself">소개글</label>
+                <textarea id="myself" rows="5" name="bio"></textarea>
+            </div>
+            <div class="form-group" style="text-align: center;">
+                <button type="submit" class="save-button">저장</button>
+                <button type="button" class="cancel-button" onclick="location.href='Profile.html'">취소</button>
+            </div>
+        </form>
+    </div>
+    </div>
+</body>
+
+</html>

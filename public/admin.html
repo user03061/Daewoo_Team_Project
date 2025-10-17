@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>관리자 통계 페이지</title>
+    <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: aliceblue;
+        color: black;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        overscroll-behavior-y: none;
+        overflow-y: auto;
+        min-height: 100vh;
+    }
+
+    .header {
+        background-color: #160027;
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .welcome-message {
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        margin-right: 20px;
+    }
+    .content {
+        width: 100%;
+        max-width: 1200px;
+        margin-top: 30px;
+        padding: 0 10px;
+        box-sizing: border-box;
+    }
+
+    .chart-container {
+        margin-bottom: 50px;
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .mbti-percentage-list {
+        margin-top: 20px;
+        font-size: 16px;
+    }
+
+    /* 4x4 그리드 스타일 */
+    .mbti-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        text-align: center;
+    }
+    .mbti-grid div {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="header">
+        <div class="logo-container">
+        </div>
+        <div class="welcome-message">
+            환영합니다, 관리자님!
+        </div>
+    </div>
+    <div class="content">
+        <div class="chart-container">
+            <h2>연령대별 성별 통계</h2>
+            <canvas id="ageGenderChart"></canvas>
+        </div>
+        <div class="chart-container" style="position: relative; height:90vh; width:60%;">
+            <h2>MBTI 유형 분포</h2>
+            <canvas id="mbtiChart"></canvas>
+            <div id="mbtiPercentageList" class="mbti-percentage-list mbti-grid"></div> <!-- 수정된 부분 -->
+        </div>
+    </div>
+
+    <script>
+    // 연령대별 성별 통계
+    fetch('/api/age-gender-stats')
+    .then(response => response.json())
+    .then(data => {
+        const ageGroups = ['13-18', '19-24', '25-29', '30-34', '35-39', '40-44', '45-49', '50+'];
+        const chartData = ageGroups.map(group => {
+            const groupData = data.find(item => item.ageGroup === group) || { male: 0, female: 0, total: 0 };
+            const total = groupData.male + groupData.female;
+            return {
+                ageGroup: group,
+                male: total > 0 ? (groupData.male / total) * 100 : 0,
+                female: total > 0 ? (groupData.female / total) * 100 : 0
+            };
+        });
+        
+        const ctx = document.getElementById('ageGenderChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: chartData.map(item => item.ageGroup),
+                datasets: [
+                    {
+                        label: '남성',
+                        data: chartData.map(item => item.male),
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: '여성',
+                        data: chartData.map(item => item.female),
+                        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        title: {
+                            display: true,
+                            text: '비율 (%)'
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: '나이 그룹'
+                        }
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ' + context.parsed.y.toFixed(1) + '%';
+                            }
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: '나이 및 성별 분포 (비율)'
+                    }
+                }
+            }
+        });
+    })
+    .catch(error => console.error('Error:', error));
+
+    // MBTI 통계 
+    async function fetchMBTIData() {
+    try {
+        const response = await fetch('/api/mbti-stats');
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log('Received MBTI data:', data);
+        return data;
+    } catch (error) {
+        console.error('Error fetching MBTI data:', error);
+        throw error;
+    }
+}
+
+    function drawMBTIChart(data) {
+    const ctx = document.getElementById('mbtiChart').getContext('2d');
+    const totalUsers = Object.values(data.stats).reduce((sum, count) => sum + count, 0);
+
+    console.log('Total users:', totalUsers);
+
+    const chartData = Object.entries(data.stats).map(([mbti, count]) => {
+        const percentage = ((count / totalUsers) * 100).toFixed(1);
+        console.log(`MBTI: ${mbti}, Count: ${count}, Percentage: ${percentage}%`);
+        return { mbti, count, percentage };
+    });
+
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: chartData.map(item => item.mbti),
+            datasets: [{
+                data: chartData.map(item => item.count),
+                backgroundColor: [
+                    'red', 'orange', 'yellow', 'green',
+                    'blue', 'purple', 'violet', 'aqua',
+                    'olive', 'silver', 'navy', 'teal',
+                    'chocolate', 'aquamarine', 'darkseagreen', 'black'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'top' },
+                title: { display: true, text: 'MBTI 유형 분포' },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const item = chartData[context.dataIndex];
+                            return `${item.mbti}: ${item.count}명 (${item.percentage}%)`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    // MBTI 유형별 인원수와 비율
+    const percentageList = document.getElementById('mbtiPercentageList');
+    let html = '';
+    chartData.forEach(item => {
+        html += `<div style="font-size: 16px; font-weight: bold;">${item.mbti}: ${item.count}명 (${item.percentage}%)</div>`;
+    });
+    percentageList.innerHTML = html;
+}
+
+
+// 페이지 로드 시 MBTI 차트 생성
+window.onload = async function() {
+    try {
+        const mbtiData = await fetchMBTIData();
+        if (mbtiData.message) {
+            console.log(mbtiData.message);
+            document.getElementById('mbtiChart').innerHTML = '데이터가 없습니다.';
+        } else {
+            drawMBTIChart(mbtiData);
+        }
+    } catch (error) {
+        console.error('MBTI 차트 생성 중 오류:', error);
+        document.getElementById('mbtiChart').innerHTML = '차트를 불러오는 데 실패했습니다.';
+    }
+};
+    </script>
+</body>
+</html>

@@ -1,0 +1,2556 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MY. 메인 페이지</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Nanum Pen Script', cursive;
+      margin: 0;
+      padding: 0;
+      overscroll-behavior-y: none;
+      overflow-y: auto;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #000000, #0a0a23, #151540);
+      color: black;
+      position: relative;
+    }
+
+    html,
+    body {
+      height: 100%;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        radial-gradient(white, rgba(255, 255, 255, .2) 2px, transparent 40px),
+        radial-gradient(white, rgba(255, 255, 255, .15) 1px, transparent 30px),
+        radial-gradient(white, rgba(255, 255, 255, .1) 2px, transparent 40px);
+      background-size: 550px 550px, 350px 350px, 250px 250px;
+      background-position: 0 0, 40px 60px, 130px 270px;
+      animation: starMove 200s linear infinite;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    @keyframes starMove {
+      from {
+        transform: translateY(0);
+      }
+
+      to {
+        transform: translateY(-2000px);
+      }
+    }
+
+    .container {
+      display: flex;
+      height: calc(100% - 60px);
+      /* 헤더 높이를 뺀 전체 높이 */
+      overflow: hidden;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      flex-wrap: nowrap;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      width: 70px;
+      height: auto;
+      margin: 0 20px 0 0;
+    }
+
+    .Menu {
+      width: 50px;
+      margin-right: 15px;
+      cursor: pointer;
+    }
+
+    .search-bar {
+      width: 80%;
+      padding: 10px;
+      border-radius: 20px;
+      font-size: 15px;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+      font-size: 35px;
+    }
+
+    .user-profile-pic {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 8px;
+    }
+
+    .signup-button {
+      width: 120px;
+      height: 40px;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-size: 15px;
+      margin-right: 30px;
+      color: white;
+      background: rgb(8, 152, 209);
+      border: none;
+      position: relative;
+      overflow: visible;
+      z-index: 1;
+      cursor: pointer;
+      animation: pulse 3s infinite;
+      margin-top: 5px;
+    }
+
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(8, 152, 209, 0.7);
+      }
+
+      70% {
+        box-shadow: 0 0 0 20px rgba(8, 152, 209, 0);
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(8, 152, 209, 0);
+      }
+    }
+
+    .logout-button {
+      margin-left: 50px;
+      color: blueviolet;
+    }
+
+    .sidebar {
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      border-radius: 10px;
+      overflow-y: auto;
+      height: 100%;
+      transition: width 0.3s ease;
+      width: 250px;
+      overflow: hidden;
+    }
+
+    .welcome-message {
+      font-size: 30px;
+      text-align: center;
+      margin: 0 auto;
+      margin-right: auto;
+      color: white;
+    }
+
+    .menu-item {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      margin-bottom: 30px;
+      padding: 10px;
+      border-radius: 10px;
+      transition: background-color 0.3s;
+      cursor: pointer;
+    }
+
+    .menu-item img {
+      width: 25px;
+      height: 25px;
+      margin-right: 10px;
+      background-color: white;
+      border-radius: 50%;
+      padding: 5px;
+    }
+
+    .menu-item span {
+      font-size: 30px;
+      color: white;
+      white-space: nowrap;
+      word-break: keep-all;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex-grow: 1;
+    }
+
+    .main-content {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      gap: 1%;
+      height: 100%;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    .center-content {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: none;
+      overflow: hidden;
+    }
+
+    .scrollable-content {
+      flex-grow: 1;
+      overflow-y: auto;
+      margin: 0;
+      padding: 0;
+    }
+
+    .scrollable-content::-webkit-scrollbar {
+      display: none;
+    }
+
+    .card,
+    .posts-container {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      max-width: 100%;
+      margin-bottom: 20px;
+    }
+
+    .posts-container {
+      resize: none;
+      overflow: visible;
+      flex-grow: 1;
+      overflow-y: auto;
+    }
+
+    .post-card {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .right-sidebar {
+  width: 70%;
+  padding: 10px;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  height: 320px;
+  background: linear-gradient(135deg, #050514, #0c0c2e, #0a0a24);
+  border: 5px solid #390950;
+  margin-right: 1%;
+  overflow: hidden;
+  position: relative;
+}
+
+.right-sidebar::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background:
+    radial-gradient(white, rgba(255, 255, 255, .2) 2px, transparent 40px),
+    radial-gradient(white, rgba(255, 255, 255, .15) 1px, transparent 30px),
+    radial-gradient(white, rgba(255, 255, 255, .1) 2px, transparent 40px);
+  background-size: 550px 550px, 350px 350px, 250px 250px;
+  background-position: 0 0, 40px 60px, 130px 270px;
+  animation: starMove 200s linear infinite;
+  z-index: 1;
+  pointer-events: none;
+}
+
+@keyframes starMove {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-2000px);
+  }
+}
+
+/*1페이지*/
+.character-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 5px;
+  margin-left: -20px;
+}
+
+.character {
+  width: 130px; /* 크기 키움 */
+  height: 130px; /* 크기 키움 */
+  margin: 0 10px; /* 캐릭터 간의 여백을 넓힘 */
+}
+
+.heart {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  background-color: red;
+  transform: rotate(-45deg);
+  opacity: 0.8;
+}
+
+.heart::before,
+.heart::after {
+  content: "";
+  width: 15px;
+  height: 15px;
+  background-color: red;
+  border-radius: 50%;
+  position: absolute;
+}
+
+.heart::before {
+  top: -7.5px;
+  left: 0;
+}
+
+.heart::after {
+  top: 0;
+  left: 7.5px;
+}
+
+.heart1 {
+  top: 20%;
+  left: 27%;
+  animation: float 3s ease-in-out infinite;
+}
+
+.heart2 {
+  top: 60%;
+  left: 33%;
+  animation: float 4s ease-in-out infinite 0.5s;
+}
+
+.heart3 {
+  top: 39%;
+  right: 47%;
+  animation: float 3.5s ease-in-out infinite 1s;
+}
+
+.heart4 {
+  top: 46%;
+  right: 27%;
+  animation: float 4.5s ease-in-out infinite 1.5s;
+}
+
+.heart5 {
+  top: 10%;
+  left: 50%;
+  animation: float 5s ease-in-out infinite 0.7s;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) rotate(-45deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(-45deg);
+  }
+}
+
+.mbti-text-container {
+  text-align: center;
+  color: #ffffff;
+  padding: 5px 0;
+  margin-top: -25px;
+}
+
+.mbti-main-text {
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 0px;
+  margin-left: 20px;
+}
+
+.mbti-sub-text {
+  font-size: 25px;
+  opacity: 0.8;
+  margin-top: 0;
+  margin-left: -5px;
+}
+
+
+.sidebar-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  padding: 10px;
+}
+
+/*2페이지*/
+.character-container-2 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  width: 90%;
+}
+
+.character {
+  width: 130px;
+  height: 130px;
+}
+
+.logo-animation-container {
+  width: 100%;
+  height: 130px;
+  position: relative;
+  overflow: hidden;
+}
+
+.moving-logo {
+  position: absolute;
+  width: 130px;
+  height: 130px;
+  animation: moveRight 3s linear infinite;
+}
+
+@keyframes moveRight {
+  0% {
+    left: -130px;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+.mbti-text-container-2 {
+  text-align: center;
+  padding: 5px 0;
+  margin-top: -20px;
+}
+
+.mbti-text-container-2 .mbti-main-text {
+  font-size: 30px;
+  font-weight: bold;
+  color: white;
+  margin-left: -65px;
+}
+
+.mbti-text-container-2 .mbti-sub-text {
+  font-size: 25px;
+  color: white;
+  opacity: 0.8;
+  margin-left: -60px;
+}
+
+
+
+
+/*3페이지*/
+.character-container-3 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  width: 90%;
+}
+
+.character-container-3 .character {
+  width: 150px; 
+  height: 150px; 
+  margin-left: 200px;
+}
+
+.mbti-text-container-3 {
+  text-align: center;
+  padding: 5px 0;
+  margin-top: -40px;
+}
+
+.mbti-text-container-3 .mbti-main-text {
+  font-size: 30px;
+  font-weight: bold;
+  color: white;
+  margin-left: -100px;
+}
+
+.mbti-text-container-3 .mbti-sub-text {
+  font-size: 25px;
+  color: white;
+  opacity: 0.8;
+  margin-left: -80px;
+}
+
+
+/*4페이지*/
+.character-container-4 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  width: 90%;
+}
+
+@keyframes rotate360 {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .rotating-logo {
+      width: 130px;
+      height: 130px;
+      animation: rotate360 5s linear infinite;
+    }
+
+.character-container-4 .character {
+  width: 130px; 
+  height: 130px; 
+  margin-left: 190px;
+}
+
+.mbti-text-container-4 {
+  text-align: center;
+  padding: 5px 0;
+  margin-top: -20px;
+}
+
+.mbti-text-container-4 .mbti-main-text {
+  font-size: 30px;
+  font-weight: bold;
+  color: white;
+  margin-left: -140px;
+}
+
+.mbti-text-container-4 .mbti-sub-text {
+  font-size: 25px;
+  color: white;
+  opacity: 0.8;
+  margin-left: -120px;
+}
+
+
+/*5페이지*/
+.character-container-5 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  width: 90%;
+  margin-top: -50px;
+}
+
+@keyframes sway {
+      0%, 100% {
+        transform: rotate(-5deg);
+      }
+      50% {
+        transform: rotate(5deg);
+      }
+    }
+
+    .swaying-ship {
+      animation: sway 3s ease-in-out infinite;
+      transform-origin: bottom center;
+    }
+
+.character-container-5 .character {
+  width: 200px; 
+  height: 200px; 
+  margin-left: 120px;
+}
+
+.mbti-text-container-5 {
+  text-align: center;
+  padding: 5px 0;
+  margin-top: -35px;
+}
+
+.mbti-text-container-5 .mbti-main-text {
+  font-size: 30px;
+  font-weight: bold;
+  color: white;
+  margin-left: -190px;
+}
+
+.mbti-text-container-5 .mbti-sub-text {
+  font-size: 25px;
+  color: white;
+  opacity: 0.8;
+  margin-left: -160px;
+}
+
+
+
+.carousel {
+  position: relative;
+  overflow: hidden;
+  flex-grow: 1;
+}
+
+.carousel-inner {
+  display: flex;
+  transition: transform 0.5s ease;
+  height: 100%;
+}
+
+.carousel-item {
+  flex: 0 0 100%;
+  padding: 10px;
+}
+
+.carousel-item h3 {
+  margin-top: 0;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.carousel-item ul {
+  padding-left: 20px;
+  margin: 5px 0;
+}
+
+.carousel-item li {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.carousel-nav {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0;
+}
+
+.nav-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #ccc;
+  margin: 0 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.nav-dot.active {
+  background-color: rgb(8, 152, 209);
+}
+
+.coin-button {
+  width: 100%;
+  background-color: rgb(8, 152, 209);
+  color: white;
+  border: none;
+  padding: 8px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: 'Nanum Pen Script', cursive;
+  font-size: 23px;
+  transition: background-color 0.3s;
+  margin-bottom: 15px;
+  margin-top: 5px;
+  position: relative;
+  overflow: visible;
+  animation: pulse 3s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(8, 152, 209, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 20px rgba(8, 152, 209, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(8, 152, 209, 0);
+  }
+}
+
+    .left-sidebar {
+      width: 45%;
+      overflow-y: auto;
+      padding: 15px;
+      background: linear-gradient(135deg, #050514, #0c0c2e, #0a0a24);
+      border: 5px solid #390950;
+      border-radius: 15px;
+      height: auto;
+      margin-left: 1.5%;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-self: flex-start;
+      box-shadow: 0 0 10px rgba(57, 9, 80, 0.7), 0 0 20px rgba(57, 9, 80, 0.7);
+      position: relative;
+      animation: glow 3s infinite alternate;
+    }
+
+    .left-sidebar::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        radial-gradient(white, rgba(255, 255, 255, .1) 2px, transparent 40px),
+        radial-gradient(white, rgba(255, 255, 255, .05) 1px, transparent 30px),
+        radial-gradient(white, rgba(255, 255, 255, .03) 2px, transparent 40px);
+      background-size: 550px 550px, 350px 350px, 250px 250px;
+      background-position: 0 0, 40px 60px, 130px 270px;
+      animation: starMove 200s linear infinite;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    @keyframes starMove {
+      from {
+        transform: translateY(0);
+      }
+
+      to {
+        transform: translateY(-2000px);
+      }
+    }
+
+    .recommended-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .daily-mbti {
+      font-size: 40px;
+      font-weight: bold;
+      color: #00ffff;
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+      margin-bottom: 5px;
+      text-align: center;
+    }
+
+    .mbti-type {
+      color: #ff00ff;
+      text-shadow: 0 0 10px rgba(255, 0, 255, 0.7);
+    }
+
+    .card {
+      position: relative;
+      transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+      background-color: rgb(255, 255, 255);
+      border-radius: 10px;
+      padding: 15px;
+      box-sizing: border-box;
+      border: 5px solid #390950;
+      height: auto;
+      margin-bottom: 30px;
+      flex-shrink: 0;
+    }
+
+    .card-edit input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      border: none;
+      box-sizing: border-box;
+      font-size: 30px;
+      font-weight: bold;
+    }
+
+    .card-edit textarea {
+      width: 100%;
+      height: 100px;
+      resize: none;
+      font-size: 20px;
+      line-height: 1.5;
+      padding: 8px;
+      padding-bottom: 25px;
+      border: none;
+      border-radius: 8px;
+      box-sizing: border-box;
+    }
+
+
+    .button-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+    }
+
+    .button-container2 {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 5px;
+      margin-bottom: 15px;
+    }
+
+    .sort-button {
+      background-color: #390950;
+      color: white;
+      border: none;
+      padding: 5px 15px;
+      font-size: 15px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .sort-button:hover {
+      background-color: #684d85;
+    }
+
+    .post-image2,
+    .send-image {
+      width: 35px;
+      height: 35px;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+
+    .post-image {
+      width: 100%;
+      height: 100%;
+    }
+
+    .selected-items-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      font-size: 15px;
+      margin-left: 5px;
+      margin-bottom: 8px;
+      color: white;
+    }
+
+    .selected-item {
+      background-color: rgba(60, 16, 83, 0.8);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 22px;
+      padding: 6px 6px;
+    }
+
+    .char-count {
+      position: absolute;
+      bottom: 15px;
+      right: 15px;
+      font-size: 25px;
+      color: #666;
+      padding: 2px 5px;
+      border-radius: 5px;
+    }
+
+    .card-edit {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .remove-image {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background-color: rgba(255, 0, 0, 0.7);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      font-size: 12px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .card-edit input {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      background-color: rgb(255, 255, 255);
+      box-sizing: border-box;
+    }
+
+    .msg {
+      position: relative;
+    }
+
+    .card-edit input[type="text"]::placeholder {
+      color: #666;
+      font-weight: normal;
+    }
+
+    .preview-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .preview-item {
+      position: relative;
+      display: inline-block;
+      width: 70px;
+      height: 70px;
+      border: 2px solid #390950;
+      border-radius: 5px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      margin-left: 10px;
+    }
+
+    .preview-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+
+    .file-upload-label {
+      cursor: pointer;
+    }
+
+    .preview-container img {
+      width: 70px;
+      height: 70px;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+
+    .dropdown {
+      align-self: flex-start;
+      margin-bottom: 10px;
+      position: relative;
+    }
+
+    .dropdown-button {
+      background-color: #390950;
+      color: white;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
+      font-size: 15px;
+      width: 90px;
+      margin-left: 5px;
+      padding: 8px 13px;
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      background-color: rgba(60, 16, 83, 0.8);
+      border-radius: 0 0 10px 10px;
+      width: 90px;
+      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+      left: 5px;
+      top: 100%;
+    }
+
+    .dropdown-item {
+      display: block;
+      padding: 10px 13px;
+      color: white;
+      text-decoration: none;
+      border-top: 1px solid #4a2e68;
+      transition: background-color 0.3s ease;
+      font-size: 20px;
+      line-height: 1.4;
+    }
+
+    .dropdown-item:hover {
+      background-color: rgba(74, 46, 104, 0.8);
+    }
+
+    .remove-item {
+      background: none;
+      border: none;
+      color: #ff4b1f;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .post {
+      position: relative;
+      background-color: #f0f0f0;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .post-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      position: relative;
+      padding-top: 5px;
+    }
+
+    .post-time {
+      font-size: 1.3em;
+      color: #888;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+
+    .post-info {
+      flex-grow: 1;
+    }
+
+    .post-actions {
+      display: flex;
+      gap: 5px;
+    }
+
+    .post h3 {
+      margin-top: 0;
+      color: #3c1053;
+    }
+
+    .post-categories {
+      margin-bottom: 10px;
+    }
+
+    .post-actions button {
+      padding: 3px 8px;
+      font-size: 12px;
+      background-color: #3c1053;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    .comment {
+      position: relative;
+      margin-bottom: 10px;
+      padding: 5px;
+      background-color: #f8f8f8;
+      border-radius: 5px;
+      font-size: 25px;
+    }
+
+    .comment-time {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      font-size: 20px;
+      color: #888;
+    }
+
+    .post-card h3 {
+      margin-top: 0;
+      color: #3c1053;
+      font-size: 1.5em;
+    }
+
+
+    .post-category {
+      background-color: #3c1053;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 15px;
+      font-size: 20px;
+      margin-right: 10px;
+      display: inline-block;
+    }
+
+
+    .post-actions {
+      margin-top: 15px;
+    }
+
+    .post-title {
+      font-size: 35px;
+      margin-bottom: 5px;
+    }
+
+    .post-text {
+      margin-top: 0;
+      margin-bottom: 10px;
+      line-height: 1.4;
+      font-size: 25px;
+    }
+
+    .post-footer {
+      display: flex;
+      align-items: center;
+    }
+
+    .comment-icon,
+    .like-icon {
+      width: 30px;
+      height: 30px;
+      margin-right: 5px;
+      cursor: pointer;
+      margin-top: 5px;
+    }
+
+    .like-icon {
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .like-icon:hover {
+      transform: scale(1.1);
+    }
+
+    .like-icon.liked {
+      filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
+    }
+
+    .like-count {
+      font-size: 25px;
+      color: #666;
+    }
+
+    .post-actions button {
+      background-color: #3c1053;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+
+    .comment-input {
+      background-color: #b6b6b6;
+      width: 99%;
+      height: 60px;
+      margin-bottom: 10px;
+      padding: 5px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      resize: none;
+      font-size: 16px;
+    }
+
+    .comments-section h4 {
+      margin-top: 5px;
+      margin-bottom: 10px;
+      font-size: 22px;
+    }
+
+    .submit-comment {
+      background-color: #3c1053;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .comments-section {
+      margin-top: 5px;
+    }
+
+    /* 게시글 수정*/
+    .edit-title {
+      width: 99%;
+      font-size: 30px;
+      padding: 5px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .edit-content {
+      width: 99%;
+      height: 150px;
+      font-size: 20px;
+      padding: 5px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      resize: none;
+    }
+
+    .edit-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .save-edit,
+    .cancel-edit {
+      background-color: #3c1053;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .save-edit:hover,
+    .cancel-edit:hover {
+      background-color: #4a2e68;
+    }
+
+    .song-info,
+    .exercise,
+    .destiny,
+    .OTT {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: linear-gradient(135deg, #000000, #0a0a23, #151540);
+      border-radius: 15px;
+      padding: 15px;
+      width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+
+    /*음악추천*/
+    .music-recommendation {
+      border-bottom: 3px solid #929292;
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+    }
+
+    .song-info::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background:
+        radial-gradient(white, rgba(255, 255, 255, .2) 2px, transparent 40px),
+        radial-gradient(white, rgba(255, 255, 255, .15) 1px, transparent 30px),
+        radial-gradient(white, rgba(255, 255, 255, .1) 2px, transparent 40px);
+      background-size: 550px 550px, 350px 350px, 250px 250px;
+      background-position: 0 0, 40px 60px, 130px 270px;
+      animation: starMove 200s linear infinite;
+      z-index: 1;
+    }
+
+    @keyframes starMove {
+      from {
+        transform: translateY(0);
+      }
+
+      to {
+        transform: translateY(-2000px);
+      }
+    }
+
+    .song-info::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .song-info .image-container {
+      position: relative;
+      width: 100%;
+      max-width: 160px;
+      height: auto;
+      aspect-ratio: 1 / 1;
+      margin-bottom: 5px;
+      text-align: center;
+      z-index: 3;
+    }
+
+    .image-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+      box-shadow: 0 3px 10px rgba(0, 0, 255, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .image-container img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 5px 15px rgba(0, 0, 255, 0.5);
+    }
+
+    .song-info p {
+      margin: 3px 0;
+      text-align: center;
+      font-weight: bold;
+      z-index: 3;
+      position: relative;
+    }
+
+    #music-title {
+      font-size: 30px;
+      margin: 0;
+      color: #00ffff;
+    }
+
+    #music-artist {
+      font-size: 25px;
+      margin: 0;
+      color: #ff00ff;
+    }
+
+    .prev-button,
+    .next-button {
+      position: absolute;
+      top: 60%;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 40px;
+      line-height: 1;
+      cursor: pointer;
+      z-index: 3;
+      transition: all 0.3s ease;
+    }
+
+    .prev-button {
+      left: -80px;
+    }
+
+    .next-button {
+      right: -80px;
+    }
+
+    .prev-button:hover,
+    .next-button:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    /* 오늘의 운세 */
+    .destiny::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background:
+        radial-gradient(white, rgba(255, 255, 255, .2) 2px, transparent 40px),
+        radial-gradient(white, rgba(255, 255, 255, .15) 1px, transparent 30px),
+        radial-gradient(white, rgba(255, 255, 255, .1) 2px, transparent 40px);
+      background-size: 550px 550px, 350px 350px, 250px 250px;
+      background-position: 0 0, 40px 60px, 130px 270px;
+      animation: starMove 200s linear infinite;
+      z-index: 1;
+    }
+
+    @keyframes starMove {
+      from {
+        transform: translateY(0);
+      }
+
+      to {
+        transform: translateY(-2000px);
+      }
+    }
+
+    .today-message {
+      border-bottom: 3px solid rgba(255, 255, 255, 0.2);
+      padding-bottom: 15px;
+      margin-bottom: 15px;
+      width: 100%;
+      position: relative;
+      z-index: 2;
+    }
+
+    .today-message h3 {
+      color: #00ffff;
+      font-size: 32px;
+      margin-bottom: 5px;
+      margin-top: 5px;
+      text-align: center;
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+    }
+
+    #daily-fortune {
+      font-size: 23px;
+      line-height: 1.5;
+      margin-top: 5px;
+      margin-bottom: 5px;
+      color: #e0e0e0;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .fortune-circles {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .fortune-circle {
+      width: calc(20% - 15px);
+      min-width: 50px;
+      max-width: 70px;
+      aspect-ratio: 1 / 1;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #3c1053, #4a2e68);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      font-size: 20px;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    @media (max-width: 768px) {
+      .fortune-circle {
+        width: calc(33.33% - 15px);
+        font-size: 14px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .fortune-circle {
+        width: calc(50% - 15px);
+        font-size: 12px;
+      }
+    }
+
+    .fortune-circle:hover,
+    .fortune-circle.active {
+      background: linear-gradient(135deg, #4a2e68, #6a4e88);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .today-message {
+      border-bottom: 3px solid #929292;
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+    }
+
+    /* 운동추천 */
+    .exercise-recommendation {
+      border-bottom: 3px solid #929292;
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+    }
+
+    .exercise::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background:
+        radial-gradient(white, rgba(255, 255, 255, .2) 2px, transparent 40px),
+        radial-gradient(white, rgba(255, 255, 255, .15) 1px, transparent 30px),
+        radial-gradient(white, rgba(255, 255, 255, .1) 2px, transparent 40px);
+      background-size: 550px 550px, 350px 350px, 250px 250px;
+      background-position: 0 0, 40px 60px, 130px 270px;
+      animation: starMove 200s linear infinite;
+      z-index: 1;
+    }
+
+    @keyframes starMove {
+      from {
+        transform: translateY(0);
+      }
+
+      to {
+        transform: translateY(-2000px);
+      }
+    }
+
+    .exercise h3 {
+      font-size: 32px;
+      margin-bottom: 5px;
+      margin-top: 5px;
+      text-align: center;
+      color: #00ffff;
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+      position: relative;
+      z-index: 2;
+    }
+
+    .exercise-list {
+      list-style-type: none;
+      width: 100%;
+      padding: 0;
+      position: relative;
+      z-index: 2;
+      margin-bottom: 5px;
+      margin-top: 5px;
+    }
+
+    .exercise-list li {
+      font-size: 22px;
+      margin-bottom: 10px;
+      color: #f0f0f0;
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+      background: rgba(255, 255, 255, 0.1);
+      padding: 10px 15px;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+    }
+
+    .exercise-list li::before {
+      content: '🚀';
+      margin-right: 10px;
+      font-size: 24px;
+    }
+
+    /* OTT추천 */
+    .OTT::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background:
+        radial-gradient(white, rgba(255, 255, 255, .2) 2px, transparent 40px),
+        radial-gradient(white, rgba(255, 255, 255, .15) 1px, transparent 30px),
+        radial-gradient(white, rgba(255, 255, 255, .1) 2px, transparent 40px);
+      background-size: 550px 550px, 350px 350px, 250px 250px;
+      background-position: 0 0, 40px 60px, 130px 270px;
+      animation: starMove 200s linear infinite;
+      z-index: 1;
+    }
+
+    @keyframes starMove {
+      from {
+        transform: translateY(0);
+      }
+
+      to {
+        transform: translateY(-2000px);
+      }
+    }
+
+    .OTT h3 {
+      color: #00ffff;
+      font-size: 32px;
+      margin-top: 5px;
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+      position: relative;
+      z-index: 2;
+      margin-bottom: 5px;
+    }
+
+    .movie-list {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: flex-start;
+      overflow-x: auto;
+      padding: 10px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .movie-poster {
+      height: auto;
+      max-width: 80%;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0, 255, 255, 0.3);
+      transition: all 0.3s ease;
+      border: 2px solid rgba(0, 255, 255, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .movie-title {
+      text-align: center;
+      margin-top: 5px;
+      font-size: 23px;
+      margin-bottom: 5px;
+      color: #ff00ff;
+    }
+  </style>
+  <script>
+    let postsContainer;
+    let currentUserId;
+    let postImageUrl = '';
+
+    function getCurrentUserId() {
+      return fetch('/api/current-user')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Failed to fetch current user');
+          }
+          return response.json();
+        })
+        .then(data => {
+          currentUserId = data.userId;
+          console.log('Current user ID:', currentUserId);
+        })
+        .catch(error => {
+          console.error('Error fetching current user:', error);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      postsContainer = document.getElementById('posts-container');
+      const submitButton = document.getElementById('submitPost');
+      const textarea = document.getElementById('textarea');
+      const charCount = document.getElementById('charCount');
+      const dropdownButton = document.querySelector('.dropdown-button');
+      const dropdownMenu = document.querySelector('.dropdown-menu');
+      const selectedItemsContainer = document.getElementById('selectedItemsContainer');
+      const fileInput = document.getElementById('fileInput');
+      const urlParams = new URLSearchParams(window.location.search);
+      const category = urlParams.get('category');
+      const postId = urlParams.get('postId');
+      const sortNewestButton = document.getElementById('sort-newest');
+      const sortPopularButton = document.getElementById('sort-popular');
+      const carousel = document.querySelector('.carousel-inner');
+  const items = document.querySelectorAll('.carousel-item');
+  const dots = document.querySelectorAll('.nav-dot');
+  let currentIndex = 0;
+
+  function showItem(index) {
+    carousel.style.transform = `translateX(-${index * 100}%)`;
+    dots.forEach((dot, i) => {
+      dot.classList.toggle('active', i === index);
+    });
+  }
+
+  function nextItem() {
+    currentIndex = (currentIndex + 1) % items.length;
+    showItem(currentIndex);
+  }
+
+  setInterval(nextItem, 3000); // 5초마다 다음 항목으로 전환
+
+  dots.forEach((dot, index) => {
+    dot.addEventListener('click', () => {
+      currentIndex = index;
+      showItem(currentIndex);
+    });
+  });
+
+      // 최신순 정렬
+      sortNewestButton.addEventListener('click', () => {
+        fetchPosts('newest');
+      });
+
+      // 인기순 정렬
+      sortPopularButton.addEventListener('click', () => {
+        fetchPosts('popular');
+      });
+
+      // 게시글 가져오기 함수
+      function fetchPosts(sortType) {
+        let sortQuery = '';
+        if (sortType === 'newest') {
+          sortQuery = '?sort=newest';
+        } else if (sortType === 'popular') {
+          sortQuery = '?sort=popular';
+        }
+
+        fetch(`/api/posts${sortQuery}`)
+          .then(response => response.json())
+          .then(posts => {
+            displayPosts(posts);
+          })
+          .catch(error => console.error('Error fetching posts:', error));
+      }
+
+      // 게시글 화면에 표시
+      function displayPosts(posts) {
+        const postsContainer = document.getElementById('posts-container');
+        postsContainer.innerHTML = '';
+
+        posts.forEach(post => {
+          const postElement = createPostElement(post);
+          postsContainer.appendChild(postElement);
+        });
+      }
+
+      if (category) {
+        document.getElementById('categorySearch').value = category;
+        filterPostsByCategory(category);
+      }
+
+      setupCategorySearch();
+
+      checkAuthAndUpdateUI();
+      setupTextareaCharCount(textarea, charCount);
+      setupPostSubmission(submitButton);
+      setupDropdownMenu(dropdownButton, dropdownMenu, selectedItemsContainer);
+      setupFileUpload(fileInput);
+
+      getCurrentUserId().then(() => {
+        loadPosts();
+      });
+      if (postId) {
+        scrollToPost(postId);
+      }
+    });
+
+    //카테고리 불러오기
+    function filterPostsByCategory(searchTerm) {
+      const searchTerms = searchTerm.toLowerCase().split(',').map(term => term.trim());
+      const posts = document.querySelectorAll('.post');
+      posts.forEach(post => {
+        const categories = Array.from(post.querySelectorAll('.post-category'))
+          .map(cat => cat.textContent.trim().toLowerCase());
+        const matchFound = searchTerms.some(term =>
+          categories.some(category => category.includes(term))
+        );
+        post.style.display = matchFound ? 'block' : 'none';
+      });
+    }
+
+    //음악추천 ISFP
+    const musicRecommendations = [
+      { id: 1, title: "Bye Bye my Blue", artist: "백예린", image: "ISFP.png", mbti_type: "ISFP" },
+      { id: 2, title: "Stars", artist: "로시", image: "ISFP2.png", mbti_type: "ISFP" },
+      { id: 3, title: "카페인", artist: "스텔라장", image: "ISFP3.png", mbti_type: "ISFP" },
+      // 더 많은 음악 추천 추가가능
+    ];
+
+    let currentIndex = 0;
+
+    function loadMusicRecommendation() {
+      updateMusicInfo(musicRecommendations[currentIndex]);
+    }
+
+    function updateMusicInfo(recommendation) {
+      document.getElementById('music-title').textContent = recommendation.title;
+      document.getElementById('music-artist').textContent = recommendation.artist;
+      document.getElementById('mbti-music-image').src = `/music/${recommendation.image}`;
+    }
+
+    function nextMbtiImage() {
+      currentIndex = (currentIndex + 1) % musicRecommendations.length;
+      loadMusicRecommendation();
+    }
+
+    function prevMbtiImage() {
+      currentIndex = (currentIndex - 1 + musicRecommendations.length) % musicRecommendations.length;
+      loadMusicRecommendation();
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      loadMusicRecommendation();
+
+      const prevButton = document.getElementById('prev-mbti');
+      const nextButton = document.getElementById('next-mbti');
+      prevButton.addEventListener('click', prevMbtiImage);
+      nextButton.addEventListener('click', nextMbtiImage);
+    });
+
+    //오늘의 운세
+    const fortunes = {
+      general: [
+        "인간관계에서 갈등이 생길 수 있습니다.<br> 열린 마음으로 소통하고 갈등을 해결하세요."
+      ],
+      love: [
+        "오늘은 당신의 감정이 깊어지는 날입니다.<br> 친밀한 관계에서 더 솔직해지기 좋은 시기입니다."
+      ],
+      study: [
+        "집중력이 높아지는 하루입니다.<br> 평소에 어려웠던 과제나 공부가 의외로<br> 쉽게 풀릴 수 있습니다."
+      ],
+      money: [
+        "오늘은 금전적으로 안정적인 날입니다.<br> 만약 투자를 계획하고 있다면 잠시 더<br> 기다리는 것이 좋습니다."
+      ],
+      health: [
+        "몸과 마음이 조화를 이루는 날입니다.<br> 가벼운 산책이나 명상, 요가 등으로<br> 몸을 풀어주는 것이 좋습니다."
+      ]
+    };
+
+    function showFortune(type) {
+      const fortuneArray = fortunes[type];
+      const randomFortune = fortuneArray[Math.floor(Math.random() * fortuneArray.length)];
+      document.getElementById('daily-fortune').innerHTML = randomFortune;
+
+      // 활성화된 버튼 스타일 변경
+      document.querySelectorAll('.fortune-circle').forEach(circle => {
+        circle.classList.remove('active');
+      });
+      document.querySelector(`.fortune-circle[data-fortune="${type}"]`).classList.add('active');
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      loadMusicRecommendation();
+      showFortune('general');
+
+      const fortuneCircles = document.querySelectorAll('.fortune-circle');
+      fortuneCircles.forEach(circle => {
+        circle.addEventListener('click', function () {
+          const fortuneType = this.getAttribute('data-fortune');
+          showFortune(fortuneType);
+        });
+      });
+
+      const prevButton = document.getElementById('prev-mbti');
+      const nextButton = document.getElementById('next-mbti');
+      prevButton.addEventListener('click', prevMbtiImage);
+      nextButton.addEventListener('click', nextMbtiImage);
+
+      // 사이드바 토글 기능 추가
+      const menuToggle = document.getElementById('menu-toggle');
+      const sidebar = document.getElementById('sidebar');
+      const content = document.getElementById('content');
+
+      menuToggle.addEventListener('click', function () {
+        sidebar.classList.toggle('collapsed');
+      });
+    });
+
+
+    function scrollToPost(postId) {
+      // 게시글 로드가 완료된 후 실행되어야 함
+      setTimeout(() => {
+        const postElement = document.querySelector(`.post[data-post-id="${postId}"]`);
+        if (postElement) {
+          postElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          postElement.style.boxShadow = '0 0 15px rgba(255, 105, 180, 0.7)';
+          setTimeout(() => {
+            postElement.style.boxShadow = '';
+          }, 3000); 
+        }
+      }, 1000);
+    }
+
+    function checkAuthAndUpdateUI() {
+      fetch('/api/check-auth')
+        .then(response => response.json())
+        .then(data => {
+          updateUI(data.isLoggedIn, data.isLoggedIn ? data.user.name : null);
+        })
+        .catch(error => {
+          console.error('Error checking auth:', error);
+          updateUI(false);
+        });
+    }
+
+    function updateUI(isLoggedIn, userName) {
+      const loggedOutElements = document.querySelectorAll('.logged-out-only');
+      const loggedInElements = document.querySelectorAll('.logged-in-only');
+      const userNameElement = document.getElementById('user-name');
+
+      loggedOutElements.forEach(el => el.style.display = isLoggedIn ? 'none' : 'block');
+      loggedInElements.forEach(el => el.style.display = isLoggedIn ? 'block' : 'none');
+      if (userNameElement && isLoggedIn) userNameElement.textContent = userName;
+    }
+
+    function setupTextareaCharCount(textarea, charCount) {
+      textarea.addEventListener('input', function () {
+        const length = this.value.length;
+        charCount.textContent = length;
+
+        if (length > 100) {
+          this.value = this.value.slice(0, 100);
+          charCount.textContent = 100;
+        }
+
+        charCount.style.color = length >= 80 ? 'red' : '#666';
+      });
+    }
+
+    function setupFileUpload(fileInput) {
+      fileInput.addEventListener('change', handleFileUpload);
+    }
+
+    function handleFileUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const formData = new FormData();
+        formData.append('image', file);
+
+        fetch('/api/upload-post-image', {
+          method: 'POST',
+          body: formData
+        })
+          .then(response => response.json())
+          .then(data => {
+            postImageUrl = data.imageUrl;
+            document.getElementById('imagePreview').innerHTML = `
+          <div class="preview-item">
+            <img src="${postImageUrl}" alt="Post image preview" style="max-width: 100%; max-height: 100px;">
+            <button onclick="removeUploadedImage()" class="remove-image">×</button>
+          </div>
+        `;
+          })
+          .catch(error => console.error('Error:', error));
+      }
+    }
+
+    function removeUploadedImage() {
+      postImageUrl = '';
+      document.getElementById('imagePreview').innerHTML = '';
+      document.getElementById('fileInput').value = '';
+    }
+
+    function setupPostSubmission(submitButton) {
+      submitButton.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        const title = document.querySelector('.title input').value;
+        const content = document.querySelector('.msg textarea').value;
+        const categories = Array.from(document.querySelectorAll('.selected-item')).map(item => item.textContent.trim());
+
+        fetch('/api/posts', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ title, content, categories: categories.join(','), imageUrl: postImageUrl }),
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.message === 'Post created successfully') {
+              document.querySelector('.title input').value = '';
+              document.querySelector('.msg textarea').value = '';
+              document.getElementById('selectedItemsContainer').innerHTML = '';
+              document.getElementById('imagePreview').innerHTML = '';
+              postImageUrl = '';
+              document.getElementById('fileInput').value = '';
+
+              loadPosts();
+            }
+          })
+          .catch(error => console.error('Error:', error));
+      });
+    }
+
+    function getRelativeTime(dateString) {
+      const now = new Date();
+      const past = new Date(dateString);
+      const diffInSeconds = Math.floor((now - past) / 1000);
+
+      if (diffInSeconds < 60) {
+        return '방금 전';
+      } else if (diffInSeconds < 3600) {
+        const minutes = Math.floor(diffInSeconds / 60);
+        return `${minutes}분 전`;
+      } else if (diffInSeconds < 86400) {
+        const hours = Math.floor(diffInSeconds / 3600);
+        return `${hours}시간 전`;
+      } else if (diffInSeconds < 604800) {
+        const days = Math.floor(diffInSeconds / 86400);
+        return `${days}일 전`;
+      } else {
+        const weeks = Math.floor(diffInSeconds / 604800);
+        return `${weeks}주 전`;
+      }
+    }
+
+    function createPostElement(post) {
+      const postElement = document.createElement('div');
+      postElement.className = 'post';
+      postElement.dataset.postId = post.id;
+
+      let categoriesHtml = post.categories ? post.categories.split(',').map(cat => `<span class="post-category">${cat.trim()}</span>`).join('') : '';
+      let imageHtml = post.image_url ? `<img src="${post.image_url}" alt="Post image" class="post-image">` : '';
+
+      let actionButtonsHtml = '';
+      if (currentUserId === post.user_id) {
+        actionButtonsHtml = `
+      <button class="edit-post">수정</button>
+      <button class="delete-post">삭제</button>
+    `;
+      }
+
+      const relativeTime = getRelativeTime(post.created_at);
+
+      postElement.innerHTML = `
+    <div class="post-header">
+      <div class="post-info">
+        <div class="post-categories">${categoriesHtml}</div>
+        <div class="user-info">
+          <img src="${post.profile_photo || '/default-profile.jpg'}" class="user-profile-pic" style="border: 2px solid #000; border-radius: 50%;">
+          <small>${post.user_name || '익명'}</small>
+        </div>
+      </div>
+      <div class="post-time">${relativeTime}</div>
+      <div class="post-actions">
+        ${actionButtonsHtml}
+      </div>
+    </div>
+    <h3 class="post-title">${post.title}</h3>
+    <p class="post-text">${post.content}</p>
+    ${imageHtml}
+    <div class="post-footer">
+      <img src="icon/comment.jpg" alt="댓글" class="comment-icon">
+      <img src="icon/heart2.png" alt="좋아요" class="like-icon">
+      <span class="like-count">${post.heart_count || 0}</span>
+    </div>
+    <div class="comments-section" style="display: none;">
+      <div class="comments-list"></div>
+      <textarea class="comment-input" placeholder="댓글을 입력하세요"></textarea>
+      <button class="submit-comment">댓글 작성</button>
+    </div>
+  `;
+
+      if (currentUserId === post.user_id) {
+        postElement.querySelector('.edit-post').addEventListener('click', () => editPost(post.id));
+        postElement.querySelector('.delete-post').addEventListener('click', () => deletePost(post.id));
+      }
+
+      postElement.querySelector('.submit-comment').addEventListener('click', () => addComment(post.id));
+
+      const commentIcon = postElement.querySelector('.comment-icon');
+      commentIcon.style.width = '30px';
+      commentIcon.style.height = '30px';
+      commentIcon.addEventListener('click', () => toggleComments(post.id));
+
+      loadComments(post.id);
+      const likeIcon = postElement.querySelector('.like-icon');
+      likeIcon.addEventListener('click', () => toggleLike(post.id));
+
+      return postElement;
+    }
+
+    //게시글 좋아요
+    function toggleLike(postId) {
+      const likeIcon = document.querySelector(`.post[data-post-id="${postId}"] .like-icon`);
+      const likeCountElement = document.querySelector(`.post[data-post-id="${postId}"] .like-count`);
+
+      fetch(`/api/posts/${postId}/like`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            likeCountElement.textContent = data.newHeartCount;
+            likeIcon.classList.add('liked');
+            alert('좋아요가 추가되었습니다!');
+          } else if (data.alreadyLiked) {
+            alert('좋아요를 이미 눌렀습니다.');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('좋아요 처리 중 오류가 발생했습니다.');
+        });
+    }
+
+    function editPost(postId) {
+      const postElement = document.querySelector(`.post[data-post-id="${postId}"]`);
+      const titleElement = postElement.querySelector('.post-title');
+      const contentElement = postElement.querySelector('.post-text');
+      const categoriesElement = postElement.querySelector('.post-categories');
+
+      const currentTitle = titleElement.textContent;
+      const currentContent = contentElement.textContent;
+      const currentCategories = Array.from(categoriesElement.querySelectorAll('.post-category'))
+        .map(cat => cat.textContent.trim());
+
+      titleElement.innerHTML = `<input type="text" class="edit-title" value="${currentTitle}">`;
+      contentElement.innerHTML = `<textarea class="edit-content">${currentContent}</textarea>`;
+
+      const editActions = document.createElement('div');
+      editActions.className = 'edit-actions';
+      editActions.innerHTML = `
+        <button class="save-edit">저장</button>
+        <button class="cancel-edit">취소</button>
+    `;
+      postElement.appendChild(editActions);
+
+      const saveButton = postElement.querySelector('.save-edit');
+      const cancelButton = postElement.querySelector('.cancel-edit');
+
+      saveButton.addEventListener('click', () => saveEdit(postId));
+      cancelButton.addEventListener('click', () => cancelEdit(postId, currentTitle, currentContent, currentCategories));
+    }
+
+    function saveEdit(postId) {
+      const postElement = document.querySelector(`.post[data-post-id="${postId}"]`);
+      const newTitle = postElement.querySelector('.edit-title').value;
+      const newContent = postElement.querySelector('.edit-content').value;
+      const categories = Array.from(postElement.querySelectorAll('.post-category'))
+        .map(cat => cat.textContent.trim());
+
+      fetch(`/api/posts/${postId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ title: newTitle, content: newContent, categories: categories.join(',') }),
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.message === 'Post updated successfully') {
+            postElement.querySelector('.post-title').textContent = newTitle;
+            postElement.querySelector('.post-text').textContent = newContent;
+            postElement.removeChild(postElement.querySelector('.edit-actions'));
+          }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    function cancelEdit(postId, originalTitle, originalContent, originalCategories) {
+      const postElement = document.querySelector(`.post[data-post-id="${postId}"]`);
+      postElement.querySelector('.post-title').textContent = originalTitle;
+      postElement.querySelector('.post-text').textContent = originalContent;
+      postElement.removeChild(postElement.querySelector('.edit-actions'));
+    }
+
+    function deletePost(postId) {
+  if (confirm('정말로 이 게시글을 삭제하시겠습니까?')) {
+    console.log(`Attempting to delete post ${postId}`);
+    fetch(`/api/posts/${postId}`, {
+      method: 'DELETE',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => {
+      console.log(`Server responded with status ${response.status}`);
+      if (!response.ok) {
+        return response.text().then(text => {
+          throw new Error(text || `HTTP error! status: ${response.status}`);
+        });
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('Delete response:', data);
+      if (data.message === 'Post and related data deleted successfully') {
+        // 삭제 성공 알림
+        alert('게시글이 성공적으로 삭제되었습니다.');
+        // DOM에서 게시글 요소 직접 제거
+        const postElement = document.querySelector(`.post[data-post-id="${postId}"]`);
+        if (postElement) {
+          postElement.remove();
+        } else {
+          console.log('Post element not found, reloading page');
+          location.reload();
+        }
+      } else {
+        throw new Error('Unexpected server response');
+      }
+    })
+    .catch(error => {
+      console.error('Error deleting post:', error);
+      alert(`게시글 삭제에 실패했습니다: ${error.message}`);
+    });
+  }
+}
+
+    function toggleComments(postId) {
+      const commentsSection = document.querySelector(`.post[data-post-id="${postId}"] .comments-section`);
+      if (commentsSection.style.display === 'none') {
+        commentsSection.style.display = 'block';
+        loadComments(postId);
+      } else {
+        commentsSection.style.display = 'none';
+      }
+    }
+
+    function addComment(postId) {
+      const commentInput = document.querySelector(`.post[data-post-id="${postId}"] .comment-input`);
+      const content = commentInput.value.trim();
+      if (content) {
+        fetch(`/api/posts/${postId}/comments`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ content })
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.message === 'Comment added successfully') {
+              commentInput.value = '';
+              loadComments(postId);
+            }
+          })
+          .catch(error => console.error('Error:', error));
+      }
+    }
+
+    function loadComments(postId) {
+      fetch(`/api/posts/${postId}/comments`)
+        .then(response => response.json())
+        .then(comments => {
+          const commentsList = document.querySelector(`.post[data-post-id="${postId}"] .comments-list`);
+          commentsList.innerHTML = comments.map(comment => `
+        <div class="comment">
+          <strong>${comment.user_name}</strong>: ${comment.content}
+          <small class="comment-time">${new Date(comment.created_at).toLocaleString()}</small>
+        </div>
+      `).join('');
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    function setupCategorySearch() {
+      const searchInput = document.getElementById('categorySearch');
+      searchInput.addEventListener('input', function () {
+        filterPostsByCategory(this.value);
+      });
+      searchInput.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          filterPostsByCategory(this.value);
+        }
+      });
+    }
+
+    function filterPostsByCategory(searchTerm) {
+      const searchTerms = searchTerm.toLowerCase().split(',').map(term => term.trim());
+      const posts = document.querySelectorAll('.post');
+      posts.forEach(post => {
+        const categories = Array.from(post.querySelectorAll('.post-category'))
+          .map(cat => cat.textContent.trim().toLowerCase());
+        const matchFound = searchTerms.some(term =>
+          categories.some(category => category.includes(term))
+        );
+        post.style.display = matchFound || searchTerm === '' ? 'block' : 'none';
+      });
+    }
+
+    function loadPosts() {
+      fetch('/api/posts')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(posts => {
+          console.log('Received posts:', posts);
+          postsContainer.innerHTML = '';
+          posts.forEach(post => {
+            const postElement = createPostElement(post);
+            postsContainer.appendChild(postElement);
+          });
+          const currentSearchTerm = document.getElementById('categorySearch').value.trim();
+          if (currentSearchTerm) {
+            filterPostsByCategory(currentSearchTerm);
+          }
+        })
+        .catch(error => {
+          console.error('Error loading posts:', error);
+          postsContainer.innerHTML = '<p>게시글을 불러오는 데 실패했습니다.</p>';
+        });
+    }
+
+    function setupDropdownMenu(dropdownButton, dropdownMenu, selectedItemsContainer) {
+      dropdownButton.addEventListener('mouseover', () => {
+        dropdownMenu.style.display = 'block';
+        dropdownButton.style.borderRadius = '15px 15px 0 0';
+      });
+
+      dropdownButton.addEventListener('mouseout', () => {
+        dropdownMenu.style.display = 'none';
+        dropdownButton.style.borderRadius = '15px';
+      });
+
+      dropdownMenu.addEventListener('mouseover', () => {
+        dropdownMenu.style.display = 'block';
+        dropdownButton.style.borderRadius = '15px 15px 0 0';
+      });
+
+      dropdownMenu.addEventListener('mouseout', () => {
+        dropdownMenu.style.display = 'none';
+        dropdownButton.style.borderRadius = '15px';
+      });
+
+      dropdownMenu.addEventListener('mouseover', (event) => {
+        if (event.target.matches('.dropdown-item')) {
+          dropdownButton.innerText = event.target.innerText;
+        }
+      });
+
+      dropdownMenu.addEventListener('click', (event) => {
+        if (event.target.matches('.dropdown-item')) {
+          event.preventDefault();
+          addSelectedItem(event.target.textContent, selectedItemsContainer);
+          dropdownButton.innerText = `# 선택`;
+          dropdownMenu.style.display = 'none';
+        }
+      });
+    }
+
+    function addSelectedItem(text, container) {
+      const existingItems = Array.from(container.children);
+      if (existingItems.some(item => item.textContent.includes(text))) {
+        return;
+      }
+
+      const selectedItem = document.createElement('div');
+      selectedItem.className = 'selected-item';
+      selectedItem.textContent = text;
+
+      const removeButton = document.createElement('button');
+      removeButton.className = 'remove-item';
+      removeButton.textContent = '×';
+      removeButton.addEventListener('click', () => container.removeChild(selectedItem));
+
+      selectedItem.appendChild(removeButton);
+      container.appendChild(selectedItem);
+    }
+  </script>
+</head>
+
+<body>
+  <div class="header">
+    <div class="logo-container">
+      <img src="icon/Menu.png" alt="메뉴" class="Menu" id="menu-toggle">
+      <img src="icon/Title.png" alt="로고" class="logo" onclick="location.href='main.html'" style="cursor: pointer;">
+    </div>
+    <input type="text" class="search-bar" id="categorySearch" placeholder="카테고리 검색 (예: 여행,게임...)">
+    <button class="signup-button logged-out-only" onclick="location.href='MemberShip.html'">가입하기</button>
+    <div class="user-info logged-in-only" style="display: none;">
+      <span class="welcome-message">환영합니다, <span id="user-name"></span>님!</span>
+    </div>
+  </div>
+  <div class="container">
+    <div class="sidebar" id="sidebar">
+      <div class="menu-item">
+        <img src="icon/home.png">
+        <span onclick="location.href='main.html'">홈</span>
+      </div>
+      <div class="menu-item">
+        <img src="icon/heart.png">
+        <span onclick="location.href='Love.html'">소개팅 매칭</span>
+      </div>
+      <div class="menu-item">
+        <img src="icon/message.png">
+        <span onclick="location.href='chat.html'">메시지</span>
+      </div>
+      <div class="menu-item">
+        <img src="icon/Logo.png">
+        <span onclick="location.href='Profile.html'">프로필</span>
+      </div>
+      <div class="menu-item">
+        <img src="icon/database.png">
+        <span onclick="location.href='resource.html'">성격 데이터 베이스</span>
+      </div>
+      <div class="menu-item">
+        <img src="icon/test.png">
+        <span onclick="location.href='MBTITest.html'">성격 유형 테스트</span>
+      </div>
+      <div class="menu-item logged-in-only" style="display: none;">
+        <span><a href="/logout" class="logout-button">로그아웃</a></span>
+      </div>
+    </div>
+    <div class="main-content">
+      <div class="left-sidebar">
+        <div class="recommended-content">
+          <div class="daily-mbti">오늘의 <span class="mbti-type">ISFP</span></div>
+          <div class="music-recommendation">
+            <div class="song-info">
+              <div class="image-container">
+                <button id="prev-mbti" class="prev-button">|</button>
+                <img id="mbti-music-image" src="" alt="MBTI Music Recommendation">
+                <button id="next-mbti" class="next-button">|</button>
+              </div>
+              <p id="music-title"></p>
+              <p id="music-artist"></p>
+            </div>
+          </div>
+          <div class="today-message">
+            <div class="destiny">
+              <h3>오늘의 운세</h3>
+              <p id="daily-fortune"></p>
+              <div class="fortune-circles">
+                <div class="fortune-circle" data-fortune="general">총운</div>
+                <div class="fortune-circle" data-fortune="love">애정운</div>
+                <div class="fortune-circle" data-fortune="study">학업운</div>
+                <div class="fortune-circle" data-fortune="money">금전운</div>
+                <div class="fortune-circle" data-fortune="health">건강운</div>
+              </div>
+            </div>
+          </div>
+          <div class="exercise-recommendation">
+            <div class="exercise">
+              <h3>오늘의 추천 운동</h3>
+              <ul class="exercise-list">
+                <li>벤치 프레스 10x3</li>
+                <li>암풀다운 10x3</li>
+                <li>핵 스쿼트 10x3</li>
+              </ul>
+            </div>
+          </div>
+          <div class="ott-recommendation">
+            <div class="OTT">
+              <h3>오늘의 OTT 추천</h3>
+              <div class="movie-list">
+                <div>
+                  <img src="movie/movie.png" class="movie-poster">
+                  <p class="movie-title">지금 우리 학교는</p>
+                </div>
+                <div>
+                  <img src="movie/movie2.png" class="movie-poster">
+                  <p class="movie-title">인간수업</p>
+                </div>
+                <div>
+                  <img src="movie/movie3.png" class="movie-poster">
+                  <p class="movie-title">엘리멘탈</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="center-content">
+        <div class="scrollable-content">
+          <div class="card">
+            <div class="card-edit">
+              <div class="dropdown">
+                <button class="dropdown-button"># 선택</button>
+                <div class="dropdown-menu">
+                  <a href="#" class="dropdown-item"># 음식</a>
+                  <a href="#" class="dropdown-item"># 여행</a>
+                  <a href="#" class="dropdown-item"># 게임</a>
+                  <a href="#" class="dropdown-item"># 연애</a>
+                  <a href="#" class="dropdown-item"># 건강</a>
+                  <a href="#" class="dropdown-item"># 운동</a>
+                  <a href="#" class="dropdown-item"># 업무</a>
+                  <a href="#" class="dropdown-item"># 휴식</a>
+                  <a href="#" class="dropdown-item"># 문화</a>
+                  <a href="#" class="dropdown-item"># 정치</a>
+                  <a href="#" class="dropdown-item"># 디지털</a>
+                </div>
+              </div>
+              <div class="selected-items-container" id="selectedItemsContainer">
+                <!-- 선택된 항목이 여기에 추가됩니다 -->
+              </div>
+              <div class="title">
+                <input type="text" placeholder="제목">
+              </div>
+              <div class="msg">
+                <textarea placeholder="내용을 입력하세요. (최대 100자)" id="textarea"></textarea>
+                <div class="char-count"><span id="charCount">0</span>/100</div>
+              </div>
+              <div class="button-container">
+                <label for="fileInput" class="file-upload-label">
+                  <img src="icon/post.png" alt="파일 첨부" class="post-image2">
+                </label>
+                <input type="file" id="fileInput" accept="image/*" onchange="handleFileUpload(this);"
+                  style="display: none;">
+                <div id="imagePreview"></div>
+                <a href="#" class="send-button" id="submitPost">
+                  <img src="icon/send.png" alt="전송" class="send-image">
+                </a>
+              </div>
+              <div class="preview-container" id="previewContainer"></div>
+            </div>
+          </div>
+          <div class="button-container2">
+            <button class="sort-button" id="sort-newest">최신순</button>
+            <button class="sort-button" id="sort-popular">인기순</button>
+          </div>
+          <div id="posts-container" class="posts-container"></div>
+        </div>
+      </div>
+      <div class="right-sidebar">
+        <div class="sidebar-section">
+          <div class="carousel">
+            <div class="carousel-inner">
+              <div class="carousel-item">
+                <div class="character-container">
+                  <img src="icon/Logo.png" alt="Character" class="character">
+                  <div class="heart heart1"></div>
+                  <div class="heart heart2"></div>
+                  <div class="heart heart3"></div>
+                  <div class="heart heart4"></div>
+                  <div class="heart heart5"></div>
+                  <img src="icon/logolove.png" alt="Character Love" class="character">
+                </div>
+                <div class="mbti-text-container">
+                  <p class="mbti-main-text">당신의 소울메이트 ✨</p>
+                  <p class="mbti-sub-text">당신의 진짜 모습을 쉽게 이해하고 인정해주는 사람</p>
+                </div>
+              </div>
+              <div class="carousel-item carousel-item-2">
+                <div class="character-container-2">
+                  <div class="logo-animation-container">
+                    <img src="icon/logospin.png" alt="Character" class="character moving-logo">
+                  </div>
+                </div>
+                <div class="mbti-text-container-2">
+                  <p class="mbti-main-text">무제한 하트</p>
+                  <p class="mbti-sub-text">무제한 일일 영혼 추천. 내일까지 기다리지 마세요</p>
+                </div>
+              </div>
+              <div class="carousel-item carousel-item-3">
+                <div class="character-container-3">
+                  <img src="icon/hand.png" alt="Character Love" class="character">
+                </div>
+                <div class="mbti-text-container-3">
+                  <p class="mbti-main-text">내역보기</p>
+                  <p class="mbti-sub-text">당신의 메시지를 읽었는지 확인하고 프라이버시를 지키세요.</p>
+                </div>
+              </div>
+              <div class="carousel-item carousel-item-4">
+                <div class="character-container-4">
+                  <img src="icon/Logo.png" alt="Character Love" class="character rotating-logo">
+                </div>
+                <div class="mbti-text-container-4">
+                  <p class="mbti-main-text">시간여행</p>
+                  <p class="mbti-sub-text">실수로 누군가를 지나쳤나요? 시간을 되돌려 기회를 얻어보세요.</p>
+                </div>
+              </div>
+              <div class="carousel-item carousel-item-5">
+                <div class="character-container-5">
+                  <img src="icon/ship.png" alt="Character Love" class="character swaying-ship">
+                </div>
+                <div class="mbti-text-container-5">
+                  <p class="mbti-main-text">스피릿 영역</p>
+                  <p class="mbti-sub-text">스피릿 영역에서 당신의 위치를 숨기고 다른 사람들의 추천에 나오지 않게 하세요. </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-nav">
+            <span class="nav-dot active"></span>
+            <span class="nav-dot"></span>
+            <span class="nav-dot"></span>
+            <span class="nav-dot"></span>
+            <span class="nav-dot"></span>
+          </div>
+          <button class="coin-button">MyBTI 코인 활성화</button>
+        </div>
+      </div>
+    </div>
+</body>
+</html>

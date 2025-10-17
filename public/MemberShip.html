@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>이메일 회원가입</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #000000, #0a0a23, #151540);
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        overscroll-behavior-y: none;
+        overflow-y: auto;
+        min-height: 100vh;
+      }
+
+      .container {
+        background: linear-gradient(135deg, #1e0936, #2a0f4c, #3b1667);
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+        width: 300px;
+        text-align: center;
+      }
+
+      .logo {
+        width: 130px;
+        height: auto;
+        margin: 20px 0;
+      }
+
+      h2 {
+        font-size: 24px;
+        color: #e0e0ff;
+        margin-bottom: 20px;
+      }
+
+      input,
+      .button,
+      select {
+        width: 93%;
+        padding: 10px;
+        margin: 10px 0;
+        border: none;
+        border-radius: 5px;
+        font-size: 14px;
+        background-color: rgba(255, 255, 255, 0.1);
+        color: white;
+      }
+
+      input::placeholder,
+      select {
+        color: #b8b8ff;
+      }
+
+      .gender-age-container {
+        display: flex;
+        justify-content: space-between;
+        background-color: transparent;
+      }
+
+      .gender-age-container select {
+        width: calc(50% - 5px);
+        padding: 10px;
+        margin: 10 0;
+      }
+
+      .button {
+        background-color: #4a2a82;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        width: 80%;
+        padding: 12px;
+        margin-top: 20px;
+        border-radius: 25px;
+      }
+
+      .button:hover {
+        background-color: #5f3aa3;
+      }
+
+      .signup-complete-message {
+        display: none;
+        background-color: #bfffcf;
+        color: black;
+        padding: 10px;
+        margin-top: 20px;
+        border-radius: 5px;
+      }
+
+      a {
+        color: #b8b8ff;
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+
+      a:hover {
+        color: #fff;
+      }
+
+      p {
+        font-size: 14px;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <img src="icon/Logo.png" alt="로고" class="logo" />
+      <h2>이메일로 회원가입</h2>
+      <form id="signup-form">
+        <input type="text" name="name" placeholder="이름" required />
+        <input type="email" name="email" placeholder="이메일" required />
+        <div class="gender-age-container">
+          <select name="gender" required>
+            <option value="" disabled selected>성별 선택</option>
+            <option value="m">남자</option>
+            <option value="w">여자</option>
+          </select>
+          <select name="age_range" required>
+            <option value="" disabled selected>나이 선택</option>
+            <option value="13-18">13-18</option>
+            <option value="19-24">19-24</option>
+            <option value="25-29">25-29</option>
+            <option value="30-34">30-34</option>
+            <option value="35-39">35-39</option>
+            <option value="40-44">40-44</option>
+            <option value="45-49">45-49</option>
+            <option value="50+">50+</option>
+          </select>
+        </div>
+        <input
+          type="password"
+          name="password"
+          placeholder="비밀번호"
+          required
+        />
+        <input
+          type="password"
+          name="confirm_password"
+          placeholder="비밀번호 확인"
+          required
+        />
+        <button type="submit" class="button">가입하기</button>
+      </form>
+      <div id="signup-complete-message" class="signup-complete-message">
+        회원가입이 완료되었습니다!<br />
+        로그인 페이지로 이동합니다.
+      </div>
+      <p>이미 계정이 있으신가요? <a href="Login.html">로그인</a></p>
+      <p>
+        가입 시 <a href="#" style="color: #4285f4">개인정보 보호정책</a>에
+        동의하는 것으로 간주합니다.
+      </p>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        function handleSignupResponse(response) {
+          if (response.message === "회원가입이 완료되었습니다.") {
+            document.getElementById("signup-form").style.display = "none";
+            const messageElement = document.getElementById(
+              "signup-complete-message"
+            );
+            messageElement.style.display = "block";
+            setTimeout(function () {
+              window.location.href = "Login.html";
+            }, 30000);
+          } else {
+            alert(response.message);
+          }
+        }
+
+        document
+          .getElementById("signup-form")
+          .addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData.entries());
+
+            fetch("/signup", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(data),
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                handleSignupResponse(data);
+              })
+              .catch((error) => {
+                console.error("회원가입 중 오류 발생:", error);
+                alert("회원가입 중 오류가 발생했습니다. 다시 시도해주세요.");
+              });
+          });
+      });
+    </script>
+  </body>
+</html>

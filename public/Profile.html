@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MY. 프로필</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Nanum Pen Script', cursive;
+            margin: 0;
+            padding: 0;
+            overscroll-behavior-y: none;
+            overflow-y: auto;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #000000, #0a0a23, #151540);
+            color: white;
+            position: relative;
+        }
+
+        /* body 배경에 올라가는 별 애니메이션 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(white, rgba(255, 255, 255, .2) 2px, transparent 40px),
+                radial-gradient(white, rgba(255, 255, 255, .15) 1px, transparent 30px),
+                radial-gradient(white, rgba(255, 255, 255, .1) 2px, transparent 40px);
+            background-size: 550px 550px, 350px 350px, 250px 250px;
+            background-position: 0 0, 40px 60px, 130px 270px;
+            animation: starMove 200s linear infinite;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        @keyframes starMove {
+            from {
+                transform: translateY(0);
+            }
+
+            to {
+                transform: translateY(-2000px);
+            }
+        }
+
+        .container {
+            display: flex;
+            padding: 20px;
+        }
+
+        .sidebar {
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            border-radius: 10px;
+        }
+
+        .sidebar {
+            transition: width 0.3s ease;
+            width: 250px;
+            overflow: hidden;
+        }
+
+        .sidebar.collapsed {
+            width: 60px;
+        }
+
+        .sidebar.collapsed .menu-item span {
+            display: none;
+        }
+
+        .menu-item {
+            white-space: nowrap;
+        }
+
+        .menu-item img {
+            min-width: 25px;
+        }
+
+        .search-bar {
+            width: 80%;
+            padding: 10px;
+            border-radius: 20px;
+            font-size: 15px;
+        }
+
+        .mbti-gender-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-left: 65px;
+        }
+
+        #user-gender {
+            font-size: 1.5em;
+            padding: 5px 10px;
+            border-radius: 50%;
+            color: white;
+        }
+
+        #user-gender.male {
+            background-color: #4169E1;
+        }
+
+        #user-gender.female {
+            background-color: #FF69B4;
+        }
+
+        .menu-item {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 10px;
+            border-radius: 10px;
+            transition: background-color 0.3s;
+            cursor: pointer;
+        }
+
+        .menu-item img {
+            width: 25px;
+            height: 25px;
+            margin-right: 10px;
+            background-color: white;
+            border-radius: 50%;
+            padding: 5px;
+        }
+
+        .menu-item span {
+            font-size: 30px;
+            color: white;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            flex-wrap: nowrap;
+        }
+
+        .signup-button {
+            width: 120px;
+            height: 40px;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 15px;
+            margin-right: 30px;
+            color: white;
+            background: rgb(8, 152, 209);
+            border: none;
+            position: relative;
+            overflow: visible;
+            z-index: 1;
+            cursor: pointer;
+            animation: pulse 3s infinite;
+            margin-top: 5px;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(8, 152, 209, 0.7);
+            }
+
+            70% {
+                box-shadow: 0 0 0 20px rgba(8, 152, 209, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(8, 152, 209, 0);
+            }
+        }
+
+        .logo {
+            width: 70px;
+            height: auto;
+            margin: 0 20px 0 0;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .Menu {
+            width: 50px;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+
+        .profile-info {
+            flex: 1.5;
+            padding: 30px;
+            background: linear-gradient(135deg, #050514, #0c0c2e, #0a0a24);
+            /* Dark space-like gradient */
+            border-radius: 20px;
+            max-width: 500px;
+            margin-left: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 0 10px rgba(148, 143, 179, 0.3), 0 0 20px rgba(148, 143, 179, 0.1);
+            border: 3px solid #390950;
+            backdrop-filter: blur(10px);
+            animation: glow 3s infinite alternate;
+            height: 70vh;
+            margin-top: 50px;
+            overflow-y: auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-info::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(white, rgba(255, 255, 255, .1) 2px, transparent 40px),
+                radial-gradient(white, rgba(255, 255, 255, .05) 1px, transparent 30px),
+                radial-gradient(white, rgba(255, 255, 255, .03) 2px, transparent 40px);
+            /* Subtle star effect */
+            background-size: 550px 550px, 350px 350px, 250px 250px;
+            background-position: 0 0, 40px 60px, 130px 270px;
+            z-index: 0;
+            pointer-events: none;
+            animation: starMove 200s linear infinite;
+            border-radius: 20px;
+        }
+
+        @keyframes glow {
+            0% {
+                box-shadow: 0 0 15px #390950, 0 0 25px #6e3a9a;
+            }
+
+            50% {
+                box-shadow: 0 0 25px #834896, 0 0 35px #a366b6;
+            }
+
+            100% {
+                box-shadow: 0 0 15px #390950, 0 0 25px #6e3a9a;
+            }
+        }
+
+        @keyframes starMove {
+            from {
+                transform: translateY(0);
+            }
+
+            to {
+                transform: translateY(-2000px);
+            }
+        }
+
+        #user-mbti {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 16px;
+            border-radius: 12px;
+            display: inline-block;
+            animation:
+                colorChange 10s linear infinite,
+                pulse 2s ease-in-out infinite;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        #user-mbti:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+        }
+
+        /* Color changing animation */
+        @keyframes colorChange {
+            0% {
+                background: #FF61A6;
+            }
+
+            14% {
+                background: #FFB3BA;
+            }
+
+            28% {
+                background: #FFA07A;
+            }
+
+            42% {
+                background: #8BE5E5;
+            }
+
+            56% {
+                background: #00CED1;
+            }
+
+            70% {
+                background: #9B7EDE;
+            }
+
+            84% {
+                background: #6A5ACD;
+            }
+
+            100% {
+                background: #FF61A6;
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+
+        .introduction {
+            margin-top: 15px;
+            text-align: center;
+            font-style: italic;
+            max-width: 100%;
+            word-wrap: break-word;
+        }
+
+        .profile-photo {
+            width: 280px;
+            height: 280px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 10px rgba(255, 105, 180, 0.4);
+        }
+
+        .posts {
+            flex: 2;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 35px;
+            min-width: 800px;
+            width: calc(66.666% - 50px);
+        }
+
+        .post {
+            position: relative;
+            width: 85%;
+            aspect-ratio: 1;
+            border: 5px solid #390950;
+            background-color: #5a5679;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-left: 50px;
+            margin-top: 15px;
+            height: 95%;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .post:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+        }
+
+        .post img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .post-text {
+            padding: 10px;
+            text-align: center;
+            font-size: 30px;
+            color: white;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 5;
+            -webkit-box-orient: vertical;
+        }
+
+        .post-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(207, 207, 207, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .post:hover .post-overlay {
+            opacity: 1;
+        }
+
+        .post-button {
+            padding: 10px 20px;
+            background-color: #fff;
+            color: #390950;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .post-button:hover {
+            background-color: #390950;
+            color: #fff;
+        }
+
+        .post-title {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgb(57, 9, 80, 0.5);
+            color: black;
+            padding: 20px;
+            text-align: center;
+            font-size: 30px;
+        }
+
+        .edit-button {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            max-width: 300px;
+            height: 50px;
+            background-color: #390950;
+            color: white;
+            border: 2px solid transparent;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: border 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .edit-button:hover {
+            border: 2px solid #ff58ff;
+            box-shadow: 0 0 20px rgba(255, 105, 180, 0.5);
+        }
+
+        .tag {
+            display: inline-block;
+            background-color: white;
+            padding: 5px 10px;
+            color: black;
+            border-radius: 20px;
+            border: 3px solid #390950;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+
+        .logout-button {
+            margin-left: 50px;
+            color: blueviolet;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+            text-align: center;
+        }
+
+        .welcome-message {
+            font-size: 30px;
+            text-align: center;
+            margin: 0 auto;
+            margin-right: auto;
+        }
+
+
+        .profile-details {
+            font-size: 1.5em;
+            text-align: center;
+        }
+
+        .profile-details p {
+            font-size: 1.3em;
+            margin: 27px 0;
+        }
+
+        .profile-object {
+            text-align: center;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 로그인 여부를 확인하고 UI를 업데이트
+            fetch('/api/check-auth')
+                .then(response => response.json())
+                .then(data => {
+                    updateUI(data.isLoggedIn, data.isLoggedIn ? data.user.name : null);
+                    if (data.isLoggedIn) {
+                        loadProfile();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error checking auth:', error);
+                    updateUI(false);
+                });
+
+            // 사이드바 토글 기능 추가
+            const menuToggle = document.getElementById('menu-toggle');
+            const sidebar = document.getElementById('sidebar');
+            const content = document.getElementById('content');
+
+            menuToggle.addEventListener('click', function () {
+                sidebar.classList.toggle('collapsed');
+            });
+
+            const searchInput = document.getElementById('categorySearch');
+            searchInput.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const searchTerm = this.value.trim();
+                    if (searchTerm) {
+                        window.location.href = `main.html?category=${encodeURIComponent(searchTerm)}`;
+                    }
+                }
+            });
+
+            function updateUI(isLoggedIn, userName) {
+                const loggedOutElements = document.querySelectorAll('.logged-out-only');
+                const loggedInElements = document.querySelectorAll('.logged-in-only');
+                const userNameElement = document.getElementById('user-name');
+                const welcomeNameElement = document.querySelector('.welcome-message span');
+
+                if (isLoggedIn) {
+                    loggedOutElements.forEach(el => el.style.display = 'none');
+                    loggedInElements.forEach(el => el.style.display = 'block');
+                    if (userNameElement) userNameElement.textContent = userName;
+                    if (welcomeNameElement) welcomeNameElement.textContent = userName;
+                } else {
+                    loggedOutElements.forEach(el => el.style.display = 'block');
+                    loggedInElements.forEach(el => el.style.display = 'none');
+                }
+            }
+            //MBTI값 가져오기
+            function fetchMBTIResult() {
+                return fetch('/get-mbti-result')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            return data.mbtiResult;
+                        } else {
+                            console.error('MBTI 결과를 가져올 수 없습니다:', data.message);
+                            return null;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('MBTI 결과 가져오기 오류:', error);
+                        return null;
+                    });
+            }
+
+            function loadUserPosts() {
+                fetch('/api/user-posts')
+                    .then(response => response.json())
+                    .then(posts => {
+                        const postsContainer = document.querySelector('.posts');
+                        postsContainer.innerHTML = '';
+                        posts.forEach(post => {
+                            const postElement = document.createElement('div');
+                            postElement.className = 'post';
+                            if (post.image_url) {
+                                postElement.innerHTML = `
+                                <img src="${post.image_url}" alt="게시물">
+                                <div class="post-overlay">
+                                    <button class="post-button">이동하기</button>
+                                </div>
+                            `;
+                            } else {
+                                postElement.innerHTML = `
+                                <div class="post-text">${post.content || '내용 없음'}</div>
+                                <div class="post-overlay">
+                                    <button class="post-button">이동하기</button>
+                                </div>
+                            `;
+                            }
+                            postElement.addEventListener('click', () => {
+                                window.location.href = `/main.html?postId=${post.id}`;
+                            });
+                            postsContainer.appendChild(postElement);
+                        });
+
+                        for (let i = posts.length; i < 6; i++) {
+                            const placeholderElement = document.createElement('div');
+                            placeholderElement.className = 'post';
+                            placeholderElement.innerHTML = `
+                            <div class="post-text">게시글 없음</div>
+                            <div class="post-overlay">
+                                <button class="post-button">이동하기</button>
+                            </div>
+                        `;
+                            postsContainer.appendChild(placeholderElement);
+                        }
+                    })
+                    .catch(error => console.error('Error loading user posts:', error));
+            }
+
+            // 프로필 정보를 불러와서 페이지에 반영
+            function loadProfile() {
+                Promise.all([
+                    fetch('/get-user-profile'),
+                    fetchMBTIResult()
+                ])
+                    .then(([profileResponse, mbtiResult]) => Promise.all([profileResponse.json(), mbtiResult]))
+                    .then(([profileData, mbtiResult]) => {
+                        if (profileData.success) {
+                            document.querySelector('.profile-photo').src = profileData.profile_photo || 'default-image.png';
+                            document.getElementById('user-name').textContent = profileData.name || '이름 없음';
+                            document.getElementById('user-mbti').textContent = mbtiResult || 'MBTI 정보 없음';
+                            // 성별 표시
+                            const genderElement = document.getElementById('user-gender');
+                            if (profileData.gender) {
+                                genderElement.textContent = profileData.gender === 'M' ? '♂' : '♀';
+                                genderElement.className = profileData.gender === 'M' ? 'male' : 'female';
+                            } else {
+                                genderElement.textContent = '?';
+                                genderElement.className = '';
+                            }
+                            document.getElementById('user-school').textContent = profileData.school || '학교 정보 없음';
+                            document.getElementById('user-job').textContent = profileData.job || '직업 정보 없음';
+                            document.getElementById('user-birthday').textContent = profileData.birthday || '생일 정보 없음';
+
+                            // 소개글 처리
+                            const introductionElement = document.getElementById('user-introduction');
+                            const introduction = profileData.introduction || profileData.bio || profileData.myself;
+                            console.log('Introduction data:', introduction); // 소개글 데이터 로깅
+                            introductionElement.textContent = introduction || '소개글이 없습니다.';
+
+                            // 생일 형식 변경
+                            if (profileData.birthday) {
+                                const birthday = new Date(profileData.birthday);
+                                const formattedBirthday = `${birthday.getFullYear()}-${String(birthday.getMonth() + 1).padStart(2, '0')}-${String(birthday.getDate()).padStart(2, '0')}`;
+                                document.getElementById('user-birthday').textContent = formattedBirthday;
+                            } else {
+                                document.getElementById('user-birthday').textContent = '생일 정보 없음';
+                            }
+
+                            // 관심사 표시
+                            const interestsContainer = document.getElementById('user-interests');
+                            interestsContainer.innerHTML = '';
+                            if (profileData.interests) {
+                                const interests = profileData.interests.split(',');
+                                interests.forEach(interest => {
+                                    const span = document.createElement('span');
+                                    span.className = 'tag';
+                                    span.textContent = interest;
+                                    interestsContainer.appendChild(span);
+                                });
+                            } else {
+                                interestsContainer.textContent = '관심사 정보 없음';
+                            }
+                        } else {
+                            console.error('사용자 프로필을 가져올 수 없습니다:', profileData.message);
+                        }
+                        loadUserPosts();
+                    })
+                    .catch(error => console.error('프로필 정보를 불러오는 중 오류 발생:', error));
+            }
+
+        });
+    </script>
+</head>
+
+<body>
+    <div class="header">
+        <div class="logo-container">
+            <img src="icon/Menu.png" alt="메뉴" class="Menu" id="menu-toggle">
+            <img src="icon/Title.png" alt="로고" class="logo" onclick="location.href='main.html'"
+                style="cursor: pointer;">
+        </div>
+        <input type="text" class="search-bar" id="categorySearch" placeholder="카테고리 검색 (예: 여행,게임...)">
+        <button class="signup-button logged-out-only" onclick="location.href='MemberShip.html'">가입하기</button>
+        <div class="user-info logged-in-only" style="display: none;">
+            <span class="welcome-message">환영합니다, <span id="welcome-name"></span>님!</span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="sidebar" id="sidebar">
+            <div class="menu-item">
+                <img src="icon/home.png">
+                <span onclick="location.href='main.html'">홈</span>
+            </div>
+            <div class="menu-item">
+                <img src="icon/heart.png">
+                <span onclick="location.href='Love.html'">소개팅 매칭</span>
+            </div>
+            <div class="menu-item">
+                <img src="icon/message.png">
+                <span onclick="location.href='chat.html'">메시지</span>
+            </div>
+            <div class="menu-item">
+                <img src="icon/Logo.png">
+                <span onclick="location.href='profile.html'">프로필</span>
+            </div>
+            <div class="menu-item">
+                <img src="icon/database.png">
+                <span onclick="location.href='resource.html'">성격 데이터 베이스</span>
+            </div>
+            <div class="menu-item">
+                <img src="icon/test.png">
+                <span onclick="location.href='MBTITest.html'">성격 유형 테스트</span>
+            </div>
+            <div class="menu-item logged-in-only" style="display: none;">
+                <span><a href="/logout" class="logout-button">로그아웃</a></span>
+            </div>
+        </div>
+        <div class="profile-info">
+            <img src="{{user.profile_photo}}" alt="프로필 사진" class="profile-photo">
+            <div class="profile-details">
+                <h1 id="user-name"></h1>
+                <div class="mbti-gender-container">
+                    <div id="user-mbti"></div>
+                    <div id="user-gender"></div>
+                </div>
+                <p id="user-school"></p>
+                <p id="user-job"></p>
+                <p id="user-birthday"></p>
+                <p id="user-introduction" class="introduction"></p>
+                <div class="profile-object" id="user-interests"></div>
+            </div>
+            <button class="edit-button" onclick="location.href='profile-edit.html'">수정하기</button>
+        </div>
+        <div class="posts">
+            <div class="post"><img src="/api/placeholder/300/300" alt="게시물"></div>
+            <div class="post"><img src="/api/placeholder/300/300" alt="게시물"></div>
+            <div class="post"><img src="/api/placeholder/300/300" alt="게시물"></div>
+            <div class="post"><img src="/api/placeholder/300/300" alt="게시물"></div>
+            <div class="post"><img src="/api/placeholder/300/300" alt="게시물"></div>
+            <div class="post"><img src="/api/placeholder/300/300" alt="게시물"></div>
+        </div>
+    </div>
+</body>
+
+</html>

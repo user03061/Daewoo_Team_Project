@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MY. 메인 페이지</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #000000, #0a0a23, #151540);
+            color: white;
+            margin: 0;
+            padding: 0;
+            overscroll-behavior-y: none;
+            overflow-y: auto;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(white, rgba(255, 255, 255, .2) 2px, transparent 40px),
+                radial-gradient(white, rgba(255, 255, 255, .15) 1px, transparent 30px),
+                radial-gradient(white, rgba(255, 255, 255, .1) 2px, transparent 40px);
+            background-size: 550px 550px, 350px 350px, 250px 250px;
+            background-position: 0 0, 40px 60px, 130px 270px;
+            animation: starMove 200s linear infinite;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        @keyframes starMove {
+            from {
+                transform: translateY(0);
+            }
+
+            to {
+                transform: translateY(-2000px);
+            }
+        }
+
+        .container {
+            display: flex;
+            padding: 20px;
+        }
+
+        .sidebar {
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            border-radius: 10px;
+        }
+
+        .sidebar {
+            transition: width 0.3s ease;
+            width: 250px;
+            overflow: hidden;
+        }
+
+        .sidebar.collapsed {
+            width: 60px;
+        }
+
+        .sidebar.collapsed .menu-item span {
+            display: none;
+        }
+
+        .menu-item {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 10px;
+            border-radius: 10px;
+            transition: background-color 0.3s;
+            cursor: pointer;
+        }
+
+        .menu-item img {
+            width: 25px;
+            height: 25px;
+            margin-right: 10px;
+            background-color: white;
+            border-radius: 50%;
+            padding: 5px;
+        }
+
+        .menu-item span {
+            font-size: 30px;
+            color: white;
+            white-space: nowrap;
+            word-break: keep-all;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex-grow: 1;
+            font-family: "Nanum Pen Script", cursive;
+        }
+
+        .logged-in-only {
+            font-size: 30px;
+            font-family: 'Nanum Pen Script';
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            flex-wrap: nowrap;
+        }
+
+        .logo {
+            width: 70px;
+            height: auto;
+            margin: 0 20px 0 0;
+        }
+
+        .logo2 {
+            width: 100px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .Menu {
+            width: 50px;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+
+        .search-bar {
+            width: 80%;
+            padding: 10px;
+            border-radius: 20px;
+            font-size: 15px;
+        }
+
+        .main-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .signup-button {
+            width: 120px;
+            height: 40px;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 15px;
+            margin-right: 30px;
+            color: white;
+            background: rgb(8, 152, 209);
+            border: none;
+            position: relative;
+            overflow: visible;
+            z-index: 1;
+            cursor: pointer;
+            animation: pulse 3s infinite;
+            margin-top: 5px;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(8, 152, 209, 0.7);
+            }
+
+            70% {
+                box-shadow: 0 0 0 20px rgba(8, 152, 209, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(8, 152, 209, 0);
+            }
+        }
+
+        .logout-button {
+            margin-left: 50px;
+            color: blueviolet;
+        }
+
+        .center-column {
+            width: 60%;
+            height: auto;
+            background-color: white;
+            color: black;
+            border-radius: 10px;
+            padding: 50px;
+            margin-top: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .center-column::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 150px;
+            background: linear-gradient(45deg, #6b7aff, #fad0c4, #ffecd2);
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 80%);
+            z-index: 0;
+        }
+
+        .center-column::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 100%);
+            z-index: 1;
+        }
+
+        .center-column>* {
+            position: relative;
+            z-index: 2;
+        }
+
+        .center-column h1 {
+            color: #333;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-bar {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 25px;
+            margin: 20px 0;
+            height: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0;
+            background-color: #76c7c0;
+            border-radius: 25px;
+            transition: width 0.4s ease;
+        }
+
+        .question {
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .question-label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .question-label input {
+            margin-right: 10px;
+        }
+
+        .question.active {
+            opacity: 1;
+        }
+
+
+        #nextButton {
+            background: linear-gradient(45deg, #6357ff, #829fff);
+            border: none;
+            color: white;
+            padding: 10px 30px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 18px;
+            display: block;
+            margin: 20px auto;
+            margin-bottom: 0px;
+            text-align: center;
+        }
+
+
+        #nextButton:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        #nextButton:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="logo-container">
+            <img src="icon/Menu.png" alt="메뉴" class="Menu" id="menu-toggle">
+            <img src="icon/Title.png" alt="로고" class="logo" onclick="location.href='main.html'"
+                style="cursor: pointer;">
+        </div>
+        <input type="text" class="search-bar" id="categorySearch" placeholder="카테고리 검색 (예: 여행,게임...)">
+        <button class="signup-button logged-out-only" onclick="location.href='MemberShip.html'">가입하기</button>
+        <div class="logged-in-only" style="display: none;">
+            환영합니다, <span id="user-name"></span>님!
+        </div>
+    </div>
+    <div class="container">
+        <div class="sidebar" id="sidebar">
+            <div class="menu-item">
+                <img src="icon/home.png">
+                <span onclick="location.href='main.html'">홈</span>
+            </div>
+            <div class="menu-item">
+                <img src="icon/heart.png">
+                <span onclick="location.href='Love.html'">소개팅 매칭</span>
+            </div>
+            <div class="menu-item">
+                <img src="icon/message.png">
+                <span onclick="location.href='chat.html'">메시지</span>
+            </div>
+            <div class="menu-item">
+                <img src="icon/Logo.png">
+                <span onclick="location.href='Profile.html'">프로필</span>
+            </div>
+            <div class="menu-item">
+                <img src="icon/database.png">
+                <span onclick="location.href='resource.html'">성격 데이터 베이스</span>
+            </div>
+            <div class="menu-item">
+                <img src="icon/test.png">
+                <span onclick="location.href='MBTITest.html'">성격 유형 테스트</span>
+            </div>
+            <div class="menu-item logged-in-only" style="display: none;">
+                <span><a href="/logout" class="logout-button">로그아웃</a></span>
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="center-column">
+                <img src="icon/Logo.png" alt="로고" class="logo2">
+                <h1>MBTI 검사</h1>
+                <div class="progress-bar">
+                    <div class="progress-bar-fill"></div>
+                </div>
+                <p id="progress-text">0%</p>
+                <form id="mbtiForm">
+                    <div class="question" id="q9">
+                        <h3>9. 당신은 친구가 슬퍼할 때 어떻게 도와줄지 고민하나요?</h3>
+                        <div class="question-label">
+                            <input type="radio" id="q9a" name="q9" value="F" onclick="saveAnswer(9, 'F')">
+                            <label for="q9a">예</label>
+                        </div>
+                        <div class="question-label">
+                            <input type="radio" id="q9b" name="q9" value="T" onclick="saveAnswer(9, 'T')">
+                            <label for="q9b">아니요</label>
+                        </div>
+                    </div>
+
+                    <div class="question" id="q10">
+                        <h3>10. 당신은 계획보다는 즉흥적인 결정을 선호하나요?</h3>
+                        <div class="question-label">
+                            <input type="radio" id="q10a" name="q10" value="P" onclick="saveAnswer(10, 'P')">
+                            <label for="q10a">예</label>
+                        </div>
+                        <div class="question-label">
+                            <input type="radio" id="q10b" name="q10" value="J" onclick="saveAnswer(10, 'J')">
+                            <label for="q10b">아니요</label>
+                        </div>
+                    </div>
+
+                    <div class="question" id="q11">
+                        <h3>11. 당신은 마감 기한 전에 일을 미리 끝내는 편인가요?</h3>
+                        <div class="question-label">
+                            <input type="radio" id="q11a" name="q11" value="J" onclick="saveAnswer(11, 'J')">
+                            <label for="q11a">예</label>
+                        </div>
+                        <div class="question-label">
+                            <input type="radio" id="q11b" name="q11" value="P" onclick="saveAnswer(11, 'P')">
+                            <label for="q11b">아니요</label>
+                        </div>
+                    </div>
+
+                    <div class="question" id="q12">
+                        <h3>12. 여행을 갈 때, 자세한 일정을 짜는 것을 좋아하나요?</h3>
+                        <div class="question-label">
+                            <input type="radio" id="q12a" name="q12" value="J" onclick="saveAnswer(12, 'J')">
+                            <label for="q12a">예</label>
+                        </div>
+                        <div class="question-label">
+                            <input type="radio" id="q12b" name="q12" value="P" onclick="saveAnswer(12, 'P')">
+                            <label for="q12b">아니요</label>
+                        </div>
+                    </div>
+                    <button type="button" id="nextButton" onclick="saveProgressAndNextPage()"
+                        style="display: none;">결과보기</button>
+                </form>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+
+                function updateUI(isLoggedIn, userName) {
+                    const loggedOutElements = document.querySelectorAll('.logged-out-only');
+                    const loggedInElements = document.querySelectorAll('.logged-in-only');
+                    const userNameElement = document.getElementById('user-name');
+
+                    loggedOutElements.forEach(el => el.style.display = isLoggedIn ? 'none' : 'block');
+                    loggedInElements.forEach(el => el.style.display = isLoggedIn ? 'block' : 'none');
+                    if (isLoggedIn && userNameElement) {
+                        userNameElement.textContent = userName;
+                    }
+                }
+
+                fetch('/api/check-auth')
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Auth check response:', data);
+                        updateUI(data.isLoggedIn, data.user ? data.user.name : '');
+                    })
+                    .catch(error => {
+                        console.error('인증 확인 오류:', error);
+                        updateUI(false);
+                    });
+
+                // 사이드바 토글 기능 추가
+                const menuToggle = document.getElementById('menu-toggle');
+                const sidebar = document.getElementById('sidebar');
+                const content = document.getElementById('content');
+
+                menuToggle.addEventListener('click', function () {
+                    sidebar.classList.toggle('collapsed');
+                });
+
+                const searchInput = document.getElementById('categorySearch');
+                searchInput.addEventListener('keypress', function (e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        const searchTerm = this.value.trim();
+                        if (searchTerm) {
+                            window.location.href = `main.html?category=${encodeURIComponent(searchTerm)}`;
+                        }
+                    }
+                });
+
+                const questions = document.querySelectorAll('.question');
+                const progressBarFill = document.querySelector('.progress-bar-fill');
+                const progressText = document.getElementById('progress-text');
+                const nextButton = document.getElementById('nextButton');
+                let currentQuestion = 0;
+                const totalQuestions = 12;
+                const currentPage = 3;
+                const questionsPerPage = 4;
+
+                const oppositeType = {
+                    'E': 'I', 'I': 'E',
+                    'S': 'N', 'N': 'S',
+                    'T': 'F', 'F': 'T',
+                    'J': 'P', 'P': 'J'
+                };
+
+                function saveAnswer(question, answer) {
+                    let currentValue = parseInt(localStorage.getItem(answer)) || 0;
+                    localStorage.setItem(answer, (currentValue + 1).toString());
+                    localStorage.setItem(oppositeType[answer], '0');
+                    console.log(`Saved answer for ${answer}: ${currentValue + 1}`);
+                    updateProgress();
+                }
+
+                function updateProgress() {
+                    const answeredQuestions = Array.from(questions).filter(q => q.querySelector('input[type="radio"]:checked')).length;
+                    const totalAnswered = (currentPage - 1) * questionsPerPage + answeredQuestions;
+                    const progress = (totalAnswered / totalQuestions) * 100;
+                    progressBarFill.style.width = progress + '%';
+                    progressText.textContent = Math.round(progress) + '%';
+                    localStorage.setItem('progress', Math.round(progress));
+                }
+
+                function activateQuestion(index) {
+                    questions.forEach((q, i) => {
+                        if (i <= index) {
+                            q.classList.add('active');
+                            q.style.opacity = '1';
+                            q.style.display = 'block';
+                        } else {
+                            q.classList.remove('active');
+                            q.style.opacity = '0';
+                            q.style.display = 'none';
+                        }
+                    });
+                    updateProgress();
+                }
+
+                function checkAnswer() {
+                    const answeredQuestions = Array.from(questions).filter(q => q.querySelector('input[type="radio"]:checked')).length;
+                    if (answeredQuestions === questions.length) {
+                        nextButton.style.display = 'block';
+                    } else {
+                        nextButton.style.display = 'none';
+                    }
+                    currentQuestion = answeredQuestions;
+                    activateQuestion(currentQuestion);
+                }
+
+                questions.forEach(question => {
+                    const inputs = question.querySelectorAll('input[type="radio"]');
+                    inputs.forEach(input => {
+                        input.addEventListener('change', function () {
+                            const questionNumber = parseInt(this.name.replace('q', ''));
+                            saveAnswer(questionNumber, this.value);
+                            checkAnswer();
+                        });
+                    });
+                });
+
+                questions.forEach((question, index) => {
+                    const questionNumber = index + 9;
+                    const savedAnswer = localStorage.getItem(`q${questionNumber}`);
+                    if (savedAnswer) {
+                        const radioButton = question.querySelector(`input[value="${savedAnswer}"]`);
+                        if (radioButton) {
+                            radioButton.checked = true;
+                        }
+                    }
+                });
+
+                checkAnswer();
+                updateProgress();
+
+                nextButton.addEventListener('click', function () {
+                    localStorage.setItem('currentPage', '4');
+                    window.location.href = 'MBTIResult.html';
+                });
+            });
+        </script>
+</body>
+</html>

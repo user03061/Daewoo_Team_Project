@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인 페이지</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #000000, #0a0a23, #151540);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overscroll-behavior-y: none;
+            overflow-y: auto;
+            min-height: 100vh;
+        }
+        .container {
+            background: linear-gradient(135deg, #1e0936, #2a0f4c, #3b1667);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+            width: 300px;
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 20px;
+            color: #e0e0ff;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #b8b8ff;
+        }
+        .input-group input {
+            width: 90%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            margin-bottom: 10px;
+        }
+        .button {
+            background-color: #4a2a82;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 80%;
+            margin-bottom: 20px;
+            transition: background-color 0.3s;
+        }
+        .button:hover {
+            background-color: #5f3aa3;
+        }
+        .register-link {
+            margin-top: 15px;
+            color: #b8b8ff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .register-link:hover {
+            color: #fff;
+        }
+        .message {
+            color: #4CAF50;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="signupMessage" class="message" style="display: none;">
+            회원가입이 완료되었습니다!
+        </div>
+        <h1>로그인</h1>
+        <form action="/login" method="post">
+            <div class="input-group">
+                <label for="username">이메일</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="input-group">
+                <label for="password">비밀번호</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" class="button">로그인</button>
+        </form>
+        <a href="Membership.html" class="register-link">회원가입</a>
+    </div>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const signupSuccess = urlParams.get('signup');
+
+        if (signupSuccess === 'success') {
+            document.getElementById('signupMessage').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

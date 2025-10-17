@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+  <title>사랑 이야기</title>
+  <style>
+    body {
+      font-family: "Nanum Pen Script", cursive;
+      background: linear-gradient(135deg, #000000, #0a0a23, #151540);
+      color: white;
+      margin: 0;
+      padding: 0;
+      overscroll-behavior-y: none;
+      overflow-y: auto;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        radial-gradient(white, rgba(255, 255, 255, .2) 2px, transparent 40px),
+        radial-gradient(white, rgba(255, 255, 255, .15) 1px, transparent 30px),
+        radial-gradient(white, rgba(255, 255, 255, .1) 2px, transparent 40px);
+      background-size: 550px 550px, 350px 350px, 250px 250px;
+      background-position: 0 0, 40px 60px, 130px 270px;
+      animation: starMove 200s linear infinite;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    @keyframes starMove {
+      from {
+        transform: translateY(0);
+      }
+
+      to {
+        transform: translateY(-2000px);
+      }
+    }
+
+    .container {
+      display: flex;
+      padding: 20px;
+    }
+
+    .sidebar {
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      border-radius: 10px;
+    }
+
+    .sidebar {
+      transition: width 0.3s ease;
+      width: 250px;
+      overflow: hidden;
+    }
+
+    .sidebar.collapsed {
+      width: 60px;
+    }
+
+    .sidebar.collapsed .menu-item span {
+      display: none;
+    }
+    .menu-item {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      margin-bottom: 30px;
+      padding: 10px;
+      border-radius: 10px;
+      transition: background-color 0.3s;
+      cursor: pointer;
+    }
+
+    .menu-item img {
+      width: 25px;
+      height: 25px;
+      margin-right: 10px;
+      background-color: white;
+      border-radius: 50%;
+      padding: 5px;
+    }
+
+    .menu-item span {
+      font-size: 30px;
+      color: white;
+      white-space: nowrap;
+      word-break: keep-all;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex-grow: 1;
+    }
+
+    .welcome-message {
+      font-size: 30px;
+      text-align: center;
+      margin: 0 auto;
+      margin-right: auto;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      flex-wrap: nowrap;
+    }
+
+    .logo {
+      width: 70px;
+      height: auto;
+      margin: 0 20px 0 0;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .logout-button {
+      margin-left: 50px;
+      color: blueviolet;
+    }
+
+    .Menu {
+      width: 50px;
+      margin-right: 15px;
+      cursor: pointer;
+    }
+
+    .search-bar {
+      width: 80%;
+      padding: 10px;
+      border-radius: 20px;
+      font-size: 15px;
+    }
+
+    .signup-button {
+      width: 120px;
+      height: 40px;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-size: 15px;
+      margin-right: 30px;
+      color: white;
+      background: rgb(8, 152, 209);
+      border: none;
+      position: relative;
+      overflow: visible;
+      z-index: 1;
+      cursor: pointer;
+      margin-top: 5px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 70px;
+      color: #FF69B4;
+      text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5), 0px 0px 20px rgba(255, 105, 180, 0.9);
+      margin-bottom: 10px;
+      font-family: "Nanum Pen Script", cursive;
+      font-weight: bold;
+      letter-spacing: 3px;
+      animation: glow 2s ease-in-out infinite;
+      padding: 20px 0;
+      position: relative;
+    }
+
+    @keyframes glow {
+      0% {
+        text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5), 0px 0px 20px rgba(255, 105, 180, 0.7);
+        transform: scale(1);
+      }
+
+      50% {
+        text-shadow: 5px 5px 20px rgba(0, 0, 0, 0.7), 0px 0px 40px rgba(255, 105, 180, 1);
+        transform: scale(1.05);
+      }
+
+      100% {
+        text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5), 0px 0px 20px rgba(255, 105, 180, 0.7);
+        transform: scale(1);
+      }
+    }
+
+    h1::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(255, 105, 180, 0.2) 0%, rgba(255, 105, 180, 0) 70%);
+      animation: pulse 2s ease-in-out infinite;
+      z-index: -1;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 0.5;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 25px;
+      color: #a5a5a5;
+    }
+
+    .date {
+      text-align: center;
+      font-size: 20px;
+      margin-bottom: 30px;
+      color: #888888;
+    }
+
+    .content {
+      text-align: center;
+      font-size: 25px;
+      margin-bottom: 20px;
+      color: #d4d4d4;
+    }
+
+    .content-area {
+    flex: 1;
+    padding: 0 20px;
+    max-width: 2000px; 
+    margin: 0 auto; 
+    }
+
+    .types {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .types span {
+      font-size: 25px;
+      padding: 10px 20px;
+      background-color: #fc9ed5;
+      border-radius: 15px;
+      color: #ffffff;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .types span:hover {
+      background-color: #b651ff;
+    }
+
+    #mbti-description-container {
+      background-color: #f4f1ea;
+      color: #333;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      margin-top: 30px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.5s ease;
+      max-width: 1100px;
+      margin-left: auto;
+      margin-right: auto;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    #mbti-description-container.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #mbti-description-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, #f8c3c9, #f2a6b3, #f4f1ea);
+
+      z-index: -1;
+      filter: blur(10px);
+      opacity: 0.5;
+    }
+
+    .main-love-icon {
+      font-size: 4em;
+      margin-bottom: 20px;
+      color: #FF69B4;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+
+      100% {
+        transform: translateY(0px);
+      }
+    }
+
+    #mbti-title {
+      font-size: 40px;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #FF69B4;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+      margin-top: 1px;
+    }
+
+    #mbti-description {
+      font-size: 25px;
+      line-height: 1.6;
+      color: #333;
+      text-align: left;
+    }
+
+    .highlight {
+      background-color: #FFB6C1;
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+
+    .love-recommendation {
+      margin-top: 10px;
+      font-size: 20px;
+      color: #333;
+      padding: 20px;
+      background-color: #f6d7ff;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      line-height: 1.3;
+    }
+
+    .love-recommendation strong {
+      font-size: 30px;
+      color: #FF69B4;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .love-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+      padding: 10px;
+      border-radius: 8px;
+      background-color: #fff;
+      transition: background-color 0.3s;
+    }
+
+    .love-item-icon {
+      font-size: 1.2em;
+      margin-right: 10px;
+      color: #FF69B4;
+    }
+
+    .love-type {
+      font-size: 25px;
+      color: #000000;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+  </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // 로그인 여부를 확인하고 UI를 업데이트
+      fetch("/api/check-auth")
+        .then((response) => response.json())
+        .then((data) => {
+          updateUI(data.isLoggedIn, data.isLoggedIn ? data.user.name : null);
+        })
+        .catch((error) => {
+          console.error("Error checking auth:", error);
+          updateUI(false);
+        });
+
+      // 사이드바 토글 기능 추가
+      const menuToggle = document.getElementById('menu-toggle');
+      const sidebar = document.getElementById('sidebar');
+      const content = document.getElementById('content');
+
+      menuToggle.addEventListener('click', function () {
+        sidebar.classList.toggle('collapsed');
+      });
+
+      const searchInput = document.getElementById('categorySearch');
+      searchInput.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          const searchTerm = this.value.trim();
+          if (searchTerm) {
+            window.location.href = `main.html?category=${encodeURIComponent(searchTerm)}`;
+          }
+        }
+      });
+
+      function updateUI(isLoggedIn, userName) {
+        const loggedOutElements =
+          document.querySelectorAll(".logged-out-only");
+        const loggedInElements = document.querySelectorAll(".logged-in-only");
+        const userNameElement = document.getElementById("user-name");
+
+        if (isLoggedIn) {
+          loggedOutElements.forEach((el) => (el.style.display = "none"));
+          loggedInElements.forEach((el) => (el.style.display = "block"));
+          if (userNameElement) userNameElement.textContent = userName;
+        } else {
+          loggedOutElements.forEach((el) => (el.style.display = "block"));
+          loggedInElements.forEach((el) => (el.style.display = "none"));
+        }
+      }
+    });
+  </script>
+</head>
+
+<body>
+  <div class="header">
+    <div class="logo-container">
+      <img src="icon/Menu.png" alt="메뉴" class="Menu" id="menu-toggle">
+      <img src="icon/Title.png" alt="로고" class="logo" onclick="location.href='main.html'" style="cursor: pointer;">
+    </div>
+    <input type="text" class="search-bar" id="categorySearch" placeholder="카테고리 검색 (예: 여행,게임...)">
+    <button class="signup-button logged-out-only" onclick="location.href='MemberShip.html'">
+      가입하기
+    </button>
+    <div class="user-info logged-in-only" style="display: none">
+      <span class="welcome-message">환영합니다, <span id="user-name"></span>님!</span>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="sidebar" id="sidebar">
+      <div class="menu-item">
+        <img src="icon/home.png" />
+        <span onclick="location.href='main.html'">홈</span>
+      </div>
+      <div class="menu-item">
+        <img src="icon/heart.png" />
+        <span onclick="location.href='Love.html'">소개팅 매칭</span>
+      </div>
+      <div class="menu-item">
+        <img src="icon/message.png" />
+        <span onclick="location.href='chat.html'">메시지</span>
+      </div>
+      <div class="menu-item">
+        <img src="icon/Logo.png" />
+        <span onclick="location.href='Profile.html'">프로필</span>
+      </div>
+      <div class="menu-item">
+        <img src="icon/database.png" />
+        <span onclick="location.href='resource.html'">성격 데이터 베이스</span>
+      </div>
+      <div class="menu-item">
+        <img src="icon/test.png" />
+        <span onclick="location.href='MBTITest.html'">성격 유형 테스트</span>
+      </div>
+      <div class="menu-item logged-in-only" style="display: none">
+        <span><a href="/logout" class="logout-button">로그아웃</a></span>
+      </div>
+    </div>
+    <div class="content-area">
+      <h1>사랑 이야기</h1>
+      <div class="subtitle">송주영 작성</div>
+      <div class="date">마지막 업데이트 일자: 2024년 9월 6일</div>
+
+      <div class="content">
+        개성을 통해 동기화된 감정, 평범함을 조율하는 사랑 이야기로, 감정의 마법을 조명합니다. 이 섹션에서는 깊은 이해와 상호 협력을 통해 연결된 사람들의 감동적인 이야기를 공유합니다.<br> 이러한 이야기는
+        다양한 사랑의 형태가 어우러져 어떻게 특별한 순간과 추억으로 탄생할 수 있는지를 강조합니다. 영감을 찾거나 마음의 위안을 원한다면, 이 사랑 이야기들은 진정한 감정적 조화의 변혁적인 힘을 보여줍니다.
+      </div>
+
+      <div class="types">
+        <span onclick="showMBTIDescription('INFP')">INFP</span>
+        <span onclick="showMBTIDescription('INFJ')">INFJ</span>
+        <span onclick="showMBTIDescription('ENFP')">ENFP</span>
+        <span onclick="showMBTIDescription('ENFJ')">ENFJ</span>
+        <span onclick="showMBTIDescription('INTP')">INTP</span>
+        <span onclick="showMBTIDescription('INTJ')">INTJ</span>
+        <span onclick="showMBTIDescription('ENTP')">ENTP</span>
+        <span onclick="showMBTIDescription('ENTJ')">ENTJ</span>
+        <span onclick="showMBTIDescription('ISFP')">ISFP</span>
+        <span onclick="showMBTIDescription('ISFJ')">ISFJ</span>
+        <span onclick="showMBTIDescription('ESFP')">ESFP</span>
+        <span onclick="showMBTIDescription('ESFJ')">ESFJ</span>
+        <span onclick="showMBTIDescription('ISTP')">ISTP</span>
+        <span onclick="showMBTIDescription('ISTJ')">ISTJ</span>
+        <span onclick="showMBTIDescription('ESTP')">ESTP</span>
+        <span onclick="showMBTIDescription('ESTJ')">ESTJ</span>
+      </div>
+
+      <div id="mbti-description-container">
+        <i class="fas fa-heart main-love-icon"></i>
+        <h2 id="mbti-title"></h2>
+        <div id="mbti-description"></div>
+        <div class="love-recommendation"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let typingTimer;
+    let isTyping = false;
+    function showMBTIDescription(mbti) {
+      const relationships = {
+        INFP: 'INFP는 감성적이고 깊은 감정을 나눌 수 있는 연인을 찾습니다.<br>따라서 INFJ와의 관계가 잘 어울립니다.<br>INFJ는 깊은 감정적 유대감을 중요시하며,<br>서로의 내면을 이해하고 지지할 수 있습니다.<br>또한, ENFP와의 관계도 좋은 조합이 될 수 있습니다.<br>ENFP는 에너지 넘치고 긍정적인 성격으로,<br>INFP의 감성적인 면을 이해하고 지지합니다.',
+        INFJ: 'INFJ는 깊은 감정적 연결과 지지적인 관계를 중요시합니다.<br>INFP와의 관계가 잘 어울립니다.<br>INFP는 감성적이고 깊은 감정을 나누며,<br>서로의 내면을 이해하고 지지하는 데 능합니다.<br>또한, ENFJ와의 관계도 좋습니다.<br>ENFJ는 긍정적이고 따뜻한 성격으로,<br>INFJ의 감정을 잘 이해하고 지지합니다.',
+        ENFP: 'ENFP는 밝고 활기찬 에너지를 가진 연인을 찾습니다.<br>INFP와의 관계가 잘 어울립니다.<br>INFP는 감성적이고 깊은 감정을 나누며,<br>ENFP의 활기찬 성격을 잘 이해하고 지지합니다.<br>또한, ESFP와의 관계도 좋은 조합이 될 수 있습니다.<br>ESFP는 즐겁고 흥겨운 성격으로,<br>ENFP의 에너지를 잘 이해하고 함께 즐길 수 있습니다.',
+        ENFJ: 'ENFJ는 감정적으로 깊이 연결될 수 있는 연인을 찾습니다.<br>INFJ와의 관계가 잘 어울립니다.<br>INFJ는 깊은 감정적 유대감을 중요시하며,<br>ENFJ의 따뜻한 성격을 잘 이해하고 지지합니다.<br>또한, ESFJ와의 관계도 좋습니다.<br>ESFJ는 따뜻하고 친근한 성격으로,<br>ENFJ의 감정을 잘 이해하고 함께 유대감을 형성할 수 있습니다.',
+        INTP: 'INTP는 지적 자극을 주는 연인을 찾습니다.<br>ENTP와의 관계가 잘 어울립니다.<br>ENTP는 창의적이고 호기심이 많은 성격으로,<br>INTP의 지적 호기심을 잘 이해하고 자극할 수 있습니다.<br>또한, INFJ와의 관계도 좋은 조합이 될 수 있습니다.<br>INFJ는 깊은 감정을 나누며,<br>INTP의 지적이고 분석적인 면을 지지합니다.',
+        INTJ: 'INTJ는 분석적이고 체계적인 성격을 가진 연인을 찾습니다.<br>ENTJ와의 관계가 잘 어울립니다.<br>ENTJ는 강렬하고 목표 지향적인 성격으로,<br>INTJ의 분석적이고 체계적인 면을 잘 이해하고 지원합니다.<br>또한, INTP와의 관계도 좋습니다.<br>INTP는 지적 자극을 주며,<br>INTJ의 분석적인 성향을 잘 이해하고 지지할 수 있습니다.',
+        ENTP: 'ENTP는 창의적이고 유연한 성격을 가진 연인을 찾습니다.<br>INTP와의 관계가 잘 어울립니다.<br>INTP는 지적 자극을 주며,<br>ENTP의 창의적이고 실험적인 성향을 잘 이해하고 지지합니다.<br>또한, ENFP와의 관계도 좋은 조합이 될 수 있습니다.<br>ENFP는 밝고 활기찬 성격으로,<br>ENTP의 창의성을 잘 이해하고 함께 즐길 수 있습니다.',
+        ENTJ: 'ENTJ는 목표 지향적이고 조직적인 연인을 찾습니다.<br>INTJ와의 관계가 잘 어울립니다.<br>INTJ는 분석적이고 체계적인 성격으로,<br>ENTJ의 목표 지향적이고 강렬한 면을 잘 이해하고 지원합니다.<br>또한, ESTJ와의 관계도 좋습니다.<br>ESTJ는 규칙적이고 조직적인 성격으로,<br>ENTJ의 목표 지향적인 성향을 잘 이해하고 지지할 수 있습니다.',
+        ISFP: 'ISFP는 감성적이고 부드러운 성격을 가진 연인을 찾습니다.<br>ESFP와의 관계가 잘 어울립니다.<br>ESFP는 즐겁고 흥겨운 성격으로,<br>ISFP의 감성적인 면을 잘 이해하고 함께 즐길 수 있습니다.<br>또한, INFP와의 관계도 좋습니다.<br>INFP는 감성적이고 깊은 감정을 나누며,<br>ISFP의 섬세한 감정을 잘 이해하고 지지할 수 있습니다.',
+        ISFJ: 'ISFJ는 안정적이고 친숙한 성격을 가진 연인을 찾습니다.<br>ESFJ와의 관계가 잘 어울립니다.<br>ESFJ는 따뜻하고 친근한 성격으로,<br>ISFJ의 안정적이고 친숙한 성격을 잘 이해하고 지지합니다.<br>또한, INFP와의 관계도 좋습니다.<br>INFP는 감성적이고 깊은 감정을 나누며,<br>ISFJ의 안정적인 면을 잘 이해하고 함께할 수 있습니다.',
+        ESFP: 'ESFP는 즐겁고 활기찬 성격을 가진 연인을 찾습니다.<br>ENFP와의 관계가 잘 어울립니다.<br>ENFP는 밝고 에너지 넘치는 성격으로,<br>ESFP의 활기찬 면을 잘 이해하고 함께 즐길 수 있습니다.<br>또한, ISFP와의 관계도 좋습니다.<br>ISFP는 감성적이고 부드러운 성격으로,<br>ESFP의 즐거운 성격을 잘 이해하고 지지할 수 있습니다.',
+        ESFJ: 'ESFJ는 따뜻하고 친근한 성격을 가진 연인을 찾습니다.<br>ISFJ와의 관계가 잘 어울립니다.<br>ISFJ는 안정적이고 친숙한 성격으로,<br>ESFJ의 따뜻한 감정을 잘 이해하고 함께 유대감을 형성할 수 있습니다.<br>또한, ENFJ와의 관계도 좋습니다.<br>ENFJ는 감정적으로 깊이 연결되며,<br>ESFJ의 따뜻한 성격을 잘 이해하고 지원할 수 있습니다.',
+        ISTP: 'ISTP는 기술적이고 실험적인 성격을 가진 연인을 찾습니다.<br>ESTP와의 관계가 잘 어울립니다.<br>ESTP는 에너지가 넘치고 역동적인 성격으로,<br>ISTP의 기술적이고 실험적인 면을 잘 이해하고 함께할 수 있습니다.<br>또한, INTP와의 관계도 좋습니다.<br>INTP는 지적 자극을 주며,<br>ISTP의 기술적인 면을 잘 이해하고 지지할 수 있습니다.',
+        ISTJ: 'ISTJ는 안정적이고 체계적인 성격을 가진 연인을 찾습니다.<br>ESTJ와의 관계가 잘 어울립니다.<br>ESTJ는 조직적이고 규칙적인 성격으로,<br>ISTJ의 안정적이고 체계적인 면을 잘 이해하고 지원합니다.<br>또한, ISFJ와의 관계도 좋습니다.<br>ISFJ는 안정적이고 친숙한 성격으로,<br>ISTJ의 체계적인 면을 잘 이해하고 함께할 수 있습니다.',
+        ESTP: 'ESTP는 에너지가 넘치고 역동적인 성격을 가진 연인을 찾습니다.<br>ISTP와의 관계가 잘 어울립니다.<br>ISTP는 기술적이고 실험적인 성격으로,<br>ESTP의 에너지를 잘 이해하고 함께할 수 있습니다.<br>또한, ENTP와의 관계도 좋습니다.<br>ENTP는 창의적이고 유연한 성격으로,<br>ESTP의 역동적인 면을 잘 이해하고 지지할 수 있습니다.',
+        ESTJ: 'ESTJ는 조직적이고 규칙적인 성격을 가진 연인을 찾습니다.<br>ISTJ와의 관계가 잘 어울립니다.<br>ISTJ는 안정적이고 체계적인 성격으로,<br>ESTJ의 조직적인 면을 잘 이해하고 지원합니다.<br>또한, ENTJ와의 관계도 좋습니다.<br>ENTJ는 목표 지향적이고 강렬한 성격으로,<br>ESTJ의 체계적인 면을 잘 이해하고 함께할 수 있습니다.',
+      };
+
+      const compatibility = {
+        INFP: 'ENFJ, ENTJ',
+        INFJ: 'ENFP, ENTP',
+        ENFP: 'INFJ, INTJ',
+        ENFJ: 'INFP, ISFP',
+        INTP: 'ENTJ, ESTJ',
+        INTJ: 'ENFP, ENTP',
+        ENTP: 'INFJ, INTJ',
+        ENTJ: 'INFP, INTP',
+        ISFP: 'ENFJ, ESFJ',
+        ISFJ: 'ESFP, ESTP',
+        ESFP: 'ISFJ, ISTJ',
+        ESFJ: 'ISFP, ISTP',
+        ISTP: 'ESFJ, ESTJ',
+        ISTJ: 'ESFP, ESTP',
+        ESTP: 'ISFJ, ISTJ',
+        ESTJ: 'INTP, ISTP'
+      };
+
+      const container = document.getElementById("mbti-description-container");
+      const title = document.getElementById("mbti-title");
+      const description = document.getElementById("mbti-description");
+      const recommendation = document.querySelector(".love-recommendation");
+
+      clearTimeout(typingTimer);
+      isTyping = false;
+      container.style.opacity = 0;
+      container.style.transition = "opacity 0.5s ease-in-out";
+
+      const colors = {
+        I: "#FFE6E6", E: "#E6F3FF", S: "#E8F5E9", N: "#FFF3E0",
+        T: "#F3E5F5", F: "#FFF9C4", J: "#E0F7FA", P: "#FFF0F5"
+      };
+      const backgroundColor = `linear-gradient(135deg, ${colors[mbti[0]]}, ${colors[mbti[1]]}, ${colors[mbti[2]]}, ${colors[mbti[3]]})`;
+      container.style.background = backgroundColor;
+
+      title.textContent = `${mbti} 연애 성향`;
+      const text = relationships[mbti];
+
+      let desc = text;
+      let rec = null;
+      if (text.includes("추천하는 연인 유형으로는")) {
+        [desc, rec] = text.split("추천하는 연인 유형으로는");
+      }
+
+      let index = 0;
+      description.innerHTML = "";
+
+      function typeWriter() {
+        if (index < desc.length && isTyping) {
+          if (desc.substr(index, 4) === "<br>") {
+            description.innerHTML += "<br>";
+            index += 4;
+          } else {
+            description.innerHTML += desc.charAt(index);
+            index++;
+          }
+          typingTimer = setTimeout(typeWriter, 20);
+        }
+      }
+
+      function updateCompatibility() {
+        const compatibleTypes = compatibility[mbti];
+        if (compatibleTypes) {
+          recommendation.innerHTML = `
+        <strong>MBTI 궁합:</strong>
+        <div class="love-item">
+          <i class="fas fa-heart love-item-icon"></i>
+          <span class="love-type">${mbti}는 ${compatibleTypes}와(과) 궁합이 잘 맞아요!</span>
+        </div>
+      `;
+        } else {
+          recommendation.innerHTML = "<strong>MBTI 궁합:</strong> 해당 MBTI 유형의 궁합 정보가 없습니다.";
+        }
+      }
+
+      setTimeout(() => {
+        container.style.opacity = 1;
+        container.classList.add("show");
+        isTyping = true;
+        typeWriter();
+        updateCompatibility();
+      }, 100);
+
+      function updateRecommendation() {
+        if (rec) {
+          recommendation.innerHTML = `
+        <strong>추천 연인 유형:</strong>
+        <div class="love-item">
+          <i class="fas fa-heart love-item-icon"></i>
+          <span class="love-type">${rec.trim()}</span>
+        </div>
+      `;
+        } else {
+          recommendation.innerHTML = "<strong>추천 연인 유형:</strong> 해당 연애 성향에 대한 추천 연인 유형이 없습니다.";
+        }
+      }
+    }
+  </script>
+</body>
+
+</html>

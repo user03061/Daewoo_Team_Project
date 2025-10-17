@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MY. 메인 페이지</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #000000, #0a0a23, #151540);
+            color: white;
+            margin: 0;
+            padding: 0;
+            overscroll-behavior-y: none;
+            overflow-y: auto;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(white, rgba(255, 255, 255, .2) 2px, transparent 40px),
+                radial-gradient(white, rgba(255, 255, 255, .15) 1px, transparent 30px),
+                radial-gradient(white, rgba(255, 255, 255, .1) 2px, transparent 40px);
+            background-size: 550px 550px, 350px 350px, 250px 250px;
+            background-position: 0 0, 40px 60px, 130px 270px;
+            animation: starMove 200s linear infinite;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        @keyframes starMove {
+            from {
+                transform: translateY(0);
+            }
+
+            to {
+                transform: translateY(-2000px);
+            }
+        }
+
+        .container {
+            display: flex;
+            padding: 20px;
+        }
+
+        .sidebar {
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            border-radius: 10px;
+        }
+
+        .sidebar {
+            transition: width 0.3s ease;
+            width: 250px;
+            overflow: hidden;
+        }
+
+        .sidebar.collapsed {
+            width: 60px;
+        }
+
+        .sidebar.collapsed .menu-item span {
+            display: none;
+        }
+
+        .menu-item {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 10px;
+            border-radius: 10px;
+            transition: background-color 0.3s;
+            cursor: pointer;
+        }
+
+        .menu-item img {
+            width: 25px;
+            height: 25px;
+            margin-right: 10px;
+            background-color: white;
+            border-radius: 50%;
+            padding: 5px;
+        }
+
+        .menu-item span {
+            font-size: 30px;
+            color: white;
+            white-space: nowrap;
+            word-break: keep-all;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex-grow: 1;
+            font-family: "Nanum Pen Script", cursive;
+        }
+
+        .logged-in-only {
+            font-size: 30px;
+            font-family: 'Nanum Pen Script';
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            flex-wrap: nowrap;
+        }
+
+        .logo {
+            width: 70px;
+            height: auto;
+            margin: 0 20px 0 0;
+        }
+
+        .logo2 {
+            width: 100px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .Menu {
+            width: 50px;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+
+        .search-bar {
+            width: 80%;
+            padding: 10px;
+            border-radius: 20px;
+            font-size: 15px;
+        }
+
+        .main-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .signup-button {
+            width: 120px;
+            height: 40px;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 15px;
+            margin-right: 30px;
+            color: white;
+            background: rgb(8, 152, 209);
+            border: none;
+            position: relative;
+            overflow: visible;
+            z-index: 1;
+            cursor: pointer;
+            animation: pulse 3s infinite;
+            margin-top: 5px;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(8, 152, 209, 0.7);
+            }
+
+            70% {
+                box-shadow: 0 0 0 20px rgba(8, 152, 209, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(8, 152, 209, 0);
+            }
+        }
+
+        .logout-button {
+            margin-left: 50px;
+            color: blueviolet;
+        }
+
+        .center-column {
+            width: auto;
+            max-width: 1000px;
+            height: auto;
+            background-color: white;
+            color: black;
+            border-radius: 10px;
+            margin: 20px auto;
+            margin-right: 10px;
+            margin-top: 50px;
+            margin-left: 0px;
+            position: relative;
+            text-align: center;
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        .image img {
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            margin-bottom: 30px;
+        }
+
+        .mbti-types {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+            background-color: white;
+            color: black;
+            border-radius: 10px;
+            margin: 20px auto;
+            margin-right: 100px;
+            margin-top: 100px;
+            width: 80%;
+            max-height: 1000px;
+        }
+
+        .mbti-description {
+            background-color: #f5f5f5;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .mbti-description h2 {
+            color: #333;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .mbti-traits {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .mbti-traits span {
+            background-color: #e0e0e0;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .mbti-stats {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .mbti-stats h3 {
+            color: #444;
+            margin-bottom: 10px;
+        }
+
+        .mbti-stats ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .mbti-stats li {
+            margin-bottom: 8px;
+        }
+    </style>
+
+    <script>
+        function sendResultByEmail() {
+            const button = document.getElementById('sendEmailButton');
+            button.disabled = true;
+            button.textContent = '전송 중...';
+
+            const mbtiResult = document.getElementById('mbti-type').textContent;
+            const resultDescription = document.getElementById('result').innerHTML;
+
+            fetch('/send-result-mbti', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    mbtiResult: mbtiResult,
+                    resultDescription: resultDescription
+                }),
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        alert('메일을 전송했습니다!');
+                    } else {
+                        console.error('서버 응답 오류:', data);
+                        alert('MBTI 결과 이메일 전송에 실패했습니다: ' + (data.message || '알 수 없는 오류'));
+                    }
+                })
+                .catch((error) => {
+                    console.error('MBTI 결과 이메일 전송 중 오류 발생:', error);
+                    alert('MBTI 결과 이메일 전송 중 오류가 발생했습니다. 콘솔에서 자세한 오류를 확인하세요.');
+                })
+                .finally(() => {
+                    button.disabled = false;
+                    button.textContent = '내결과 메일로 받기';
+                });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const descriptions = {
+                'INFP': `
+        <div class="mbti-description">
+            <h2>INFP: 이상주의적인 중재자</h2>
+            <p>INFP는 깊은 감성과 창의성을 지닌 이상주의자입니다. 그들은 내면의 가치와 원칙을 중요시하며, 자신과 타인의 성장을 위해 끊임없이 노력합니다.</p>
+            <div class="mbti-traits">
+                <span>창의적</span>
+                <span>이상주의적</span>
+                <span>공감능력 뛰어남</span>
+                <span>적응력 있음</span>
+            </div>
+            <div class="mbti-stats">
+                <h3>INFP 통계</h3>
+                <ul>
+                    <li><strong>인구 비율:</strong> 약 4-5%</li>
+                    <li><strong>성별 분포:</strong> 여성 (60%), 남성 (40%)</li>
+                    <li><strong>주요 직업군:</strong> 작가, 예술가, 상담사, 심리학자</li>
+                    <li><strong>유명인:</strong> J.R.R. 톨킨, 윌리엄 셰익스피어, 빈센트 반 고흐</li>
+                </ul>
+            </div>
+        </div>
+    `,
+                'INTJ': `
+        <div class="mbti-description">
+            <h2>INTJ: 전략적인 사색가</h2>
+            <p>INTJ는 상상력이 풍부하고 전략적인 사고를 하는 혁신가입니다. 그들은 복잡한 문제를 해결하고 장기적인 비전을 수립하는 데 탁월합니다.</p>
+            <div class="mbti-traits">
+                <span>전략적</span>
+                <span>독립적</span>
+                <span>분석적</span>
+                <span>결단력 있음</span>
+            </div>
+            <div class="mbti-stats">
+                <h3>INTJ 통계</h3>
+                <ul>
+                    <li><strong>인구 비율:</strong> 약 2%</li>
+                    <li><strong>성별 분포:</strong> 남성 (56%), 여성 (44%)</li>
+                    <li><strong>주요 직업군:</strong> 과학자, 엔지니어, 전략 컨설턴트, 투자 은행가</li>
+                    <li><strong>유명인:</strong> 일론 머스크, 마크 주커버그, 니콜라 테슬라</li>
+                </ul>
+            </div>
+        </div>
+    `,
+                'INFJ': `
+        <div class="mbti-description">
+            <h2>INFJ: 선의의 옹호자</h2>
+            <p>INFJ는 조용하고 신비로우면서도 영감을 주는 이상주의자입니다. 그들은 타인의 삶에 긍정적인 영향을 미치기 위해 노력합니다.</p>
+            <div class="mbti-traits">
+                <span>이상주의적</span>
+                <span>통찰력 있음</span>
+                <span>헌신적</span>
+                <span>창의적</span>
+            </div>
+            <div class="mbti-stats">
+                <h3>INFJ 통계</h3>
+                <ul>
+                    <li><strong>인구 비율:</strong> 약 1-2%</li>
+                    <li><strong>성별 분포:</strong> 여성 (65%), 남성 (35%)</li>
+                    <li><strong>주요 직업군:</strong> 상담사, 작가, 종교 지도자, 교사</li>
+                    <li><strong>유명인:</strong> 마틴 루터 킹 주니어, 넬슨 만델라, 마더 테레사</li>
+                </ul>
+            </div>
+        </div>
+    `,
+                'INTP': `
+        <div class="mbti-description">
+            <h2>INTP: 논리적인 사색가</h2>
+            <p>INTP는 혁신적인 발명가이자 추상적 사고에 뛰어난 이론가입니다. 그들은 복잡한 문제를 해결하고 새로운 아이디어를 창출하는 데 탁월합니다.</p>
+            <div class="mbti-traits">
+                <span>분석적</span>
+                <span>창의적</span>
+                <span>객관적</span>
+                <span>호기심 많음</span>
+            </div>
+            <div class="mbti-stats">
+                <h3>INTP 통계</h3>
+                <ul>
+                    <li><strong>인구 비율:</strong> 약 3-5%</li>
+                    <li><strong>성별 분포:</strong> 남성 (65%), 여성 (35%)</li>
+                    <li><strong>주요 직업군:</strong> 프로그래머, 물리학자, 철학자, 건축가</li>
+                    <li><strong>유명인:</strong> 알버트 아인슈타인, 빌 게이츠, 찰스 다윈</li>
+                </ul>
+            </div>
+        </div>
+    `,
+
+                'ISTJ': `
+        <div class="mbti-description">
+            <h2>ISTJ: 청렴결백한 논리주의자</h2>
+            <p>ISTJ는 사실에 근거하여 판단하는 신중하고 질서정연한 성격의 소유자입니다. 그들은 책임감이 강하고 전통을 중요시합니다.</p>
+            <div class="mbti-traits">
+                <span>신뢰할 수 있음</span>
+                <span>체계적</span>
+                <span>사실 중심적</span>
+                <span>실용적</span>
+            </div>
+            <div class="mbti-stats">
+                <h3>ISTJ 통계</h3>
+                <ul>
+                    <li><strong>인구 비율:</strong> 약 11-14%</li>
+                    <li><strong>성별 분포:</strong> 남성 (54%), 여성 (46%)</li>
+                    <li><strong>주요 직업군:</strong> 회계사, 군인, 변호사, 경찰관</li>
+                    <li><strong>유명인:</strong> 앙겔라 메르켈, 워런 버핏, 엘리자베스 2세</li>
+                </ul>
+            </div>
+        </div>
+    `,
+
+                'ISFJ': `
+        <div class="mbti-description">
+            <h2>ISFJ: 용감한 수호자</h2>
+            <p>ISFJ는 헌신적이고 따뜻한 보호자입니다. 그들은 다른 사람들의 필요를 세심하게 관찰하고 지원하는 데 능숙합니다.</p>
+            <div class="mbti-traits">
+                <span>충실함</span>
+                <span>온화함</span>
+                <span>책임감 있음</span>
+                <span>실용적</span>
+            </div>
+            <div class="mbti-stats">
+                <h3>ISFJ 통계</h3>
+                <ul>
+                    <li><strong>인구 비율:</strong> 약 9-14%</li>
+                    <li><strong>성별 분포:</strong> 여성 (65%), 남성 (35%)</li>
+                    <li><strong>주요 직업군:</strong> 간호사, 교사, 사회복지사, 행정 지원</li>
+                    <li><strong>유명인:</strong> 마더 테레사, 케이트 미들턴, 로사 파크스</li>
+                </ul>
+            </div>
+        </div>
+    `,
+
+                'ISTP': `
+        <div class="mbti-description">
+            <h2>ISTP: 만능 재주꾼</h2>
+            <p>ISTP는 대담하고 실용적인 실험자입니다. 그들은 손재주가 뛰어나며 문제 해결에 탁월한 능력을 보입니다.</p>
+            <div class="mbti-traits">
+                <span>적응력 있음</span>
+                <span>관찰력 뛰어남</span>
+                <span>실용적</span>
+                <span>모험을 즐김</span>
+            </div>
+            <div class="mbti-stats">
+                <h3>ISTP 통계</h3>
+                <ul>
+                    <li><strong>인구 비율:</strong> 약 5-6%</li>
+                    <li><strong>성별 분포:</strong> 남성 (65%), 여성 (35%)</li>
+                    <li><strong>주요 직업군:</strong> 기계공, 엔지니어, 운동선수, 파일럿</li>
+                    <li><strong>유명인:</strong> 베어 그릴스, 마이클 조던, 클린트 이스트우드</li>
+                </ul>
+            </div>
+        </div>
+    `,
+
+                'ISFP': `
+        <div class="mbti-description">
+            <h2>ISFP: 호기심 많은 예술가</h2>
+            <p>ISFP는 유연하고 매력적인 예술가입니다. 그들은 현재를 즐기며 자신만의 방식으로 삶을 살아갑니다.</p>
+            <div class="mbti-traits">
+                <span>예술적</span>
+                <span>융통성 있음</span>
+                <span>온화함</span>
+                <span>충동적</span>
+            </div>
+            <div class="mbti-stats">
+                <h3>ISFP 통계</h3>
+                <ul>
+                    <li><strong>인구 비율:</strong> 약 8-9%</li>
+                    <li><strong>성별 분포:</strong> 여성 (55%), 남성 (45%)</li>
+                    <li><strong>주요 직업군:</strong> 예술가, 음악가, 요리사, 패션 디자이너</li>
+                    <li><strong>유명인:</strong> 마이클 잭슨, 프리다 칼로, 데이비드 보위</li>
+                </ul>
+            </div>
+        </div>
+    `,
+
+                'ESTP': `
+        <div class="mbti-description">
+            <h2>ESTP: 모험을 즐기는 사업가</h2>
+            <p>ESTP는 대담하고 행동 지향적인 모험가입니다. 그들은 위험을 감수하는 것을 좋아하며 빠르게 문제를 해결합니다.</p>
+            <div class="mbti-traits">
+                <span>활동적</span>
+                <span>즉흥적</span>
+                <span>실용적</span>
+                <span>사교적</span>
+            </div>
+            <div class="mbti-stats">
+                <h3>ESTP 통계</h3>
+                <ul>
+                    <li><strong>인구 비율:</strong> 약 4-5%</li>
+                    <li><strong>성별 분포:</strong> 남성 (55%), 여성 (45%)</li>
+                    <li><strong>주요 직업군:</strong> 기업가, 세일즈맨, 운동선수, 소방관</li>
+                    <li><strong>유명인:</strong> 도널드 트럼프, 마돈나, 에디 머피</li>
+                </ul>
+            </div>
+        </div>
+    `,
+
+                'ESFP': `
+        <div class="mbti-description">
+            <h2>ESFP: 자유로운 영혼의 연예인</h2>
+            <p>ESFP는 즉흥적이고 열정적인 연예인입니다. 그들은 삶을 즐기며 다른 사람들에게 기쁨을 전파합니다.</p>
+            <div class="mbti-traits">
+                <span>외향적</span>
+                <span>즐거움 추구</span>
+                <span>친화력 있음</span>
+                <span>적응력 있음</span>
+            </div>
+            <div class="mbti-stats">
+                <h3>ESFP 통계</h3>
+                <ul>
+                    <li><strong>인구 비율:</strong> 약 8-9%</li>
+                    <li><strong>성별 분포:</strong> 여성 (60%), 남성 (40%)</li>
+                    <li><strong>주요 직업군:</strong> 배우, MC, 이벤트 플래너, 판매원</li>
+                    <li><strong>유명인:</strong> 엘비스 프레슬리, 머라이어 캐리, 윌 스미스</li>
+                </ul>
+            </div>
+        </div>
+    `,
+
+                'ESTJ': `
+        <div class="mbti-description">
+            <h2>ESTJ: 엄격한 관리자</h2>
+            <p>ESTJ는 체계적이고 질서정연한 관리자입니다. 그들은 명확한 규칙과 절차를 중요시하며 목표 달성에 집중합니다.</p>
+            <div class="mbti-traits">
+                <span>조직적</span>
+                <span>실용적</span>
+                <span>책임감 있음</span>
+                <span>결단력 있음</span>
+            </div>
+            <div class="mbti-stats">
+                <h3>ESTJ 통계</h3>
+                <ul>
+                    <li><strong>인구 비율:</strong> 약 8-12%</li>
+                    <li><strong>성별 분포:</strong> 남성 (55%), 여성 (45%)</li>
+                    <li><strong>주요 직업군:</strong> 관리자, 군인, 판사, 금융 분석가</li>
+                    <li><strong>유명인:</strong> 마거릿 대처, 존 D. 록펠러, 베니토 무솔리니</li>
+                </ul>
+            </div>
+        </div>
+    `,
+                'ESFJ': `
+        <div class="mbti-description">
+            <h2>ESFJ: 사교적인 외교관</h2>
+            <p>ESFJ는 배려심 깊고 사교적인 보호자입니다. 그들은 조화와 협력을 중요시하며 타인의 필요를 잘 파악합니다.</p>
+            <div class="mbti-traits">
+                <span>친절함</span>
+                <span>책임감 있음</span>
+                <span>협조적</span>
+                <span>전통을 중시함</span>
+            </div>
+            <div class="mbti-stats">
+                <h3>ESFJ 통계</h3>
+                <ul>
+                    <li><strong>인구 비율:</strong> 약 12%</li>
+                    <li><strong>성별 분포:</strong> 여성 (70%), 남성 (30%)</li>
+                    <li><strong>주요 직업군:</strong> 교사, 간호사, 사회복지사, 인사 관리자</li>
+                    <li><strong>유명인:</strong> 테일러 스위프트, 빌 클린턴, 앤 해서웨이</li>
+                </ul>
+            </div>
+        </div>
+    `,
+
+                'ENFP': `
+        <div class="mbti-description">
+            <h2>ENFP: 재기발랄한 활동가</h2>
+            <p>ENFP는 열정적이고 창의적인 자유로운 영혼입니다. 그들은 새로운 가능성을 발견하고 다른 사람들에게 영감을 줍니다.</p>
+            <div class="mbti-traits">
+                <span>창의적</span>
+                <span>열정적</span>
+                <span>관계 중심적</span>
+                <span>융통성 있음</span>
+            </div>
+            <div class="mbti-stats">
+                <h3>ENFP 통계</h3>
+                <ul>
+                    <li><strong>인구 비율:</strong> 약 6-8%</li>
+                    <li><strong>성별 분포:</strong> 여성 (60%), 남성 (40%)</li>
+                    <li><strong>주요 직업군:</strong> 작가, 저널리스트, 배우, 심리학자</li>
+                    <li><strong>유명인:</strong> 로빈 윌리엄스, 월트 디즈니, 엘런 디제너러스</li>
+                </ul>
+            </div>
+        </div>
+    `,
+                'ENTP': `
+        <div class="mbti-description">
+            <h2>ENTP: 논쟁을 즐기는 변론가</h2>
+            <p>ENTP는 재치 있고 호기심 많은 사색가입니다. 그들은 새로운 아이디어를 탐구하고 지적인 도전을 즐깁니다.</p>
+            <div class="mbti-traits">
+                <span>창의적</span>
+                <span>논리적</span>
+                <span>토론을 즐김</span>
+                <span>모험을 좋아함</span>
+            </div>
+            <div class="mbti-stats">
+                <h3>ENTP 통계</h3>
+                <ul>
+                    <li><strong>인구 비율:</strong> 약 2-5%</li>
+                    <li><strong>성별 분포:</strong> 남성 (60%), 여성 (40%)</li>
+                    <li><strong>주요 직업군:</strong> 기업가, 변호사, 발명가, 마케팅 전략가</li>
+                    <li><strong>유명인:</strong> 스티브 잡스, 마크 트웨인, 토마스 에디슨</li>
+                </ul>
+            </div>
+        </div>
+    `,
+
+                'ENFJ': `
+        <div class="mbti-description">
+            <h2>ENFJ: 정의로운 사회운동가</h2>
+            <p>ENFJ는 카리스마 있고 영감을 주는 지도자입니다. 그들은 다른 사람들의 잠재력을 끌어내고 긍정적인 변화를 만들어냅니다.</p>
+            <div class="mbti-traits">
+                <span>열정적</span>
+                <span>이타적</span>
+                <span>신뢰할 수 있음</span>
+                <span>영감을 줌</span>
+            </div>
+            <div class="mbti-stats">
+                <h3>ENFJ 통계</h3>
+                <ul>
+                    <li><strong>인구 비율:</strong> 약 2-3%</li>
+                    <li><strong>성별 분포:</strong> 여성 (60%), 남성 (40%)</li>
+                    <li><strong>주요 직업군:</strong> 교사, 상담사, 인사 관리자, 정치인</li>
+                    <li><strong>유명인:</strong> 버락 오바마, 오프라 윈프리, 넬슨 만델라</li>
+                </ul>
+            </div>
+        </div>
+    `,
+
+                'ENTJ': `
+        <div class="mbti-description">
+            <h2>ENTJ: 대담한 통솔자</h2>
+            <p>ENTJ는 카리스마 있고 자신감 넘치는 지도자입니다. 그들은 장기적인 계획을 세우고 효율적으로 목표를 달성합니다.</p>
+            <div class="mbti-traits">
+                <span>결단력 있음</span>
+                <span>전략적</span>
+                <span>야심찬</span>
+                <span>효율성 중시</span>
+            </div>
+            <div class="mbti-stats">
+                <h3>ENTJ 통계</h3>
+                <ul>
+                    <li><strong>인구 비율:</strong> 약 1-3%</li>
+                    <li><strong>성별 분포:</strong> 남성 (60%), 여성 (40%)</li>
+                    <li><strong>주요 직업군:</strong> 경영자, 정치인, 경영 컨설턴트, 변호사</li>
+                    <li><strong>유명인:</strong> 스티브 잡스, 마거릿 대처, 프랭클린 D. 루스벨트</li>
+                </ul>
+            </div>
+        </div>
+    `
+            }
+            function updateUI(isLoggedIn, userName) {
+                const loggedOutElements = document.querySelectorAll('.logged-out-only');
+                const loggedInElements = document.querySelectorAll('.logged-in-only');
+                const userNameElement = document.getElementById('user-name');
+
+                loggedOutElements.forEach(el => el.style.display = isLoggedIn ? 'none' : 'block');
+                loggedInElements.forEach(el => el.style.display = isLoggedIn ? 'block' : 'none');
+                if (isLoggedIn && userNameElement) {
+                    userNameElement.textContent = userName;
+                }
+            }
+
+            fetch('/api/check-auth')
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Auth check response:', data);
+                    updateUI(data.isLoggedIn, data.user ? data.user.name : '');
+                })
+                .catch(error => {
+                    console.error('인증 확인 오류:', error);
+                    updateUI(false);
+                });
+
+            // 사이드바 토글 기능 추가
+            const menuToggle = document.getElementById('menu-toggle');
+            const sidebar = document.getElementById('sidebar');
+            const content = document.getElementById('content');
+
+            menuToggle.addEventListener('click', function () {
+                sidebar.classList.toggle('collapsed');
+            });
+
+            const searchInput = document.getElementById('categorySearch');
+            searchInput.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const searchTerm = this.value.trim();
+                    if (searchTerm) {
+                        window.location.href = `main.html?category=${encodeURIComponent(searchTerm)}`;
+                    }
+                }
+            });
+
+            function calculateMbtiResult() {
+                const types = ['E', 'I', 'S', 'N', 'T', 'F', 'J', 'P'];
+                const counts = {};
+                types.forEach(type => {
+                    counts[type] = parseInt(localStorage.getItem(type)) || 0;
+                });
+
+                console.log('Raw MBTI Counts:', counts);
+
+                const oppositePairs = [['E', 'I'], ['S', 'N'], ['T', 'F'], ['J', 'P']];
+                oppositePairs.forEach(pair => {
+                    const [type1, type2] = pair;
+                    const total = counts[type1] + counts[type2];
+                    const expectedTotal = 3;
+
+                    if (total !== expectedTotal) {
+                        console.warn(`Warning: ${type1}/${type2} total is ${total}, expected ${expectedTotal}`);
+                        if (total > 0) {
+                            const ratio = expectedTotal / total;
+                            counts[type1] = Math.round(counts[type1] * ratio);
+                            counts[type2] = expectedTotal - counts[type1];
+                        } else {
+                            // If both are 0, set to default values
+                            counts[type1] = Math.floor(expectedTotal / 2);
+                            counts[type2] = Math.ceil(expectedTotal / 2);
+                        }
+                    }
+                });
+
+                console.log('Adjusted MBTI Counts:', counts);
+
+                let result = '';
+                result += counts['E'] > counts['I'] ? 'E' : 'I';
+                result += counts['S'] > counts['N'] ? 'S' : 'N';
+                result += counts['T'] > counts['F'] ? 'T' : 'F';
+                result += counts['J'] > counts['P'] ? 'J' : 'P';
+
+                return { result, counts };
+            }
+
+            function saveMbtiResult(mbtiResult) {
+                fetch('/save-mbti-result', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ mbtiResult: mbtiResult }),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            console.log(`MBTI 결과 '${mbtiResult}'가 성공적으로 저장되었습니다.`);
+                        } else {
+                            console.error('MBTI 결과 저장 실패:', data.message);
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('MBTI 결과 저장 중 오류 발생:', error);
+                    });
+            }
+
+            function displayResult(mbtiData) {
+                const { result: mbti, counts } = mbtiData;
+
+                const borderColors = {
+                    'INFJ': 'greenyellow', 'INFP': 'green', 'ISFJ': 'pink', 'ISFP': 'orange',
+                    'ISTP': 'darksalmon', 'INTP': 'purple', 'ISTJ': 'skyblue', 'INTJ': 'mediumpurple',
+                    'ENTP': 'firebrick', 'ENTJ': 'firebrick', 'ESTP': 'tomato', 'ESTJ': 'skyblue',
+                    'ENFP': 'chartreuse', 'ENFJ': 'limegreen', 'ESFJ': 'skyblue', 'ESFP': 'tomato'
+                };
+
+                const description = descriptions[mbti] || '유효하지 않은 MBTI 유형입니다.';
+                document.getElementById('result').innerHTML = `
+            <div style="text-align: center; margin-bottom: 20px;">
+                <span style="font-size: 28px;">당신의 MBTI 유형은</span><br>
+                <span id="mbti-type" style="font-size: 36px; font-weight: bold;">${mbti}</span>
+            </div>
+            ${description}
+        `;
+
+                document.getElementById('mbti-type').style.animation = `colorChange 5s infinite`;
+
+                const imageDiv = document.getElementById('image');
+                imageDiv.innerHTML = '';
+                const img = document.createElement('img');
+                img.src = `mbti/${mbti}.png`;
+                img.alt = `${mbti} 이미지`;
+                img.style.border = `5px solid ${borderColors[mbti] || 'greenyellow'}`;
+                imageDiv.appendChild(img);
+
+                document.querySelector('.center-column').style.borderTop = `5px solid ${borderColors[mbti] || 'greenyellow'}`;
+                document.getElementById('result').style.border = `3px solid ${borderColors[mbti] || 'greenyellow'}`;
+            }
+
+            console.log('Local Storage Contents:', localStorage);
+
+            const mbtiData = calculateMbtiResult();
+            console.log("Final MBTI Result:", mbtiData.result);
+
+            const sendEmailButton = document.getElementById('sendEmailButton');
+            if (sendEmailButton) {
+                sendEmailButton.addEventListener('click', sendResultByEmail);
+            } else {
+                console.error('sendEmailButton not found');
+            }
+
+            if (mbtiData.result.length !== 4) {
+                document.getElementById('result').innerHTML = '<p>유효한 MBTI 결과를 얻을 수 없습니다. 모든 질문에 답변했는지 확인해 주세요.</p>';
+            } else {
+                displayResult(mbtiData);
+                saveMbtiResult(mbtiData.result);
+            }
+
+            const styleSheet = document.createElement('style');
+            styleSheet.type = 'text/css';
+            styleSheet.innerText = `
+        @keyframes colorChange {
+            0% { color: red; }
+            14% { color: orange; }
+            28% { color: yellow; }
+            42% { color: green; }
+            56% { color: blue; }
+            70% { color: indigo; }
+            84% { color: violet; }
+            100% { color: red; }
+        }
+    `;
+            document.head.appendChild(styleSheet);
+        });
+    </script>
+</head>
+
+<body>
+    <div class="header">
+        <div class="logo-container">
+            <img src="icon/Menu.png" alt="메뉴" class="Menu" id="menu-toggle">
+            <img src="icon/Title.png" alt="로고" class="logo" onclick="location.href='main.html'"
+                style="cursor: pointer;">
+        </div>
+        <input type="text" class="search-bar" id="categorySearch" placeholder="카테고리 검색 (예: 여행,게임...)">
+        <button class="signup-button logged-out-only" onclick="location.href='MemberShip.html'">가입하기</button>
+        <div class="logged-in-only" style="display: none;">
+            환영합니다, <span id="user-name"></span>님!
+        </div>
+
+    </div>
+    <div class="container">
+        <div class="sidebar" id="sidebar">
+            <div class="menu-item">
+                <img src="icon/home.png">
+                <span onclick="location.href='main.html'">홈</span>
+            </div>
+            <div class="menu-item">
+                <img src="icon/heart.png">
+                <span onclick="location.href='Love.html'">소개팅 매칭</span>
+            </div>
+            <div class="menu-item">
+                <img src="icon/message.png">
+                <span onclick="location.href='chat.html'">메시지</span>
+            </div>
+            <div class="menu-item">
+                <img src="icon/Logo.png">
+                <span onclick="location.href='Profile.html'">프로필</span>
+            </div>
+            <div class="menu-item">
+                <img src="icon/database.png">
+                <span onclick="location.href='resource.html'">성격 데이터 베이스</span>
+            </div>
+            <div class="menu-item">
+                <img src="icon/test.png">
+                <span onclick="location.href='MBTITest.html'">성격 유형 테스트</span>
+            </div>
+            <div class="menu-item logged-in-only" style="display: none;">
+                <span><a href="/logout" class="logout-button">로그아웃</a></span>
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="center-column">
+                <h1>MBTI 검사 결과</h1>
+                <div id="image" class="image"></div>
+                <div id="result" class="result"></div>
+                <div style="text-align: center; margin-top: 30px;">
+                    <button onclick="location.href='Main.html'"
+                        style="border: none; padding: 10px 30px; border-radius: 10px; background-color: #160027; color: white; font-size: 16px; cursor: pointer; margin-right: 20px; margin-left: 40px;">홈</button>
+                    <button id="sendEmailButton"
+                        style="border: none; padding: 10px 20px; border-radius: 10px; background-color: #160027; color: white; font-size: 16px; cursor: pointer; margin-left: 10px;">내결과
+                        메일로 받기</button>
+                </div>
+            </div>
+        </div>
+</body>
+
+</html>

@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+  <title>운동 이야기</title>
+  <style>
+    body {
+      font-family: "Nanum Pen Script", cursive;
+      background: linear-gradient(135deg, #000000, #0a0a23, #151540);
+      color: white;
+      margin: 0;
+      padding: 0;
+      overscroll-behavior-y: none;
+      overflow-y: auto;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        radial-gradient(white, rgba(255, 255, 255, .2) 2px, transparent 40px),
+        radial-gradient(white, rgba(255, 255, 255, .15) 1px, transparent 30px),
+        radial-gradient(white, rgba(255, 255, 255, .1) 2px, transparent 40px);
+      background-size: 550px 550px, 350px 350px, 250px 250px;
+      background-position: 0 0, 40px 60px, 130px 270px;
+      animation: starMove 200s linear infinite;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    @keyframes starMove {
+      from {
+        transform: translateY(0);
+      }
+
+      to {
+        transform: translateY(-2000px);
+      }
+    }
+
+    .container {
+      display: flex;
+      padding: 20px;
+    }
+
+    .sidebar {
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      border-radius: 10px;
+    }
+
+    .sidebar {
+      transition: width 0.3s ease;
+      width: 250px;
+      overflow: hidden;
+    }
+
+    .sidebar.collapsed {
+      width: 60px;
+    }
+
+    .sidebar.collapsed .menu-item span {
+      display: none;
+    }
+
+    .menu-item {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      margin-bottom: 30px;
+      padding: 10px;
+      border-radius: 10px;
+      transition: background-color 0.3s;
+      cursor: pointer;
+    }
+
+    .menu-item img {
+      width: 25px;
+      height: 25px;
+      margin-right: 10px;
+      background-color: white;
+      border-radius: 50%;
+      padding: 5px;
+    }
+
+    .menu-item span {
+      font-size: 30px;
+      color: white;
+      white-space: nowrap;
+      word-break: keep-all;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex-grow: 1;
+    }
+
+    .welcome-message {
+      font-size: 30px;
+      text-align: center;
+      margin: 0 auto;
+      margin-right: auto;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      flex-wrap: nowrap;
+    }
+
+    .logo {
+      width: 70px;
+      height: auto;
+      margin: 0 20px 0 0;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .logout-button {
+      margin-left: 50px;
+      color: blueviolet;
+    }
+
+    .Menu {
+      width: 50px;
+      margin-right: 15px;
+      cursor: pointer;
+    }
+
+    .search-bar {
+      width: 80%;
+      padding: 10px;
+      border-radius: 20px;
+      font-size: 15px;
+    }
+
+    .signup-button {
+      width: 120px;
+      height: 40px;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-size: 15px;
+      margin-right: 30px;
+      color: white;
+      background: rgb(8, 152, 209);
+      border: none;
+      position: relative;
+      overflow: visible;
+      z-index: 1;
+      cursor: pointer;
+      margin-top: 5px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 70px;
+      color: #FF8C00;
+      text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5), 0px 0px 20px rgba(255, 140, 0, 0.9);
+      margin-bottom: 10px;
+      font-family: "Nanum Pen Script", cursive;
+      font-weight: bold;
+      letter-spacing: 3px;
+      animation: glow 2s ease-in-out infinite;
+      padding: 20px 0;
+      position: relative;
+    }
+
+    @keyframes glow {
+      0% {
+        text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5), 0px 0px 20px rgba(255, 140, 0, 0.7);
+        transform: scale(1);
+      }
+
+      50% {
+        text-shadow: 5px 5px 20px rgba(0, 0, 0, 0.7), 0px 0px 40px rgba(255, 140, 0, 1);
+        transform: scale(1.05);
+      }
+
+      100% {
+        text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5), 0px 0px 20px rgba(255, 140, 0, 0.7);
+        transform: scale(1);
+      }
+    }
+
+    h1::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(255, 140, 0, 0.2) 0%, rgba(255, 140, 0, 0) 70%);
+      animation: pulse 2s ease-in-out infinite;
+      z-index: -1;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 0.5;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 25px;
+      color: #a5a5a5;
+    }
+
+    .date {
+      text-align: center;
+      font-size: 20px;
+      margin-bottom: 30px;
+      color: #888888;
+    }
+
+    .content {
+      text-align: center;
+      font-size: 25px;
+      margin-bottom: 20px;
+      color: #d4d4d4;
+    }
+
+    .content-area {
+    flex: 1;
+    padding: 0 20px;
+    max-width: 2000px; 
+    margin: 0 auto; 
+    }
+
+    .types {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .types span {
+      font-size: 25px;
+      padding: 10px 20px;
+      background-color: #ffad7e;
+      border-radius: 15px;
+      color: #ffffff;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .types span:hover {
+      background-color: #b96e3b;
+    }
+
+    #mbti-description-container {
+      background-color: #f4f1ea;
+      color: #333;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      margin-top: 30px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.5s ease;
+      max-width: 1100px;
+      margin-left: auto;
+      margin-right: auto;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    #mbti-description-container.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #mbti-description-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, #f9d29d, #f4a261, #f4f1ea);
+      z-index: -1;
+      filter: blur(10px);
+      opacity: 0.5;
+    }
+
+    .main-exercise-icon {
+      font-size: 4em;
+      margin-bottom: 20px;
+      color: #FF8C00;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+
+      100% {
+        transform: translateY(0px);
+      }
+    }
+
+    #mbti-title {
+      font-size: 40px;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #FF8C00;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+      margin-top: 1px;
+    }
+
+    #mbti-description {
+      font-size: 25px;
+      line-height: 1.6;
+      color: #333;
+      text-align: left;
+    }
+
+    .highlight {
+      background-color: #FFA07A;
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+
+    .exercise-recommendation {
+      margin-top: 10px;
+      font-size: 20px;
+      color: #333;
+      padding: 20px;
+      background-color: #ffeecb;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      line-height: 1.3;
+    }
+
+    .exercise-recommendation strong {
+      font-size: 30px;
+      color: #FF8C00;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .exercise-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+      padding: 10px;
+      border-radius: 8px;
+      background-color: #fff;
+      transition: background-color 0.3s;
+    }
+
+    .exercise-item-icon {
+      font-size: 1.2em;
+      margin-right: 10px;
+      color: #FF8C00;
+    }
+
+    .exercise-name {
+      font-size: 25px;
+      color: #000000;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+  </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // 로그인 여부를 확인하고 UI를 업데이트
+      fetch("/api/check-auth")
+        .then((response) => response.json())
+        .then((data) => {
+          updateUI(data.isLoggedIn, data.isLoggedIn ? data.user.name : null);
+        })
+        .catch((error) => {
+          console.error("Error checking auth:", error);
+          updateUI(false);
+        });
+
+      // 사이드바 토글 기능 추가
+      const menuToggle = document.getElementById('menu-toggle');
+      const sidebar = document.getElementById('sidebar');
+      const content = document.getElementById('content');
+
+      menuToggle.addEventListener('click', function () {
+        sidebar.classList.toggle('collapsed');
+      });
+
+      const searchInput = document.getElementById('categorySearch');
+      searchInput.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          const searchTerm = this.value.trim();
+          if (searchTerm) {
+            window.location.href = `main.html?category=${encodeURIComponent(searchTerm)}`;
+          }
+        }
+      });
+
+      function updateUI(isLoggedIn, userName) {
+        const loggedOutElements =
+          document.querySelectorAll(".logged-out-only");
+        const loggedInElements = document.querySelectorAll(".logged-in-only");
+        const userNameElement = document.getElementById("user-name");
+
+        if (isLoggedIn) {
+          loggedOutElements.forEach((el) => (el.style.display = "none"));
+          loggedInElements.forEach((el) => (el.style.display = "block"));
+          if (userNameElement) userNameElement.textContent = userName;
+        } else {
+          loggedOutElements.forEach((el) => (el.style.display = "block"));
+          loggedInElements.forEach((el) => (el.style.display = "none"));
+        }
+      }
+    });
+  </script>
+</head>
+
+<body>
+  <div class="header">
+    <div class="logo-container">
+      <img src="icon/Menu.png" alt="메뉴" class="Menu" id="menu-toggle">
+      <img src="icon/Title.png" alt="로고" class="logo" onclick="location.href='main.html'" style="cursor: pointer;">
+    </div>
+    <input type="text" class="search-bar" id="categorySearch" placeholder="카테고리 검색 (예: 여행,게임...)">
+    <button class="signup-button logged-out-only" onclick="location.href='MemberShip.html'">
+      가입하기
+    </button>
+    <div class="user-info logged-in-only" style="display: none">
+      <span class="welcome-message">환영합니다, <span id="user-name"></span>님!</span>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="sidebar" id="sidebar">
+      <div class="menu-item">
+        <img src="icon/home.png" />
+        <span onclick="location.href='main.html'">홈</span>
+      </div>
+      <div class="menu-item">
+        <img src="icon/heart.png" />
+        <span onclick="location.href='Love.html'">소개팅 매칭</span>
+      </div>
+      <div class="menu-item">
+        <img src="icon/message.png" />
+        <span onclick="location.href='chat.html'">메시지</span>
+      </div>
+      <div class="menu-item">
+        <img src="icon/Logo.png" />
+        <span onclick="location.href='Profile.html'">프로필</span>
+      </div>
+      <div class="menu-item">
+        <img src="icon/database.png" />
+        <span onclick="location.href='resource.html'">성격 데이터 베이스</span>
+      </div>
+      <div class="menu-item">
+        <img src="icon/test.png" />
+        <span onclick="location.href='MBTITest.html'">성격 유형 테스트</span>
+      </div>
+      <div class="menu-item logged-in-only" style="display: none">
+        <span><a href="/logout" class="logout-button">로그아웃</a></span>
+      </div>
+    </div>
+    <div class="content-area">
+      <h1>운동 이야기</h1>
+      <div class="subtitle">송주영 작성</div>
+      <div class="date">마지막 업데이트 일자: 2024년 9월 6일</div>
+
+      <div class="content">
+        동기화된 운동의 리듬을 통해, 평범함을 넘어서는 특별한 운동의 이야기를 나누어봅니다.
+        이 섹션에서는 운동의 깊은 이해와 협력을 통해 서로 연결된 운동가들의 감동적인 여정을 소개합니다.
+        <br>이야기 속에서 각기 다른 운동 성향이 어떻게 조화를 이루어 특별한 운동 프로그램과 성과로 이어지는지를 조명합니다.
+        영감을 얻거나 마음의 위안을 찾고자 한다면, 이 운동 이야기들은 진정한 운동의 힘과 변화를 보여줍니다.
+
+
+      </div>
+
+      <div class="types">
+        <span onclick="showMBTIDescription('INFP')">INFP</span>
+        <span onclick="showMBTIDescription('INFJ')">INFJ</span>
+        <span onclick="showMBTIDescription('ENFP')">ENFP</span>
+        <span onclick="showMBTIDescription('ENFJ')">ENFJ</span>
+        <span onclick="showMBTIDescription('INTP')">INTP</span>
+        <span onclick="showMBTIDescription('INTJ')">INTJ</span>
+        <span onclick="showMBTIDescription('ENTP')">ENTP</span>
+        <span onclick="showMBTIDescription('ENTJ')">ENTJ</span>
+        <span onclick="showMBTIDescription('ISFP')">ISFP</span>
+        <span onclick="showMBTIDescription('ISFJ')">ISFJ</span>
+        <span onclick="showMBTIDescription('ESFP')">ESFP</span>
+        <span onclick="showMBTIDescription('ESFJ')">ESFJ</span>
+        <span onclick="showMBTIDescription('ISTP')">ISTP</span>
+        <span onclick="showMBTIDescription('ISTJ')">ISTJ</span>
+        <span onclick="showMBTIDescription('ESTP')">ESTP</span>
+        <span onclick="showMBTIDescription('ESTJ')">ESTJ</span>
+      </div>
+
+      <div id="mbti-description-container">
+        <i class="fas fa-dumbbell main-exercise-icon"></i>
+        <h2 id="mbti-title"></h2>
+        <div id="mbti-description"></div>
+        <div class="exercise-recommendation"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let typingTimer;
+    let isTyping = false;
+    function showMBTIDescription(mbti) {
+      const descriptions = {
+        INFP: 'INFP는 감성적이고 자기 반성을 중시하는 운동을 선호합니다.<br>이들은 내면의 감정을 탐구할 수 있는 운동을 통해 자신을 발견하고 싶어합니다.<br>자유롭고 조용한 환경에서 하는 운동이 잘 맞습니다.<br>요가, 필라테스, 느린 조깅 등이 이들에게 잘 맞습니다.<br>이들은 운동을 통해 마음의 평화를 찾고,<br>자신만의 속도와 방식을 유지하면서 내면의 감정을 탐구합니다.<br>명상과 함께 하는 요가 수업이나 자연 속에서의 조깅이 추천됩니다.<br>추천하는 운동으로는 "명상과 요가 클래스", "자연 속에서의 조깅" 등이 있습니다.',
+        INFJ: 'INFJ는 내면의 깊이를 탐구할 수 있는 운동을 선호합니다.<br>이들은 운동을 통해 스스로를 성장시키고,<br>자신의 내면과의 연결을 강화하려 합니다.<br>조용하고 집중할 수 있는 운동이 이들에게 잘 맞습니다.<br>명상적인 운동이나 조용한 환경에서의 운동을 좋아합니다.<br>요가, 필라테스, 명상과 함께 하는 걷기 등이 추천됩니다.<br>이들은 운동을 통해 자신을 이해하고 감정적인 평화를 찾습니다.<br>추천하는 운동으로는 "명상과 요가", "자연 속 걷기" 등이 있습니다.',
+        ENFP: 'ENFP는 다채롭고 활기찬 운동을 좋아합니다.<br>새로운 것을 시도하고 다양한 활동을 통해 에너지를 얻고 싶어합니다.<br>이들은 운동에서 재미와 즐거움을 찾고,<br>다양한 경험을 통해 기분 전환을 하기를 원합니다.<br>댄스, 그룹 운동, 트레일 러닝 등이 이들에게 잘 맞습니다.<br>활기찬 분위기와 에너지를 제공하는 운동을 선호하며,<br>혼자보다는 함께하는 활동을 즐깁니다.<br>추천하는 운동으로는 "댄스 클래스", "그룹 운동" 등이 있습니다.',
+        ENFJ: 'ENFJ는 사람들과 함께 하는 운동을 선호합니다.<br>이들은 운동을 통해 사회적 유대감을 느끼고 싶어하며,<br>팀워크와 공동체 의식을 중시합니다.<br>팀 스포츠나 그룹 피트니스 클래스를 즐기며,<br>다른 사람들과 함께 운동하는 것을 좋아합니다.<br>이들은 운동을 통해 사람들과의 관계를 강화하고,<br>긍정적인 에너지를 나누고 싶어합니다.<br>추천하는 운동으로는 "팀 스포츠", "그룹 피트니스 클래스" 등이 있습니다.',
+        INTP: 'INTP는 지적 자극을 주는 운동을 선호합니다.<br>복잡한 기술과 동작을 탐구하며,<br>새로운 도전과 실험을 좋아합니다.<br>이들은 운동에서 기술적 정밀함과 창의적인 접근을 중요시합니다.<br>암벽 등반, 복싱, 트레일 러닝 등이 추천됩니다.<br>새로운 기술을 배우고 자신만의 방식을 개발하는 것을 즐깁니다.<br>이들은 운동을 통해 지적 호기심을 충족시키고 싶어합니다.<br>추천하는 운동으로는 "암벽 등반", "복싱" 등이 있습니다.',
+        INTJ: 'INTJ는 구조적이고 분석적인 운동을 좋아합니다.<br>계획적이고 목표 지향적인 운동을 통해 성과를 추구합니다.<br>체계적이고 구조적인 운동이 잘 맞으며,<br>웨이트 트레이닝, 크로스핏, 마라톤 등이 추천됩니다.<br>이들은 운동에서 체계적 접근과 목표 달성을 중요시하며,<br>명확한 계획과 분석적인 방법으로 운동을 진행합니다.<br>운동의 모든 세부 사항을 관리하고 분석하는 것을 좋아합니다.<br>추천하는 운동으로는 "웨이트 트레이닝", "크로스핏" 등이 있습니다.',
+        ENTP: 'ENTP는 창의적이고 다양한 운동을 선호합니다.<br>실험적인 운동을 시도하고 새로운 도전을 즐깁니다.<br>이들은 운동에서 재미와 창의성을 추구하며,<br>새로운 방식으로 운동을 즐기고 싶어합니다.<br>서핑, 스케이트보드, 아쿠아로빅 같은 운동이 추천됩니다.<br>기존의 틀을 깨는 새로운 운동을 시도하는 것을 좋아합니다.<br>이들은 운동을 통해 다양한 스타일을 탐험하며 재미를 느낍니다.<br>추천하는 운동으로는 "서핑", "스케이트보드" 등이 있습니다.',
+        ENTJ: 'ENTJ는 강렬하고 도전적인 운동을 좋아합니다.<br>목표를 달성하고 성과를 중요시하며,<br>강렬한 비트와 리드미컬한 운동을 선호합니다.<br>격투기, 고강도 인터벌 트레이닝, 마라톤 등이 이들에게 잘 맞습니다.<br>이들은 운동에서 에너지를 얻고 목표를 달성하려는 동기부여를 찾습니다.<br>강렬한 비트와 도전적인 요소가 있는 운동을 즐깁니다.<br>운동을 통해 성과와 목표 달성을 추구합니다.<br>추천하는 운동으로는 "격투기", "고강도 인터벌 트레이닝" 등이 있습니다.',
+        ISFP: 'ISFP는 감성적이고 부드러운 운동을 선호합니다.<br>자신의 감정을 표현할 수 있는 운동을 좋아하며,<br>편안하고 예술적인 분위기의 운동을 즐깁니다.<br>무용, 요가, 자연 속 산책 등이 추천됩니다.<br>이들은 운동을 통해 감성을 표현하고 내면의 평화를 찾습니다.<br>조용하고 감성적인 환경에서 운동하는 것을 선호합니다.<br>편안하고 세심한 감정적 터치가 담긴 운동을 좋아합니다.<br>추천하는 운동으로는 "무용", "자연 속 산책" 등이 있습니다.',
+        ISFJ: 'ISFJ는 안정감과 편안함을 주는 운동을 선호합니다.<br>전통적인 운동 루틴과 안정적인 환경을 찾습니다.<br>이들은 운동에서 편안함과 안정감을 중시하며,<br>저강도 운동을 즐깁니다.<br>걷기, 조깅, 수영 등이 이들에게 잘 맞습니다.<br>운동을 통해 마음의 평화와 안정감을 찾고 싶어합니다.<br>편안하고 친숙한 운동을 통해 일상에서 편안함을 느낍니다.<br>추천하는 운동으로는 "걷기", "수영" 등이 있습니다.',
+        ESFP: 'ESFP는 즐겁고 흥겨운 운동을 좋아합니다.<br>파티 분위기나 에너지가 넘치는 운동을 즐기며,<br>춤을 추거나 활동적인 운동을 선호합니다.<br>댄스 클래스, 에어로빅 등이 이들에게 잘 맞습니다.<br>이들은 운동에서 즐거움과 에너지를 찾고 싶어하며,<br>다양한 비트와 리듬이 있는 운동을 즐깁니다.<br>활기찬 분위기를 통해 기분을 좋게 하는 운동을 선호합니다.<br>추천하는 운동으로는 "댄스 클래스", "에어로빅" 등이 있습니다.',
+        ESFJ: 'ESFJ는 사람들과 함께 하는 운동을 선호합니다.<br>공동체와의 유대를 강화할 수 있는 운동을 좋아합니다.<br>팀 스포츠나 그룹 피트니스 클래스를 즐기며,<br>다른 사람들과 함께하는 활동을 선호합니다.<br>이들은 운동을 통해 사회적 관계를 강화하고,<br>따뜻하고 친근한 분위기를 중요시합니다.<br>운동을 통해 사람들과의 연결을 강화하고 싶어합니다.<br>추천하는 운동으로는 "팀 스포츠", "그룹 피트니스 클래스" 등이 있습니다.',
+        ISTP: 'ISTP는 기술적이고 정교한 운동을 선호합니다.<br>운동의 기술적 측면과 복잡한 동작에 매력을 느끼며,<br>자유로운 운동 방식과 실험적인 접근을 좋아합니다.<br>스포츠 클라이밍, 무술, 복싱 등이 추천됩니다.<br>이들은 운동에서 새로운 기술과 도전적인 요소를 찾고,<br>다양한 악기와 사운드를 탐구하며 기술적 정밀함을 중시합니다.<br>운동에서 창의적인 시도와 혁신을 즐깁니다.<br>추천하는 운동으로는 "스포츠 클라이밍", "무술" 등이 있습니다.',
+        ISTJ: 'ISTJ는 전통적이고 체계적인 운동을 선호합니다.<br>명확한 구조와 규칙이 있는 운동을 좋아하며,<br>계획적이고 안정적인 운동 루틴을 유지합니다.<br>웨이트 트레이닝, 조깅, 클래식 피트니스 프로그램 등이 추천됩니다.<br>이들은 운동에서 체계적 접근과 규칙을 중요시하며,<br>목표 달성을 위한 계획적인 운동을 선호합니다.<br>안정적이고 구조적인 운동을 통해 효율적인 운동을 추구합니다.<br>추천하는 운동으로는 "웨이트 트레이닝", "조깅" 등이 있습니다.',
+        ESTP: 'ESTP는 에너지가 넘치고 역동적인 운동을 좋아합니다.<br>강렬한 비트와 리듬의 운동을 선호하며,<br>도전적이고 활동적인 운동을 즐깁니다.<br>스프린트, 킥복싱, 배틀로얄 같은 운동이 추천됩니다.<br>이들은 운동에서 강렬한 에너지와 도전을 추구하며,<br>리듬감 있는 운동과 경쟁적인 요소를 즐깁니다.<br>활동적이고 역동적인 운동을 통해 기분을 좋게 합니다.<br>추천하는 운동으로는 "킥복싱", "스프린트" 등이 있습니다.',
+        ESTJ: 'ESTJ는 조직적이고 규칙적인 운동을 선호합니다.<br>명확한 리듬과 구조가 있는 운동을 좋아하며,<br>계획적이고 체계적인 운동 루틴을 유지합니다.<br>크로스핏, 스피닝, 규칙적인 운동 프로그램 등이 추천됩니다.<br>이들은 운동에서 규칙성과 조직성을 중시하며,<br>목표 달성을 위한 체계적 접근을 중요시합니다.<br>운동의 모든 세부 사항을 계획하고 분석하는 것을 좋아합니다.<br>추천하는 운동으로는 "크로스핏", "스피닝" 등이 있습니다.'
+      };
+
+      const container = document.getElementById("mbti-description-container");
+      const title = document.getElementById("mbti-title");
+      const description = document.getElementById("mbti-description");
+      const recommendation = document.querySelector(".exercise-recommendation");
+
+      clearTimeout(typingTimer);
+      isTyping = false;
+      container.style.opacity = 0;
+      container.style.transition = "opacity 0.5s ease-in-out";
+
+      const colors = {
+        I: "#E6F3FF", E: "#FFEBEE", S: "#E8F5E9", N: "#FFF3E0",
+        T: "#F3E5F5", F: "#FFF9C4", J: "#E0F7FA", P: "#FFF3E0"
+      };
+      const backgroundColor = `linear-gradient(135deg, ${colors[mbti[0]]}, ${colors[mbti[1]]}, ${colors[mbti[2]]}, ${colors[mbti[3]]})`;
+      container.style.background = backgroundColor;
+
+      title.textContent = `${mbti} 운동 성향`;
+      const text = descriptions[mbti];
+
+      const [desc, rec] = text.split("추천하는 운동으로는");
+
+      let index = 0;
+      description.innerHTML = "";
+
+      function typeWriter() {
+        if (index < desc.length && isTyping) {
+          if (desc.substr(index, 4) === "<br>") {
+            description.innerHTML += "<br>";
+            index += 4;
+          } else {
+            description.innerHTML += desc.charAt(index);
+            index++;
+          }
+          typingTimer = setTimeout(typeWriter, 20);
+        }
+      }
+
+      setTimeout(() => {
+        container.style.opacity = 1;
+        container.classList.add("show");
+        isTyping = true;
+        typeWriter();
+      }, 100);
+
+      if (rec) {
+        const recList = rec.split(",").map(item => item.trim());
+        recommendation.innerHTML = `
+      <strong>추천 운동:</strong>
+      ${recList.map(item => `
+        <div class="exercise-item">
+          <i class="fas fa-dumbbell exercise-item-icon"></i>
+          <span class="exercise-name">${item}</span>
+        </div>
+      `).join("")}
+    `;
+      } else {
+        recommendation.innerHTML = "";
+      }
+    }
+  </script>
+</body>
+
+</html>

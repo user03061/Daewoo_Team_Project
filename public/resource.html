@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet" />
+  <title>리소스 페이지</title>
+  <style>
+    body {
+      font-family: "Nanum Pen Script", cursive;
+      background: linear-gradient(135deg, #000000, #0a0a23, #151540);
+      color: white;
+      margin: 0;
+      padding: 0;
+      overscroll-behavior-y: none;
+      overflow-y: auto;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        radial-gradient(white, rgba(255, 255, 255, .2) 2px, transparent 40px),
+        radial-gradient(white, rgba(255, 255, 255, .15) 1px, transparent 30px),
+        radial-gradient(white, rgba(255, 255, 255, .1) 2px, transparent 40px);
+      background-size: 550px 550px, 350px 350px, 250px 250px;
+      background-position: 0 0, 40px 60px, 130px 270px;
+      animation: starMove 200s linear infinite;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    @keyframes starMove {
+      from {
+        transform: translateY(0);
+      }
+
+      to {
+        transform: translateY(-2000px);
+      }
+    }
+
+    .container {
+      display: flex;
+      padding: 20px;
+    }
+
+    .menu-item {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      margin-bottom: 30px;
+      padding: 10px;
+      border-radius: 10px;
+      transition: background-color 0.3s;
+      cursor: pointer;
+    }
+
+    .menu-item img {
+      width: 25px;
+      height: 25px;
+      margin-right: 10px;
+      background-color: white;
+      border-radius: 50%;
+      padding: 5px;
+    }
+
+    .menu-item span {
+      font-size: 30px;
+      color: white;
+      white-space: nowrap;
+      word-break: keep-all;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex-grow: 1;
+    }
+
+    .welcome-message {
+      font-size: 30px;
+      text-align: center;
+      margin: 0 auto;
+      margin-right: auto;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      flex-wrap: nowrap;
+    }
+
+    .logo {
+      width: 70px;
+      height: auto;
+      margin: 0 20px 0 0;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .Menu {
+      width: 50px;
+      margin-right: 15px;
+      cursor: pointer;
+    }
+
+    .search-bar {
+      width: 80%;
+      padding: 10px;
+      border-radius: 20px;
+      font-size: 15px;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+      text-align: center;
+    }
+
+    .signup-button {
+      width: 120px;
+      height: 40px;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-size: 15px;
+      margin-right: 30px;
+      color: white;
+      background: rgb(8, 152, 209);
+      border: none;
+      position: relative;
+      overflow: visible;
+      z-index: 1;
+      cursor: pointer;
+      animation: pulse 3s infinite;
+      margin-top: 5px;
+    }
+
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(8, 152, 209, 0.7);
+      }
+
+      70% {
+        box-shadow: 0 0 0 20px rgba(8, 152, 209, 0);
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(8, 152, 209, 0);
+      }
+    }
+
+    .logout-button {
+      margin-left: 50px;
+      color: blueviolet;
+    }
+
+    .container {
+      display: flex;
+      flex: 1;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .sidebar {
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      border-radius: 10px;
+    }
+
+    .sidebar {
+      transition: width 0.3s ease;
+      width: 250px;
+      overflow: hidden;
+    }
+
+    .sidebar.collapsed {
+      width: 60px;
+      /* 축소된 너비 */
+    }
+
+    .sidebar.collapsed .menu-item span {
+      display: none;
+    }
+
+    .menu-item {
+      white-space: nowrap;
+    }
+
+    .menu-item img {
+      min-width: 25px;
+    }
+
+    .menu-item {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      margin-bottom: 30px;
+      padding: 10px;
+      border-radius: 10px;
+      transition: background-color 0.3s;
+      cursor: pointer;
+    }
+
+    .menu-item img {
+      width: 25px;
+      height: 25px;
+      margin-right: 10px;
+      background-color: white;
+      border-radius: 50%;
+      padding: 5px;
+    }
+
+    .menu-item span {
+      font-size: 30px;
+      color: white;
+      white-space: nowrap;
+      word-break: keep-all;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex-grow: 1;
+    }
+
+    .content {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .resource-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      margin-left: 3%;
+    }
+
+    .content h1 {
+      font-size: 50px;
+      color: white;
+      text-align: center;
+      margin-top: 5px;
+    }
+
+    .content p {
+      font-size: 30px;
+      color: white;
+      text-align: center;
+      margin-top: 5px;
+    }
+
+    .resource-item {
+      background: linear-gradient(135deg, #0a0a0a, #1a0d2e, #2e124f);
+      /* 블랙홀 느낌 그라디언트 */
+      padding: 15px;
+      border-radius: 15px;
+      text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 5px solid #1d063b;
+      width: 80%;
+      box-shadow: 0 0 15px rgba(30, 20, 50, 0.6), 0 0 30px rgba(10, 0, 20, 0.4);
+    }
+
+    .resource-item img {
+      width: 250px;
+      height: 250px;
+      margin-bottom: 20px;
+      border-radius: 20px;
+    }
+
+    @keyframes swing {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(5deg); }
+      75% { transform: rotate(-5deg); }
+    }
+
+    .resource-item:nth-child(1) img { animation: swing 3s ease-in-out infinite; }
+    .resource-item:nth-child(2) img { animation: swing 3s ease-in-out infinite; }
+    .resource-item:nth-child(3) img { animation: swing 3s ease-in-out infinite; }
+    .resource-item:nth-child(4) img { animation: swing 3s ease-in-out infinite; }
+    .resource-item:nth-child(5) img { animation: swing 3s ease-in-out infinite; }
+    .resource-item:nth-child(6) img { animation: swing 3s ease-in-out infinite; }
+
+    .resource-item h3 {
+      margin-bottom: 15px;
+      margin-top: 5px;
+      font-size: 40px;
+      color: #ffffff;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    }
+
+    .resource-item p {
+      font-size: 27px;
+      color: #dddddd;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    .resource-item:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .logout-button {
+      margin-left: 50px;
+      color: blueviolet;
+    }
+  </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // 로그인 여부를 확인하고 UI를 업데이트
+      fetch("/api/check-auth")
+        .then((response) => response.json())
+        .then((data) => {
+          updateUI(data.isLoggedIn, data.isLoggedIn ? data.user.name : null);
+        })
+        .catch((error) => {
+          console.error("Error checking auth:", error);
+          updateUI(false);
+        });
+
+      // 사이드바 토글 기능 추가
+      const menuToggle = document.getElementById('menu-toggle');
+      const sidebar = document.getElementById('sidebar');
+      const content = document.getElementById('content');
+
+      menuToggle.addEventListener('click', function () {
+        sidebar.classList.toggle('collapsed');
+      });
+
+      const searchInput = document.getElementById('categorySearch');
+      searchInput.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          const searchTerm = this.value.trim();
+          if (searchTerm) {
+            window.location.href = `main.html?category=${encodeURIComponent(searchTerm)}`;
+          }
+        }
+      });
+
+      function updateUI(isLoggedIn, userName) {
+        const loggedOutElements =
+          document.querySelectorAll(".logged-out-only");
+        const loggedInElements = document.querySelectorAll(".logged-in-only");
+        const userNameElement = document.getElementById("user-name");
+
+        if (isLoggedIn) {
+          loggedOutElements.forEach((el) => (el.style.display = "none"));
+          loggedInElements.forEach((el) => (el.style.display = "block"));
+          if (userNameElement) userNameElement.textContent = userName;
+        } else {
+          loggedOutElements.forEach((el) => (el.style.display = "block"));
+          loggedInElements.forEach((el) => (el.style.display = "none"));
+        }
+      }
+    });
+  </script>
+</head>
+
+<body>
+  <div class="header">
+    <div class="logo-container">
+      <img src="icon/Menu.png" alt="메뉴" class="Menu" id="menu-toggle">
+      <img src="icon/Title.png" alt="로고" class="logo" onclick="location.href='main.html'" style="cursor: pointer;">
+    </div>
+    <input type="text" class="search-bar" id="categorySearch" placeholder="카테고리 검색 (예: 여행,게임...)">
+    <button class="signup-button logged-out-only" onclick="location.href='MemberShip.html'">가입하기</button>
+    <div class="user-info logged-in-only" style="display: none">
+      <span class="welcome-message">환영합니다, <span id="user-name"></span>님!</span>
+    </div>
+  </div>
+  <div class="container">
+    <div class="sidebar" id="sidebar">
+      <div class="menu-item">
+        <img src="icon/home.png" />
+        <span onclick="location.href='main.html'">홈</span>
+      </div>
+      <div class="menu-item">
+        <img src="icon/heart.png" />
+        <span onclick="location.href='Love.html'">소개팅 매칭</span>
+      </div>
+      <div class="menu-item">
+        <img src="icon/message.png" />
+        <span onclick="location.href='chat.html'">메시지</span>
+      </div>
+      <div class="menu-item">
+        <img src="icon/Logo.png" />
+        <span onclick="location.href='profile.html'">프로필</span>
+      </div>
+      <div class="menu-item">
+        <img src="icon/database.png" />
+        <span onclick="location.href='resource.html'">성격 데이터 베이스</span>
+      </div>
+      <div class="menu-item">
+        <img src="icon/test.png" />
+        <span onclick="location.href='MBTITest.html'">성격 유형 테스트</span>
+      </div>
+      <div class="menu-item logged-in-only" style="display: none">
+        <span><a href="/logout" class="logout-button">로그아웃</a></span>
+      </div>
+    </div>
+    <div class="content">
+      <h1>MyBTI Story</h1>
+      <p>
+        더 깊은 연결을 위한 의도와 활동이 만나는 부 리소스 페이지에 오신 것을
+        환영합니다. 여기에서는 관계와 개인 학습에 대한 이해를 높이기 위한
+        다양한 리소스를 모아두었습니다.
+      </p>
+
+      <div class="resource-grid">
+        <div class="resource-item" onclick="location.href='Resource2.html'">
+          <img src="icon/Music.png" alt="음악 이야기" />
+          <h3>음악 이야기</h3>
+          <p>자신이 좋아하는 음악을 찾아 힐링을 해봅니다.</p>
+        </div>
+        <div class="resource-item" onclick="location.href='Resource3.html'">
+          <img src="icon/Excercise.png" alt="운동 이야기" />
+          <h3>운동 이야기</h3>
+          <p>자신에게 맞는 운동을 찾아 건강을 되찾습니다.</p>
+        </div>
+        <div class="resource-item" onclick="location.href='Resource4.html'">
+          <img src="icon/Trip.png" alt="여행 이야기" />
+          <h3>여행 이야기</h3>
+          <p>자신이 좋아하는 여행을 찾아 세계 곳곳을 여행합니다.</p>
+        </div>
+        <div class="resource-item" onclick="location.href='Resource5.html'">
+          <img src="icon/Book.png" alt="도서 이야기" />
+          <h3>도서 이야기</h3>
+          <p>자신에게 맞는 도서를 해서 마음의 지식을 쌓아봅니다.</p>
+        </div>
+        <div class="resource-item" onclick="location.href='Resource6.html'">
+          <img src="icon/Love.png" alt="사랑 이야기" />
+          <h3>사랑 이야기</h3>
+          <p>
+            연애의 세계에서 독특한 틈새를 기념하는 데이터. 이곳은 손에 맞는
+            사람을 찾기 위한 당신의 가이드입니다.
+          </p>
+        </div>
+        <div class="resource-item" onclick="location.href='Resource7.html'">
+          <img src="icon/Dream.png" alt="꿈 이야기" />
+          <h3>꿈 이야기</h3>
+          <p>자신의 꿈을 찾아 이룰 수 있도록 나아가 봅시다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
